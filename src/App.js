@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Graph from "./components/d3/Graph";
 import AddNode from "./components/AddNode";
+import FriendSlide from "./components/FriendSlide";
 import "./styles/App.css";
 
 function App() {
@@ -98,24 +99,21 @@ function App() {
     <Graph data={graphData} retrieveHandler={retrieveselectedPerson} />
   );
 
-  const displaySelected = selectedPerson ? (
-    <div className="selected-container">
-      <h2>
-        Name: {selectedPerson.firstName} {selectedPerson.lastName}
-      </h2>
-      <p>Phone: {selectedPerson.phone}</p>
-      <p>Image: {selectedPerson.imageUrl}</p>
-      <p>Last Connection: {selectedPerson.updatedAt}</p>
-    </div>
-  ) : (
-    <p className="selected-container">No selected user</p>
-  );
-
+  
   return (
     <div className="App">
-      <AddNode addData={addGraphData} />
-      {displayGraph}
-      {displaySelected}
+      <div className="friend-slide">
+        {selectedPerson? <FriendSlide firstName={selectedPerson.firstName}
+        lastName={selectedPerson.lastName}
+        imageUrl={selectedPerson.imageUrl}
+        phone={selectedPerson.phone}
+        updatedAt={selectedPerson.updatedAt}/>: <h2>no Selected User</h2>}
+      </div>
+
+    <div className="graph">
+        <AddNode addData={addGraphData} />
+        {displayGraph}
+      </div>
     </div>
   );
 }
