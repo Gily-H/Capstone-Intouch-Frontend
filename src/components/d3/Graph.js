@@ -1,41 +1,41 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import useD3 from "../../hooks/useD3";
 
 export default function Graph(props) {
-  const networkGraph = useRef();
-
   const size = { width: 200, length: 200 };
 
-  useEffect(() => {
+  const networkGraph = useD3(() => {
     const svg = d3
-        .select(networkGraph.current)
-        .html("")
-        .attr("viewBox", [0, 0, size.width, size.length]),
-      link = svg
-        .selectAll(".link")
-        .data(props.graph.links)
-        .join("line")
-        .classed("link", true),
-      node = svg
-        .selectAll(".node")
-        .data(props.graph.nodes)
-        .join("circle")
-        .attr("r", 10)
-        .classed("node", true)
-        .classed("fixed", (d) => d.fx !== undefined);
+      .select(networkGraph.current)
+      .html("")
+      .attr("viewBox", [0, 0, size.width, size.length]);
+
+    const link = svg
+      .selectAll(".link")
+      .data(props.data.links)
+      .join("line")
+      .classed("link", true);
+
+    const node = svg
+      .selectAll(".node")
+      .data(props.data.nodes) // array of data to be mapped to html/svg elements
+      .join("circle") // add or remove html/svg elements to match the number of data entries
+      .attr("r", 10)
+      .classed("node", true)
+      .classed("fixed", (d) => d.fx !== undefined);
 
     svg.node();
 
     const simulation = d3
-      .forceSimulation()
-      .nodes(props.graph.nodes)
-      .force("charge", d3.forceManyBody())
-      .force("center", d3.forceCenter(size.width / 2, size.length / 2))
+      .forceSimulation(props.data.nodes)
+      .force("charge", d3.forceManyBody()) // magnetic force, positive attracts, default -30
+      .force("center", d3.forceCenter(size.width / 2, size.length / 2)) // point to center on canvas
       .force(
         "link",
-        d3.forceLink(props.graph.links).distance(() => 80)
+        d3.forceLink(props.data.links).distance(() => 80) // set link line length (competes with force)
       )
-      .on("tick", tick);
+      .on("tick", tick); // get state of layout whe it has changed (advanced one tick)
 
     function tick() {
       link
@@ -45,7 +45,7 @@ export default function Graph(props) {
         .attr("y2", (d) => d.target.y);
       node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
     }
-  }, []);
+  }, [props.data.nodes.length]);
 
   return (
     <div className="svg-container">
