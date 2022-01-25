@@ -12,9 +12,10 @@ export default function AddNode(props) {
 
   function formSubmitHandler(event) {
     event.preventDefault();
+    const id = Number(event.target[0].value);
     const newData = {
-      node: { id: Number(event.target[0].value) },
-      link: { source: 0, target: Number(event.target[0].value) },
+      node: { id: id, index: id },
+      link: { source: 0, target: id },
     };
 
     props.addData(newData);

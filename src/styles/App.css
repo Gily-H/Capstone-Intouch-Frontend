@@ -1,3 +1,9 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .svg-container {
   max-width: 800px;
 }
@@ -9,11 +15,19 @@
 
 .node {
   cursor: move;
-  fill: #ccc;
+  fill: rgb(83, 238, 35);
   stroke: #000;
   stroke-width: 1.5px;
+  filter: drop-shadow(5px 5px 5px grey);
 }
 
 .node.fixed {
   fill: #f00;
+}
+
+.selected-container {
+  margin: 2rem;
+  padding: 2rem;
+  width: fit-content;
+  border: 3px solid black;
 }

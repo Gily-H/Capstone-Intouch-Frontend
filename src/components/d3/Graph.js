@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import * as d3 from "d3";
 import useD3 from "../../hooks/useD3";
+import { createNodes, createLinks } from "./graphFuncs";
 
 export default function Graph(props) {
   const size = { width: 200, length: 200 };
@@ -11,19 +12,8 @@ export default function Graph(props) {
       .html("")
       .attr("viewBox", [0, 0, size.width, size.length]);
 
-    const link = svg
-      .selectAll(".link")
-      .data(props.data.links)
-      .join("line")
-      .classed("link", true);
-
-    const node = svg
-      .selectAll(".node")
-      .data(props.data.nodes) // array of data to be mapped to html/svg elements
-      .join("circle") // add or remove html/svg elements to match the number of data entries
-      .attr("r", 10)
-      .classed("node", true)
-      .classed("fixed", (d) => d.fx !== undefined);
+    const link = createLinks(svg, props.data.links);
+    const node = createNodes(svg, props.data.nodes, props.retrieveHandler);
 
     svg.node();
 
