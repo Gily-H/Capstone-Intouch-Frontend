@@ -15,6 +15,10 @@ function App() {
   });
   const [isLoading, setLoading] = useState(true);
 
+  const [selectedPerson, setselectedPerson] = useState("");
+
+  /* data fetching  */
+
   async function fetchPeopleData() {
     const rootUser = await axios.get(
       "https://crud-intouch-backend.herokuapp.com/api/roots/1"
@@ -29,21 +33,36 @@ function App() {
       friends: friends.data,
     });
 
-    const rootId = rootUser.data.id - 1; // should be 0
-    const rootNode = { id: rootId, index: rootId }; // create node object
+    const rootData = rootUser.data;
+    const rootId = rootData.id - 1; // should be 0
+
+    // create node for root user
+    const rootNode = {
+      id: rootId,
+      index: rootId,
+      firstName: rootData.firstName,
+      lastName: rootData.lastName,
+      phone: rootData.phone,
+      imageUrl: rootData.imageUrl,
+      updatedAt: rootData.updatedAt,
+    };
+
+    // create nodes for all friends
     const friendIds = friends.data.map((friend) => ({
       id: friend.id,
       index: friend.id,
+      firstName: friend.firstName,
+      lastName: friend.lastName,
+      phone: friend.phone,
+      imageUrl: friend.imageUrl,
+      interactions: friend.interactions,
+      updatedAt: friend.updatedAt,
     }));
+
     const friendLinks = friends.data.map((friend) => ({
       source: 0, // root should always be in the first position
       target: friend.id,
     }));
-
-    console.log("inside");
-    console.log(rootNode);
-    console.log(friendIds);
-    console.log(friendLinks);
 
     setGraphData({
       nodes: [rootNode, ...friendIds], // keep the root user in the first position
@@ -55,24 +74,48 @@ function App() {
 
   useEffect(() => fetchPeopleData(), []);
 
-  console.log("outside");
-  console.log(isLoading);
-  console.log(peopleData);
-  console.log(graphData);
+  /* handlers */
 
   function addGraphData(data) {
+    console.log(data);
     setGraphData((prevGraphData) => ({
       nodes: [...prevGraphData.nodes, data.node],
       links: [...prevGraphData.links, data.link],
     }));
   }
 
-  const display = isLoading ? <p>Loading</p> : <Graph data={graphData} />;
+  function retrieveselectedPerson(selected) {
+    console.log("this is the selected user");
+    console.log(selected);
+    setselectedPerson(selected);
+  }
+
+  /* display section  */
+
+  const displayGraph = isLoading ? (
+    <p>Loading</p>
+  ) : (
+    <Graph data={graphData} retrieveHandler={retrieveselectedPerson} />
+  );
+
+  const displaySelected = selectedPerson ? (
+    <div className="selected-container">
+      <h2>
+        Name: {selectedPerson.firstName} {selectedPerson.lastName}
+      </h2>
+      <p>Phone: {selectedPerson.phone}</p>
+      <p>Image: {selectedPerson.imageUrl}</p>
+      <p>Last Connection: {selectedPerson.updatedAt}</p>
+    </div>
+  ) : (
+    <p className="selected-container">No selected user</p>
+  );
 
   return (
     <div className="App">
       <AddNode addData={addGraphData} />
-      {display}
+      {displayGraph}
+      {displaySelected}
     </div>
   );
 }
