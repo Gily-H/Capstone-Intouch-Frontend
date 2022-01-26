@@ -34,10 +34,15 @@
 
 .App{
   display: flex;
+  margin-top: 300px;
 }
 .friend-slide{
   margin-right: 1000px;
+  height: 100%;
+  background-color: blue;
 }
 svg{
   height: 1000px;
 }
+
+

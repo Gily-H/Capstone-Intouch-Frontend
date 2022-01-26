@@ -18,7 +18,7 @@ export default function Login(){
         setRedirect(true)
     }
 	const logo = "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png"
-	const fb_logo = "https://assets.flagfamily.com/web/images/articles/facebook-logo-1633351081.png?o68zMHPJNaYDEFit6P7OFwUZta6IW1Oy";
+	
 	const google_logo = "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg"
 	return(
 		
@@ -48,11 +48,6 @@ export default function Login(){
 				</label>
 				<input type="submit" value="Create Account" className="login-btns login-submit-btn"/>
 				<p className="login-OR"> or</p>
-
-				<button className="login-btns login-fb-btn">
-					<img src={fb_logo} className="fb-logo"/> 
-					<p className="fb-text">Continue with Facebook</p>
-				</button>
 
 				<button className="login-btns login-google-btn">
 					<img src={google_logo} className="google-logo"/> 

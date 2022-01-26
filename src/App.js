@@ -3,11 +3,15 @@ import axios from "axios";
 import Graph from "./components/d3/Graph";
 import AddNode from "./components/AddNode";
 import FriendSlide from "./components/FriendSlide";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import "./styles/App.css";
 import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Signup from "./components/SignUp"
+import Navbar from "./components/Navbar";
+
+
+
 function App() {
   const [peopleData, setPeopleData] = useState({
     root: {},
@@ -102,29 +106,31 @@ function App() {
     <Graph data={graphData} retrieveHandler={retrieveselectedPerson} />
   );
 
-  
+
   return (
     <Router>
       <Routes>
         <Route path="/userGraph" element={
-          <div className="App">
-            <div className="friend-slide">
-              {selectedPerson ? <FriendSlide firstName={selectedPerson.firstName}
-                lastName={selectedPerson.lastName}
-                imageUrl={selectedPerson.imageUrl}
-                phone={selectedPerson.phone}
-                updatedAt={selectedPerson.updatedAt} /> : <h2>no Selected User</h2>}
-            </div>
+          <div className="total-App">
+            <div className="App">
+              <div className="friend-slide">
+                {selectedPerson ? <FriendSlide firstName={selectedPerson.firstName}
+                  lastName={selectedPerson.lastName}
+                  imageUrl={selectedPerson.imageUrl}
+                  phone={selectedPerson.phone}
+                  updatedAt={selectedPerson.updatedAt} /> : <></>}
+              </div>
 
-            <div className="graph">
-              <AddNode addData={addGraphData} />
-              {displayGraph}
+              <div className="graph">
+                <AddNode addData={addGraphData} />
+                {displayGraph}
+              </div>
             </div>
           </div>
         } />
-        <Route path="/" element={<HomePage/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signUp" element={<Signup/>}/>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<Signup />} />
       </Routes>
     </Router>
   );
