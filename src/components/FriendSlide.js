@@ -1,23 +1,20 @@
-import React, { useState } from "react"
+import React from "react";
 
-export default function FriendSlide(props){
-    
-    const name = `${props.firstName} ${props.lastName}`
+export default function FriendSlide(props) {
+  const name = `${props.firstName} ${props.lastName}`;
+  const phone = props.phone;
+  const imageUrl = props.imageUrl;
+  const updatedAt = props.updatedAt;
 
-    const phone = props.phone
-
-    const imageUrl = props.imageUrl
-
-    const updatedAt = props.updatedAt
-
-    return(
-        <div id="friend-slide">
-            {props? <><img src={imageUrl}></img>
-            <h2>Name: {name}</h2>
-            <h3>Phone: {phone}</h3>
-            <h3>Last Connection {updatedAt}</h3></> : <h2>bi</h2>}
-            
-            
-        </div>
-    )
+  return (
+    <div className="friend-slide">
+      <img className="friend-img" src={imageUrl} alt="friend-profile"></img>
+      <h2 className="friend-name">{name}</h2>
+      <p className="friend-phone">Phone: {phone}</p>
+      <p className="friend-last-contact">Last Connection {updatedAt}</p>
+      <button className="friend-contact">
+        (message icon) Send a Messge
+      </button>
+    </div>
+  );
 }
