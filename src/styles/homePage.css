@@ -1,0 +1,38 @@
+.home-text1{
+    background-color: blue;
+    text-align: center;
+    color: white;
+    width:60%;
+    max-width: 1300px;
+    padding: 100px;
+    font-size: 40px;
+    margin: 0 auto;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.home-text1 h2{
+    margin-bottom: 30px;
+}
+
+.home-text2{
+    background-color: red;
+    text-align: center;
+    color: white;
+    width:60%;
+    max-width: 1300px;
+    padding: 100px;
+    font-size: 40px;
+    margin: 0 auto;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.home-text2 h2{
+    margin-bottom: 30px;
+}
+
+body{
+    background-image: url("../images/darkBlue-notexture.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
