@@ -1,12 +1,5 @@
 
-.bubbles{
-    position: relative;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    transform: translateY(30%);
-    text-align: center;
-}
+
 img{
     position: relative;
     border-radius: 50%;
@@ -23,6 +16,10 @@ img{
     color: white;
     font-size: 30px;
 
+}
+
+a{
+    text-decoration: none;
 }
 
 

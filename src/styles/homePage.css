@@ -31,20 +31,43 @@
 }
 
 body{
-    background-image: url("../images/darkBlue-notexture.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #ebebeb ;
+      
+}
+
+.top-bubble{
+    display: flex;
+    
+    width:fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 150px;
+    margin-top: 20px;
     
 }
-.top-bubbles{
-    display: flex;
-    margin-bottom: 200px;
-    
+
+.top-bubble img{
+    height: 250px;
 }
 
 
 .bottom-bubbles{
     display: flex;
-    margin-top: 200px;
+    width:1000px;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateY(200%);
 }
+
+#left-btm-bubble{
+    margin-right: auto;
+}
+
+.center-bubble{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translatey(80%);
+}
+
 
