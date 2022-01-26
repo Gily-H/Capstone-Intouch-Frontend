@@ -3,6 +3,7 @@ import * as d3 from "d3";
 // import useD3 from "../../hooks/useD3";
 import { createNodes, createLinks, createSvg } from "./graphFuncs";
 import "../../styles/Graph.css";
+import Navbar from "../Navbar";
 
 export default function Graph(props) {
   /* 

@@ -1,16 +1,19 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import '../styles/navbar.css'
+import '../styles/navbar2.css'
 import Login from './Login'
+import {animated, useSpring} from "react-spring"
 
 
 
 export default function Navbar(){
 
+    const effs = useSpring({from: {opacity: 0, marginTop: -200},to: {opacity: 1, marginTop: 0}, config:{duration: 500}})
+
     return(
         <div>
 
-        <div className="nav-body">
+        <animated.div className="nav-body" style={effs}>
             
             <div className="nav-header">
                 {/* <img src={logo} className="bank-logo"/> */}
@@ -26,7 +29,7 @@ export default function Navbar(){
                 <Link to="/login" className="nav-link nav-login-btn" >Login</Link>
                 
             </div>
-        </div>
+        </animated.div>
        
         
 

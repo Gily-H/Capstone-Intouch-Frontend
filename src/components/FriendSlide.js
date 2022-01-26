@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "./Navbar";
 
 export default function FriendSlide(props) {
   const name = `${props.firstName} ${props.lastName}`;
