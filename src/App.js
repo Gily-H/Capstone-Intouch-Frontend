@@ -5,10 +5,11 @@ import AddNode from "./components/AddNode";
 import FriendSlide from "./components/FriendSlide";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import "./styles/App.css";
-import HomePage from "./components/HomePage";
+import About from "./components/About";
 import Login from "./components/Login";
 import Signup from "./components/SignUp"
 import Navbar from "./components/Navbar";
+import HomePage from "./components/HomePage";
 
 
 
@@ -124,7 +125,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/" element={<HomePage/>}/>
         <Route path="/userGraph" element={<div className="App">
           <AddNode addData={addGraphData} />
           {displayGraph}

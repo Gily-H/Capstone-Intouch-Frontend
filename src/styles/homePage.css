@@ -1,5 +1,5 @@
 .home-text1{
-    background-color: blue;
+    background-color: none;
     text-align: center;
     color: white;
     width:60%;
@@ -15,9 +15,9 @@
 }
 
 .home-text2{
-    background-color: red;
+    background-color: white;
     text-align: center;
-    color: white;
+    color: black;
     width:60%;
     max-width: 1300px;
     padding: 100px;
@@ -36,3 +36,15 @@ body{
     background-size: cover;
     
 }
+.top-bubbles{
+    display: flex;
+    margin-bottom: 200px;
+    
+}
+
+
+.bottom-bubbles{
+    display: flex;
+    margin-top: 200px;
+}
+
