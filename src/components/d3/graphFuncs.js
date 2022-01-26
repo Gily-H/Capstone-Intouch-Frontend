@@ -31,7 +31,17 @@ export function createLinks(svg, data) {
   return links;
 }
 
-export function createSvg(ref, width, length) {
-  const svg = d3.select(ref);
-  return svg;
+export function randomBackgroundColor(datum) {
+  const COLORS = [
+    "#7094cf",
+    "#cf9c70",
+    "#cf7070",
+    "#70cf7e",
+    "#8c70cf",
+    "#ed7edb",
+    "#ffaf69",
+  ];
+
+  const random = datum % COLORS.length;
+  return COLORS[random];
 }

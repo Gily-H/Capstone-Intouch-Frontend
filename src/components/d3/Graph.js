@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 // import useD3 from "../../hooks/useD3";
-import { createNodes, createLinks, createSvg } from "./graphFuncs";
+import { createNodes, createLinks, randomBackgroundColor } from "./graphFuncs";
 import "../../styles/Graph.css";
 
 export default function Graph(props) {
@@ -19,6 +19,53 @@ export default function Graph(props) {
       .html("")
       .attr("viewbox", [0, 0, props.dimensions.width, props.dimensions.height]);
 
+    // draws a circle - I did this to make a visual representation of the forceRadial
+    svg
+      .selectAll(".enclosure")
+      .data([props.data])
+      .join("circle")
+      .attr("stroke", "green")
+      .attr("fill", "none")
+      .attr("r", 500)
+      .attr("cx", props.dimensions.width / 2)
+      .attr("cy", props.dimensions.height / 2);
+
+    /* graph components */
+    const links = svg
+      .selectAll(".link")
+      .data(props.data.links)
+      .join("line")
+      .classed("link", true)
+      .on("click", () => alert("clicked link"));
+
+    const nodes = svg
+      .selectAll(".node")
+      .data(props.data.nodes)
+      .join("circle")
+      .attr("r", 20)
+      .attr("fill", (datum) => randomBackgroundColor(datum.id))
+      .classed("node", true)
+      .on("mousedown", (event, datum) => {
+        props.retrieveHandler(datum);
+      });
+
+    const text = svg
+      .selectAll(".text")
+      .data(props.data.nodes)
+      .join("text")
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline", "middle")
+      // .attr("dy", "0.35em")
+      .text((datum) => {
+        const initials = datum.firstName
+          ? (datum.firstName[0] + datum.lastName[0]).toUpperCase()
+          : "";
+        console.log(initials);
+        return initials;
+      })
+      .classed("text", true);
+
+    console.log(nodes);
     /* graph forces */
     const simulation = d3
       .forceSimulation(props.data.nodes)
@@ -52,40 +99,12 @@ export default function Graph(props) {
           return link.target.id * EDGE_GROWTH_FACTOR; // MOVE EDGE CLOSER TO RADIAL EDGE
         })
       )
-      .alpha(0.9) // will decay until reaches default break point of 0.001
-      .alphaMin(0.01) // without this -> infinite loop
-      .alphaDecay(0.05); // rate of decay
+      // .alpha(0.9) // will decay until reaches default break point of 0.001
+      // .alphaMin(0.01) // without this -> infinite loop
+      // .alphaDecay(0.05) // rate of decay
+      .tick(35); // subtract from default ticks (300 - 35 = 265 ticks)
 
-    // draws a circle - I did this to make a visual representation of the forceRadial
-    svg
-      .selectAll(".enclosure")
-      .data([props.data])
-      .join("circle")
-      .attr("stroke", "green")
-      .attr("fill", "none")
-      .attr("r", 500)
-      .attr("cx", props.dimensions.width / 2)
-      .attr("cy", props.dimensions.height / 2);
-
-    /* graph components */
-    const links = svg
-      .selectAll(".link")
-      .data(props.data.links)
-      .join("line")
-      .classed("link", true)
-      .on("click", () => alert("clicked link"));
-
-    const nodes = svg
-      .selectAll(".node")
-      .data(props.data.nodes)
-      .join("circle")
-      .attr("r", 10)
-      .classed("node", true)
-      .on("mousedown", (event, datum) => {
-        props.retrieveHandler(datum);
-      });
-
-    // default 300 ticks per simulation before all movement ceases
+    // default 300 ticks per simulation before simulation stops
     simulation.on("tick", tick);
 
     /* update positions function */
@@ -97,6 +116,7 @@ export default function Graph(props) {
         .attr("x2", (link) => link.target.x)
         .attr("y2", (link) => link.target.y);
       nodes.attr("cx", (node) => node.x).attr("cy", (node) => node.y);
+      text.attr("x", (node) => node.x).attr("y", (node) => node.y);
     }
   }, [props.data.nodes.length]);
 
