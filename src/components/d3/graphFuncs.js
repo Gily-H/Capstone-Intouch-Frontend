@@ -6,8 +6,9 @@ export function createNodes(svg, data, eventHandler) {
     .data(data)
     .join("circle")
     .attr("r", 10)
+    .attr("cx", (node) => node.x)
+    .attr("cy", (node) => node.y)
     .classed("node", true)
-    .classed("fixed", (d) => d.fx !== undefined) // if undefined, nodes will move aroud
     .on("mousedown", (event, datum) => {
       eventHandler(datum);
     });
@@ -20,33 +21,17 @@ export function createLinks(svg, data) {
     .selectAll(".link")
     .data(data)
     .join("line")
+    .attr("x1", (link) => link.source.x)
+    .attr("y1", (link) => link.source.y)
+    .attr("x2", (link) => link.target.x)
+    .attr("y2", (link) => link.target.y)
     .classed("link", true)
     .on("click", () => alert("clicked link"));
 
   return links;
 }
 
-function addTooltip(circle) {
-  var x = parseFloat(circle.attr("cx"));
-  var y = parseFloat(circle.attr("cy"));
-  var text = circle.attr("id");
-
-  var tooltip = d3
-    .select("#plot")
-    .append("text")
-    .text(text)
-    .attr("x", x)
-    .attr("y", y)
-    .attr("id", "tooltip");
-
-  var offset = tooltip.node().getBBox().width / 2;
-
-  if (x - offset < 0) {
-    tooltip.attr("text-anchor", "start");
-  } else if (x + offset > 100 - 20) {
-    tooltip.attr("text-anchor", "end");
-  } else {
-    tooltip.attr("text-anchor", "middle");
-    tooltip.attr("dx", 0);
-  }
+export function createSvg(ref, width, length) {
+  const svg = d3.select(ref);
+  return svg;
 }

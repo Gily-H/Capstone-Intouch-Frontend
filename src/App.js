@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 
 
 function App() {
+  const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
     root: {},
     friends: [],
@@ -21,8 +22,10 @@ function App() {
     nodes: [],
     links: [],
   });
-  const [isLoading, setLoading] = useState(true);
-
+  const CANVAS_DIMENSIONS = {
+    width: 1000,
+    height: 1000,
+  };
   const [selectedPerson, setselectedPerson] = useState("");
 
   /* data fetching  */
@@ -48,6 +51,8 @@ function App() {
     const rootNode = {
       id: rootId,
       index: rootId,
+      fx: CANVAS_DIMENSIONS.width / 2, // fixed x position on canvas
+      fy: CANVAS_DIMENSIONS.height / 2, // fixed y position on canvas
       firstName: rootData.firstName,
       lastName: rootData.lastName,
       phone: rootData.phone,
@@ -64,7 +69,6 @@ function App() {
       phone: friend.phone,
       imageUrl: friend.imageUrl,
       interactions: friend.interactions,
-      updatedAt: friend.updatedAt,
     }));
 
     const friendLinks = friends.data.map((friend) => ({
@@ -85,7 +89,6 @@ function App() {
   /* handlers */
 
   function addGraphData(data) {
-    console.log(data);
     setGraphData((prevGraphData) => ({
       nodes: [...prevGraphData.nodes, data.node],
       links: [...prevGraphData.links, data.link],
@@ -93,8 +96,6 @@ function App() {
   }
 
   function retrieveselectedPerson(selected) {
-    console.log("this is the selected user");
-    console.log(selected);
     setselectedPerson(selected);
   }
 
@@ -103,34 +104,34 @@ function App() {
   const displayGraph = isLoading ? (
     <p>Loading</p>
   ) : (
-    <Graph data={graphData} retrieveHandler={retrieveselectedPerson} />
+    <Graph
+      data={graphData}
+      retrieveHandler={retrieveselectedPerson}
+      dimensions={CANVAS_DIMENSIONS}
+    />
   );
 
+  const displaySelected = (
+    <FriendSlide
+      firstName={selectedPerson.firstName}
+      lastName={selectedPerson.lastName}
+      imageUrl={selectedPerson.imageUrl}
+      phone={selectedPerson.phone}
+      updatedAt={selectedPerson.updatedAt}
+    />
+  );
 
   return (
     <Router>
       <Routes>
-        <Route path="/userGraph" element={
-          <div className="total-App">
-            <div className="App">
-              <div className="friend-slide">
-                {selectedPerson ? <FriendSlide firstName={selectedPerson.firstName}
-                  lastName={selectedPerson.lastName}
-                  imageUrl={selectedPerson.imageUrl}
-                  phone={selectedPerson.phone}
-                  updatedAt={selectedPerson.updatedAt} /> : <></>}
-              </div>
-
-              <div className="graph">
-                <AddNode addData={addGraphData} />
-                {displayGraph}
-              </div>
-            </div>
-          </div>
-        } />
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signUp" element={<Signup />} />
+        <Route path="/userGraph" element={<div className="App">
+          <AddNode addData={addGraphData} />
+          {displayGraph}
+          {selectedPerson && displaySelected}
+        </div>} />
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/signUp" element={<Signup/>}/>
       </Routes>
     </Router>
   );

@@ -1,0 +1,27 @@
+.svg-container {
+  text-align: center;
+  height: 100vh;
+}
+
+svg {
+  background-color: rgb(226, 226, 226);
+  width: 1000px;
+  height: 1000px;
+}
+
+.link {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node {
+  cursor: move;
+  fill: rgb(83, 238, 35);
+  stroke: #000;
+  stroke-width: 1.5px;
+  filter: drop-shadow(5px 5px 5px grey);
+}
+
+.node.fixed {
+  fill: #f00;
+}
