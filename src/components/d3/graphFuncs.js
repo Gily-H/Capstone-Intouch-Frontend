@@ -45,3 +45,10 @@ export function randomBackgroundColor(datum) {
   const random = datum % COLORS.length;
   return COLORS[random];
 }
+
+export function setInitials(datum) {
+  const initials = datum.firstName
+    ? (datum.firstName[0] + datum.lastName[0]).toUpperCase()
+    : "";
+  return initials;
+}

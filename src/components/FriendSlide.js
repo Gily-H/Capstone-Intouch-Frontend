@@ -1,15 +1,15 @@
 import React from "react";
-import RemoveNode from "./RemoveNode";
+import RemoveFriendNode from "./RemoveFriendNode";
 
 export default function FriendSlide(props) {
   const friendId = props.friend.id;
   const name = `${props.friend.firstName} ${props.friend.lastName}`;
   const phone = props.friend.phone;
   const imageUrl = props.friend.imageUrl;
-  const updatedAt = props.friend.updatedAt; 
+  const updatedAt = props.friend.updatedAt;
 
   const displayRemoveButton = props.rootUserId !== friendId && (
-    <RemoveNode deleteHandler={props.deleteHandler} selectedId={friendId} />
+    <RemoveFriendNode deleteHandler={props.deleteHandler} selectedId={friendId} />
   );
 
   return (

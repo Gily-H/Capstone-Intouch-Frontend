@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Graph from "./components/d3/Graph";
-import AddNode from "./components/AddNode";
+import AddFriendNode from "./components/AddFriendNode";
 import FriendSlide from "./components/FriendSlide";
 import "./styles/App.css";
 
@@ -13,7 +13,7 @@ function App() {
 
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
-    root: {},
+    root: {}, // Will use google idea
     friends: [],
   });
   const [graphData, setGraphData] = useState({
@@ -51,6 +51,7 @@ function App() {
       lastName: rootData.lastName,
       phone: rootData.phone,
       imageUrl: rootData.imageUrl,
+      /* additional required fields */
       fx: CANVAS_DIMENSIONS.width / 2, // fixed-x position on canvas
       fy: CANVAS_DIMENSIONS.height / 2, // fixed-y position on canvas
     };
@@ -64,11 +65,14 @@ function App() {
       phone: friend.phone,
       imageUrl: friend.imageUrl,
       interactions: friend.interactions,
-      updatedAt: rootData.updatedAt, /* REMOVE?? */
+      strength: 100, /* DEFAULT FOR NOW */
+      /* ADDITIONAL FIELD FOR TESTING PURPOSES ONLY */
+      days: Math.ceil(Math.random() * 40),
     }));
 
     const friendLinks = friends.data.map((friend) => ({
-      source: rootId, /* root should always be in the first position - See Line #44 */
+      source:
+        rootId /* root should always be in the first position - See Line #44 */,
       target: friend.id,
       /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
     }));
@@ -83,7 +87,7 @@ function App() {
 
   useEffect(() => fetchPeopleData(), []);
 
-  /* handlers */
+  /* state handlers */
 
   function addGraphData(data) {
     setGraphData((prevGraphData) => ({
@@ -102,7 +106,9 @@ function App() {
       return;
     }
 
-    const updatedFriends = peopleData.friends.filter((friend) => friend.id !== removeId);
+    const updatedFriends = peopleData.friends.filter(
+      (friend) => friend.id !== removeId
+    );
     const updatedGraphData = {
       nodes: graphData.nodes.filter((node) => node.id !== removeId),
       links: graphData.links.filter((link) => link.target.id !== removeId),
@@ -132,18 +138,16 @@ function App() {
   const displayFriendPanel = (
     <FriendSlide
       friend={selectedPerson}
-      rootUserId={0} /* peopleData.root.id - 1 */
-      deleteHandler={deleteFriend}
+      rootUserId={0}
+      /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
     />
   );
 
-  console.log(peopleData);
-
   return (
     <div className="App">
-      <AddNode addData={addGraphData} />
+      <AddFriendNode addData={addGraphData} />
       {displayGraph}
-      {selectedPerson && displayFriendPanel}
+      {selectedPerson && displayFriendPanel} */}
     </div>
   );
 }

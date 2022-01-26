@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function RemoveNode(props) {
+export default function RemoveFriendNode(props) {
   return <button onClick={() => props.deleteHandler(props.selectedId)}>Delete</button>;
 }
