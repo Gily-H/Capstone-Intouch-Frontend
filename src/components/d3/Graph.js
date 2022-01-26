@@ -22,12 +22,14 @@ export default function Graph(props) {
     /* graph forces */
     const simulation = d3
       .forceSimulation(props.data.nodes)
-      .force("charge", d3.forceManyBody().strength(-100)) // magnetic force between nodes, positive attracts, default -30
+      .force("charge", d3.forceManyBody().strength(-10)) // magnetic force between nodes, positive attracts, default -30
       .force("collide", d3.forceCollide(20)) // prevent node overlap
       .force(
         "center",
-        d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2)
-      ) // force exerted from this point
+        d3
+          .forceCenter(props.dimensions.width / 2, props.dimensions.height / 2)
+          .strength(0.01)
+      ) // force exerted from center point - evenly spreads distance between nodes
 
       // creates a circle that applies a pulling force to all nodes
       .force(
@@ -96,8 +98,6 @@ export default function Graph(props) {
         .attr("y2", (link) => link.target.y);
       nodes.attr("cx", (node) => node.x).attr("cy", (node) => node.y);
     }
-
-    /* event handlers */
   }, [props.data.nodes.length]);
 
   return (
