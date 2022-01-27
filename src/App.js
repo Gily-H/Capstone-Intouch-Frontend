@@ -56,10 +56,10 @@ function App() {
 
     };
 
-    if (successfulLogin) {
-      getUser();
-    }
-  }, [successfulLogin]);
+    // if (successfulLogin) {
+    getUser();
+    // }
+  }, []);
 
   /* data fetching  */
 
