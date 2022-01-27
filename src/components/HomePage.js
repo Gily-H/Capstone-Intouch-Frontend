@@ -21,7 +21,7 @@ export default function HomePage() {
             </div>
             <div className="bottom-bubbles">
                 <div id="left-btm-bubble">
-                    <Bubbles image={NewBlackCircle} label={"Profile"} startOp={.2} />
+                 <Bubbles image={NewBlackCircle} label={"Profile"} startOp={.2} />
                 </div>
                 <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.2} />
             </div>

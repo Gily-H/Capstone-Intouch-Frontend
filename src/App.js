@@ -11,6 +11,7 @@ import Signup from "./components/SignUp";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -33,12 +34,14 @@ function App() {
 
   async function fetchPeopleData() {
     const rootUser = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/api/roots/1"
+      "https://crud-intouch-backend.herokuapp.com/api/users/ "
     );
 
+   
     const friends = await axios.get(
       "https://crud-intouch-backend.herokuapp.com/api/friends/"
     );
+    console.log(friends);
 
     setPeopleData({
       root: rootUser.data,
@@ -65,8 +68,8 @@ function App() {
 
     // create nodes for all friends
     const friendIds = friends.data.map((friend) => ({
-      id: friend.id,
-      index: friend.id,
+      id: friend.friend_id,
+      index: friend.friend_id,
       firstName: friend.firstName,
       lastName: friend.lastName,
       phone: friend.phone,
@@ -156,6 +159,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage {...peopleData}/>} />
         <Route
           path="/userGraph"
           element={

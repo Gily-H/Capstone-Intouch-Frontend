@@ -17,13 +17,14 @@ export default function Navbar(){
             
             <div className="nav-header">
                 {/* <img src={logo} className="bank-logo"/> */}
-                <h1 className="nav-title">In-Touch</h1>
+                {/* <h1 className="nav-title">In-Touch</h1> */}
+                <Link to="/" className="nav-link">Home</Link>
             </div>
 
             <div className="nav-links">
-                <Link to="/" className="nav-link">Home</Link>
+                {/* <Link to="/" className="nav-link">Home</Link>
                 <Link to="/userGraph" className="nav-link">My Connects</Link>
-                <Link to="/" className="nav-link">About</Link>
+                <Link to="/" className="nav-link">About</Link> */}
 
                 <Link to="/signUp" className="nav-link nav-login-btn" >Sign up</Link>
                 <Link to="/login" className="nav-link nav-login-btn" >Login</Link>
