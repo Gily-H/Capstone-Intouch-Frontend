@@ -33,7 +33,7 @@ function App() {
   // });
 
   const [currentUserId, setCurrentUserId] = useState("");
-
+  const [successfulLogin, setSeuccesFulLogin] = useState(false);
   const [graphData, setGraphData] = useState({
     nodes: [],
     links: [],
@@ -46,6 +46,7 @@ function App() {
       const resObject = await axios
         .get("http://crud-intouch-backend.herokuapp.com/auth/login/success")
         .then((res) => {
+          console.log("fetching");
           console.log(res);
           console.log(res.data);
         })

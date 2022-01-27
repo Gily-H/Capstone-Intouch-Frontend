@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Lin, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/login.css";
 import Navbar from "./Navbar";
@@ -11,7 +11,8 @@ const logo =
 const google_logo =
   "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
 
-export default function Login() {
+export default function Login(props) {
+  const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
   const [signUp, setSignUp] = useState({
     firstName: "",
@@ -20,10 +21,17 @@ export default function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    axios.post(
-      "https://crud-intouch-backend.herokuapp.com/customAuth/signup ",
-      signUp
-    ).then(res => console.log("sent request to sign up")).catch(err => console.log(err))
+    axios
+      .post(
+        "https://crud-intouch-backend.herokuapp.com/customAuth/signup ",
+        signUp
+      )
+      .then((res) => {
+        navigate("../");
+        // props.handleSuccessfulLogin(true);
+        console.log("sent request to sign up");
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleChange(event) {

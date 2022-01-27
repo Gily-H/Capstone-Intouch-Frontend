@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/login.css";
 import Navbar from "./Navbar";
@@ -11,7 +11,8 @@ const logo =
 const google_logo =
   "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
 
-export default function Login() {
+export default function Login(props) {
+  const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
   const [signIn, setSignIn] = useState({
     firstName: "",
@@ -26,7 +27,12 @@ export default function Login() {
         "https://crud-intouch-backend.herokuapp.com/customAuth/signin",
         userLogin
       )
-      .then((res) => console.log("sent request to sign in"))
+      .then((res) => {
+        navigate("../");
+
+        // props.handleSuccessfulLogin(true);
+        console.log("sent request to sign in");
+      })
       .catch((err) => console.log(err));
   }
 
