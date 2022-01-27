@@ -10,7 +10,7 @@
 }
 
 .friend-slide {
-  background-color: rgb(215, 250, 242);
+  background-color: black;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -19,8 +19,60 @@
   top: 0;
   left: 0;
   max-width: 30%;
+  min-width: 15%;
   height: 100%;
   padding: 1.5rem;
 }
+.friend-slide h2{
+  font-size: x-large;
+  color: white
+}
+
+.friend-slide p{
+  font-size: larger;
+  margin-top: 5%;
+  color: white
+}
+
+.friend-slide img{
+  margin-bottom: 10%;
+  margin-top: 40%;
+  height: auto;
+  max-height: 27%;
+  width: auto;
+  max-width: 60%;
+  border-radius: 50%;
+}
+
+.friend-contact{
+  height: auto;
+  height: auto;
+  max-height: 15%;
+  background-color: blue;
+  color: white;
+  padding: 20px 10px;
+  border-radius: 10%;
+  border: none;
+  width: auto;
+  margin-top: 5%;
+  font-size: large;
+
+}
+
+.delete-btn{
+  margin-top: auto;
+}
+
+.delete-btn button{
+  padding: 10px 30px;
+  border-radius: 10%;
+  background-color: red;
+  color: white;
+  font-size: large;
+  border-style: none;
+}
+
+
+
 
 
