@@ -26,9 +26,9 @@ export default function Login(){
 			<Navbar/>
 			<div className="login-box">
 				
-				<img src={logo} className="logo"/>
+				{/* <img src={logo} className="logo"/> */}
 
-				<h1 className="login-msg">Welcome!</h1>
+				<h1 className="login-msg">Let's get in touch...</h1>
 			<form onSubmit={handleSubmit} className="login-form">
 				<label className="login-username">
 					<input className="login-input"
@@ -53,6 +53,9 @@ export default function Login(){
 					<img src={google_logo} className="google-logo"/> 
 					<p className="google-text">Continue with Google</p>
 				</button>
+				<p className="sign-up-msg"> 
+					Already a member? <a href="/login">Login</a>
+				</p>
 			</form>
 			<hr className="login-footer-line"/>
 			<p className="login-footer-msg"> 

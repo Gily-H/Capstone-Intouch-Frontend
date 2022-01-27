@@ -1,17 +1,18 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
 .login-box{
 	width: 525px;
 	height: 700px;
 	border: none;
-	border-radius: 20px;
+	border-radius: 70px;
 	position: relative;
-    top: 60%;
-    left: 50%;
+	left: 50%;
+	top: -200px;
     /* margin-right: -50%;  */
 	transform: translate(-50%, 50%);
 	/* background-color: rgb(2, 88, 114); */
-	background-color: rgb(201, 201, 201);
+	background-color: rgb(248, 248, 248);
 	
 }
 .logo{
@@ -26,22 +27,23 @@
 	text-align: center;
 	/* background-color: coral; */
 	margin-inline: auto;
-	margin-top: 30px;
+	padding-top: 100px;
 }
 .login-form{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 10px;
+	margin-top: 40px;
 	
 }
 .login-input{
 	background-color: rgb(217, 217, 223);
 	width: 270px;
-	height: 45px;
+	height: 60px;
 	border-radius: 20px;
+	border-style: none;
 	margin-top: 20px;
-	padding-left: 10px;
+	padding-left: 15px;
 	font-size: 20px;
 }
 .login-btns{
@@ -56,7 +58,7 @@
 }
 .login-submit-btn{
 	background-color: rgb(0, 0, 0);
-	margin-top: 20px;
+	margin-top: 40px;
 }
 .login-fb-btn{
 	background-color: rgb(20, 96, 247);
@@ -84,16 +86,18 @@
 	display: inline-flex;
 	text-align: left;
 	font-size: 16px;
+	border-style: solid;
 }
 .google-logo{
 	height: 20px;
 	width: 20px;
 	margin-top: 10px;
-	margin-left: 5px;
+	margin-left: 12px;
 }
 .google-text{
-	margin-top: 12px;
-	margin-left: 15px;
+	margin-top: 11px;
+	margin-left: 10px;
+	font-size: 18px;
 }
 .login-OR{
 	font-size: 30px;
