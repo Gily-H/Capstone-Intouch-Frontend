@@ -22,7 +22,7 @@ function App() {
   };
 
   const [isLoading, setLoading] = useState(true);
-  const [peopleData, setPeoplesData] = useState({
+  const [peopleData, setPeopleData] = useState({
     root: {}, // Will use google id
     friends: [],
   });
