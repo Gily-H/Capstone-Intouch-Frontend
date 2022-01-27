@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
+import ProfilePage from "./components/ProfilePage";
 import Prince from "./images/prince-akachi.jpg"
 
 function App() {
@@ -23,6 +24,11 @@ function App() {
     root: {}, // Will use google id
     friends: [],
   });
+  const [currentUser, setCurrentUser] = useState({
+    id: "",
+    name: "",
+    image: "",
+  });
   const [currentUserId, setCurrentUserId] = useState("");
 
   const [graphData, setGraphData] = useState({
@@ -31,66 +37,84 @@ function App() {
   });
   const [selectedPerson, setselectedPerson] = useState("");
 
+  /* user login */
+  useEffect(() => {
+    const getUser = () => {
+      axios
+        .get("http://crud-intouch-backend.herokuapp.com/auth/login/success")
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("authentication has been failed!");
+        })
+        .then((resObject) => {
+          console.log(resObject);
+          setCurrentUserId(resObject.id);
+        })
+        .catch((err) => console.log(err));
+    };
+    getUser();
+  }, []);
+
   /* data fetching  */
 
-  async function fetchPeopleData() {
-    const rootUser = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/auth/google"
-    );
+  // async function fetchPeopleData() {
 
-    const friends = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/api/friends/"
-    );
+  //   if (currentUser) {
 
-    setPeopleData({
-      root: rootUser.data,
-      friends: friends.data,
-    });
+  //   const friends = await axios.get(
+  //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
+  //   );
 
-    const userData = rootUser.data;
-    const userId = userData.googleId || userData.id; // if no google, backend creates id
-    setCurrentUserId(userId);
+  //   setPeopleData({
+  //     root: rootUser.data,
+  //     friends: friends.data,
+  //   });
 
-    const rootNode = {
-      id: userId,
-      // index: 0,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      imageUrl: userData.imageUrl,
-      // password: userData.password ||
-      /* additional required fields for fixed position */
-      fx: CANVAS_DIMENSIONS.width / 2,
-      fy: CANVAS_DIMENSIONS.height / 2,
-    };
+  //   const userData = rootUser.data;
+  //   const userId = userData.googleId || userData.id; // if no google, backend creates id
+  //   setCurrentUserId(userId);
 
-    // create nodes for all friends
-    const friendIds = friends.data.map((friend) => ({
-      id: friend.friend_id,
-      index: friend.friend_id,
-      firstName: friend.firstName,
-      lastName: friend.lastName,
-      phone: friend.phone,
-      imageUrl: friend.imageUrl,
-      strength: friend.strength,
-      lastContact: friend.lastContact,
-      userId: userId,
-    }));
+  //   const rootNode = {
+  //     id: userId,
+  //     // index: 0,
+  //     firstName: userData.firstName,
+  //     lastName: userData.lastName,
+  //     imageUrl: userData.imageUrl,
+  //     // password: userData.password ||
+  //     /* additional required fields for fixed position */
+  //     fx: CANVAS_DIMENSIONS.width / 2,
+  //     fy: CANVAS_DIMENSIONS.height / 2,
+  //   };
 
-    const friendLinks = friends.data.map((friend) => ({
-      source: userId,
-      target: friend.friend_id,
-      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-    }));
+  //   // create nodes for all friends
+  //   const friendIds = friends.data.map((friend) => ({
+  //     id: friend.friend_id,
+  //     index: friend.friend_id,
+  //     firstName: friend.firstName,
+  //     lastName: friend.lastName,
+  //     phone: friend.phone,
+  //     imageUrl: friend.imageUrl,
+  //     strength: friend.strength,
+  //     lastContact: friend.lastContact,
+  //     userId: userId,
+  //   }));
 
-    setGraphData({
-      nodes: [rootNode, ...friendIds], // keep the root user in the first position
-      links: [...friendLinks],
-    });
+  //   const friendLinks = friends.data.map((friend) => ({
+  //     source: userId,
+  //     target: friend.friend_id,
+  //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+  //   }));
 
-    setLoading(false);
-  }
+  //   setGraphData({
+  //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
+  //     links: [...friendLinks],
+  //   });
 
-  useEffect(() => fetchPeopleData(), []);
+  //   setLoading(false);
+  //   }
+  // }
+
+  // useEffect(() => fetchPeopleData(), [currentUserId]);
 
   /* state handlers */
 
@@ -162,6 +186,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage {...peopleData}/>} />
         <Route
           path="/userGraph"
           element={
