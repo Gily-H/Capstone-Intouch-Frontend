@@ -8,9 +8,9 @@ import "./styles/App.css";
 import About from "./components/About";
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
-import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
+import Prince from "./images/prince-akachi.jpg"
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -141,10 +141,14 @@ function App() {
       dimensions={CANVAS_DIMENSIONS}
     />
   );
+  const testImages = {
+    image1: Prince
+  }
 
   const displayFriendPanel = (
     <FriendSlide
       friend={selectedPerson}
+      image={testImages.image1}//image prop for testing
       rootUserId={0}
       /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
     />
@@ -162,7 +166,8 @@ function App() {
             <div className="App">
               <AddFriendNode addData={addGraphData} />
               {displayGraph}
-              {selectedPerson && displayFriendPanel}
+             {selectedPerson && displayFriendPanel}  {/* {selectedPerson && displayFriendPanel}   original line*/}
+            {displayFriendPanel}          {/* Added in order to do styling without graph */}
             </div>
           }
         />
