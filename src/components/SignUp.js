@@ -3,23 +3,27 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/login.css";
 import Navbar from "./Navbar";
+import axios from "axios";
+
+const logo =
+  "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
+
+const google_logo =
+  "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
+
 export default function Login() {
-  const logo =
-    "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
-
-  const google_logo =
-    "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
-
+  const [redirect, setRedirect] = useState(false);
   const [signUp, setSignUp] = useState({
     userName: "",
     password: "",
   });
-  const [redirect, setRedirect] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // await axios.post(`INSERT LINK HERE`, {userName, password})
-    setRedirect(true);
+    axios.post(
+      "https://crud-intouch-backend.herokuapp.com/customAuth/signup ",
+      signUp
+    );
   }
 
   function handleChange(event) {
@@ -28,6 +32,19 @@ export default function Login() {
       [event.target.name]: event.target.value,
     }));
   }
+
+ function handleLogin() {
+   setRedirect(true);
+ }
+ 
+  useEffect(() => {
+    if (redirect) {
+      window.open(
+        "https://crud-intouch-backend.herokuapp.com/auth/google",
+        "_self"
+      );
+    }
+  }, [redirect]);
 
   return (
     <div>
@@ -42,8 +59,9 @@ export default function Login() {
               className="login-input"
               placeholder="Username"
               type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={signUp.userName}
+              onChange={handleChange}
+              name="userName"
             />
           </label>
           <label className="login-password">
@@ -51,8 +69,9 @@ export default function Login() {
               className="login-input"
               placeholder="Password"
               type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={signUp.password}
+              onChange={handleChange}
+              name="password"
             />
           </label>
           <input
@@ -62,14 +81,16 @@ export default function Login() {
           />
           <p className="login-OR"> or</p>
 
-          <button className="login-btns login-google-btn">
-            <img src={google_logo} className="google-logo" />
-            <p className="google-text">Continue with Google</p>
-          </button>
           <p className="sign-up-msg">
             Already a member? <a href="/login">Login</a>
           </p>
         </form>
+
+        <button className="login-btns login-google-btn">
+          <img src={google_logo} className="google-logo" />
+          <p className="google-text">Continue with Google</p>
+        </button>
+
         <hr className="login-footer-line" />
         <p className="login-footer-msg">
           By continuing in you agree to the in-Touch's Terms of Service, Privacy
