@@ -43,9 +43,13 @@ function App() {
   /* user login */
   useEffect(() => {
     const getUser = async () => {
-      const resObject = await axios.get(
-        "http://crud-intouch-backend.herokuapp.com/auth/login/success"
-      );
+      const resObject = await axios
+        .get("http://crud-intouch-backend.herokuapp.com/auth/login/success")
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
 
       // setCurrentUser(resObject);
 
