@@ -32,7 +32,7 @@ export default function LandingPage() {
             </animated.div>
             <div className="bottom-bubbles">
                 <animated.div style={leftEffs} id="left-btm-bubble">
-                    <Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.8} />
+                <Link to="/profile"><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.8} /></Link>
                 </animated.div>
                 <animated.div style={rightEffs}>
                     <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.8} />
