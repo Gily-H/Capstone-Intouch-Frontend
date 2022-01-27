@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { zoomTransform } from "d3-zoom";
-// import useD3 from "../../hooks/useD3";
 import { createNodes, createLinks, createNodeText, onTick } from "./graphFuncs";
 import "../../styles/Graph.css";
-import Navbar from "../Navbar";
 
 export default function Graph(props) {
   /* 
@@ -13,7 +11,6 @@ export default function Graph(props) {
     Avoiding using floating point -> 17 is a close enough approximation  
   */
   const EDGE_GROWTH_FACTOR = 17;
-  const PAN_CONSTRAINT = 100;
   const networkGraph = useRef();
 
   useEffect(() => {
@@ -52,14 +49,17 @@ export default function Graph(props) {
       // )
       .force(
         "links",
-        d3.forceLink(props.data.links).distance((link) => {
-          // limit how far the nodes can move - CHANGE THE LINK VALUE BASED ON TIME DIFF INSTEAD OF PERSON's ID VALUE
-          console.log(`${link.target.firstName} ${link.target.days}`);
-          if (30 * EDGE_GROWTH_FACTOR > 500) {
-            return props.dimensions.width / 2; // TOUCH OUTER RADIAL EDGE
-          }
-          return 30 * EDGE_GROWTH_FACTOR; // MOVE EDGE CLOSER TO RADIAL EDGE
-        })
+        d3
+          .forceLink(props.data.links)
+          .id((datum) => datum.id)
+          .distance((link) => {
+            // limit how far the nodes can move - CHANGE THE LINK VALUE BASED ON TIME DIFF INSTEAD OF PERSON's ID VALUE
+            // console.log(`${link.target.firstName} ${link.target.days}`);
+            if (30 * EDGE_GROWTH_FACTOR > 500) {
+              return props.dimensions.width / 2; // TOUCH OUTER RADIAL EDGE
+            }
+            return 30 * EDGE_GROWTH_FACTOR; // MOVE EDGE CLOSER TO RADIAL EDGE
+          })
       )
       // .alpha(0.9) // will decay until reaches default break point of 0.001
       // .alphaMin(0.01) // without this -> infinite loop
