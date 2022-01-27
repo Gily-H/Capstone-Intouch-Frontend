@@ -48,6 +48,7 @@ function App() {
       );
 
       // setCurrentUser(resObject);
+
     };
 
     getUser();
@@ -108,6 +109,7 @@ function App() {
   // }
 
   // useEffect(() => fetchPeopleData(), [currentUserId]);
+
 
   /* state handlers */
 
