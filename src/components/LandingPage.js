@@ -14,7 +14,7 @@ export default function LandingPage() {
     const effs = useSpring({ from: { transform: "translateY(200%)" }, to: { transform: open ? "translateY(0%)" : "translateY(200%)", opacity: open ? 1 : 0 } })
     const leftEffs = useSpring({ from: { transform: "translate(100%,-90%)" }, to: { transform: open ? "translate(0%,0%)" : "translate(100%,-90%)", opacity: open ? 1 : 0 } })
     const rightEffs = useSpring({ from: { transform: "translate(-100%,-90%)" }, to: { transform: open ? "translate(0%,0%)" : "translate(-100%,-90%)", opacity: open ? 1 : 0 } })
-    const centerEffs = useSpring({ from: { opacity: 1 }, to: { opacity: open ? .3 : 1 } })
+    
 
     return (
         <div id="home">
