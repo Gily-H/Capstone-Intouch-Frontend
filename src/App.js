@@ -55,10 +55,10 @@ function App() {
       // setCurrentUser(resObject);
     };
 
-    if (successfulLogin) {
-      getUser();
-    }
-  }, [successfulLogin]);
+    // if (successfulLogin) {
+    getUser();
+    // }
+  }, []);
 
   /* data fetching  */
 
