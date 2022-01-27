@@ -22,7 +22,7 @@ function App() {
   };
 
   const [isLoading, setLoading] = useState(true);
-  const [friendsData, setFriendsData] = useState({
+  const [peopleData, setPeoplesData] = useState({
     root: {}, // Will use google id
     friends: [],
   });
@@ -48,7 +48,7 @@ function App() {
         "http://crud-intouch-backend.herokuapp.com/auth/login/success"
       );
 
-      setCurrentUser(resObject);
+     // setCurrentUser(resObject);
     };
 
     getUser();
@@ -129,7 +129,7 @@ function App() {
       return;
     }
 
-    const updatedFriends = friendsData.friends.filter(
+    const updatedFriends = peopleData.friends.filter(
       (friend) => friend.friend_id !== removeId
     );
 
@@ -138,7 +138,7 @@ function App() {
       links: graphData.links.filter((link) => link.target.id !== removeId),
     };
 
-    setFriendsData((prevPeopleData) => ({
+    setPeopleData((prevPeopleData) => ({
       ...prevPeopleData,
       friends: updatedFriends,
     }));
