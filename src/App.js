@@ -10,7 +10,10 @@ import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
-import Prince from "./images/prince-akachi.jpg";
+
+import ProfilePage from "./components/ProfilePage";
+import Prince from "./images/prince-akachi.jpg"
+
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -174,6 +177,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage {...peopleData}/>} />
         <Route
           path="/userGraph"
           element={
