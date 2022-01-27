@@ -56,59 +56,59 @@ function App() {
 
   /* data fetching  */
 
-  async function fetchPeopleData() {
-    const friends = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/api/friends/"
-    );
+  //async function fetchPeopleData() {
+  // const friends = await axios.get(
+  //    "https://crud-intouch-backend.herokuapp.com/api/friends/"
+  //  );
 
-    setFriendsData({
-      friends: friends.data,
-    });
+ //   setFriendsData({
+ //     friends: friends.data,
+  //  });
 
-    const userData = rootUser.data;
-    const userId = userData.googleId || userData.id; // if no google, backend creates id
-    setCurrentUserId(userId);
+ //   const userData = rootUser.data;
+ //  const userId = userData.googleId || userData.id; // if no google, backend creates id
+ //    setCurrentUserId(userId);
 
-    const rootNode = {
-      id: userId,
-      // index: 0,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      imageUrl: userData.imageUrl,
+ //   const rootNode = {
+ //     id: userId,
+ //     // index: 0,
+ //     firstName: userData.firstName,
+ //     lastName: userData.lastName,
+ //     imageUrl: userData.imageUrl,
       // password: userData.password ||
       /* additional required fields for fixed position */
-      fx: CANVAS_DIMENSIONS.width / 2,
-      fy: CANVAS_DIMENSIONS.height / 2,
-    };
+//      fx: CANVAS_DIMENSIONS.width / 2,
+ //     fy: CANVAS_DIMENSIONS.height / 2,
+ //   };
 
     // create nodes for all friends
-    const friendIds = friends.data.map((friend) => ({
-      id: friend.friend_id,
-      index: friend.friend_id,
-      firstName: friend.firstName,
-      lastName: friend.lastName,
-      phone: friend.phone,
-      imageUrl: friend.imageUrl,
-      strength: friend.strength,
-      lastContact: friend.lastContact,
-      userId: userId,
-    }));
+ //   const friendIds = friends.data.map((friend) => ({
+ //    id: friend.friend_id,
+//      index: friend.friend_id,
+ //     firstName: friend.firstName,
+  //    lastName: friend.lastName,
+ //     phone: friend.phone,
+ //     imageUrl: friend.imageUrl,
+  //    strength: friend.strength,
+  //    lastContact: friend.lastContact,
+  //    userId: userId,
+ //   }));
 
-    const friendLinks = friends.data.map((friend) => ({
-      source: userId,
-      target: friend.friend_id,
-      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-    }));
+  //  const friendLinks = friends.data.map((friend) => ({
+   //   source: userId,
+   //   target: friend.friend_id,
+ //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+  //  }));
 
-    setGraphData({
-      nodes: [rootNode, ...friendIds], // keep the root user in the first position
-      links: [...friendLinks],
-    });
+//    setGraphData({
+ //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
+//      links: [...friendLinks],
+//    });
 
-    setLoading(false);
-  }
+ //   setLoading(false);
+//  }
 
-  useEffect(() => fetchPeopleData(), [currentUserId]);
+//  useEffect(() => fetchPeopleData(), [currentUserId]);
 
   /* state handlers */
 
