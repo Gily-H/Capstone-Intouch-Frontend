@@ -8,12 +8,7 @@ import axios from "axios";
 export default function Login() {
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-
   const [redirect, setRedirect] = useState(false);
-
-  useEffect(() => {
-    axios.get("https://crud-intouch-backend.herokuapp.com/auth/google");
-  }, []);
 
   console.log(userName);
 
@@ -22,6 +17,14 @@ export default function Login() {
     //  await axios.post(`INSERT LINK HERE`, {userName, password})
     setRedirect(true);
   }
+
+  function handleLogin() {
+    window.open(
+      "https://crud-intouch-backend.herokuapp.com/auth/google",
+      "_self"
+    );
+  }
+
   const logo =
     "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
 
@@ -60,7 +63,7 @@ export default function Login() {
           />
           <p className="login-OR"> or</p>
 
-          <button className="login-btns login-google-btn">
+          <button className="login-btns login-google-btn" onClick={handleLogin}>
             <img src={google_logo} className="google-logo" />
             <p className="google-text">Continue with Google</p>
           </button>

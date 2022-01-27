@@ -31,66 +31,87 @@ function App() {
   });
   const [selectedPerson, setselectedPerson] = useState("");
 
+  /* user login */
+  useEffect(() => {
+    const getUser = () => {
+      fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("authentication has been failed!");
+        })
+        .then((resObject) => {
+          console.log(resObject);
+          setCurrentUserId(resObject.id);
+        })
+        .catch((err) => console.log(err));
+    };
+    getUser();
+  }, []);
+
   /* data fetching  */
 
-  async function fetchPeopleData() {
-    const rootUser = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/auth/google"
-    );
+  // async function fetchPeopleData() {
+  //   const friends = await axios.get(
+  //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
+  //   );
 
-    const friends = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/api/friends/"
-    );
+  //   setPeopleData({
+  //     root: rootUser.data,
+  //     friends: friends.data,
+  //   });
 
-    setPeopleData({
-      root: rootUser.data,
-      friends: friends.data,
-    });
+  //   const userData = rootUser.data;
+  //   const userId = userData.googleId || userData.id; // if no google, backend creates id
+  //   setCurrentUserId(userId);
 
-    const userData = rootUser.data;
-    const userId = userData.googleId || userData.id; // if no google, backend creates id
-    setCurrentUserId(userId);
+  //   const rootNode = {
+  //     id: userId,
+  //     // index: 0,
+  //     firstName: userData.firstName,
+  //     lastName: userData.lastName,
+  //     imageUrl: userData.imageUrl,
+  //     // password: userData.password ||
+  //     /* additional required fields for fixed position */
+  //     fx: CANVAS_DIMENSIONS.width / 2,
+  //     fy: CANVAS_DIMENSIONS.height / 2,
+  //   };
 
-    const rootNode = {
-      id: userId,
-      // index: 0,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      imageUrl: userData.imageUrl,
-      // password: userData.password ||
-      /* additional required fields for fixed position */
-      fx: CANVAS_DIMENSIONS.width / 2,
-      fy: CANVAS_DIMENSIONS.height / 2,
-    };
+  //   // create nodes for all friends
+  //   const friendIds = friends.data.map((friend) => ({
+  //     id: friend.friend_id,
+  //     index: friend.friend_id,
+  //     firstName: friend.firstName,
+  //     lastName: friend.lastName,
+  //     phone: friend.phone,
+  //     imageUrl: friend.imageUrl,
+  //     strength: friend.strength,
+  //     lastContact: friend.lastContact,
+  //     userId: userId,
+  //   }));
 
-    // create nodes for all friends
-    const friendIds = friends.data.map((friend) => ({
-      id: friend.friend_id,
-      index: friend.friend_id,
-      firstName: friend.firstName,
-      lastName: friend.lastName,
-      phone: friend.phone,
-      imageUrl: friend.imageUrl,
-      strength: friend.strength,
-      lastContact: friend.lastContact,
-      userId: userId,
-    }));
+  //   const friendLinks = friends.data.map((friend) => ({
+  //     source: userId,
+  //     target: friend.friend_id,
+  //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+  //   }));
 
-    const friendLinks = friends.data.map((friend) => ({
-      source: userId,
-      target: friend.friend_id,
-      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-    }));
+  //   setGraphData({
+  //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
+  //     links: [...friendLinks],
+  //   });
 
-    setGraphData({
-      nodes: [rootNode, ...friendIds], // keep the root user in the first position
-      links: [...friendLinks],
-    });
+  //   setLoading(false);
+  // }
 
-    setLoading(false);
-  }
-
-  useEffect(() => fetchPeopleData(), []);
+  // useEffect(() => fetchPeopleData(), [currentUserId]);
 
   /* state handlers */
 
