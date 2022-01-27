@@ -1,12 +1,16 @@
 .svg-container {
   text-align: center;
   height: 100vh;
+  max-width: 80%;
+  margin: auto;
 }
 
 svg {
   background-color: rgb(226, 226, 226);
-  width: 1000px;
-  height: 1000px;
+  width: 100%;
+  height: 100%;
+  /* width: 1000px;
+  height: 1000px; */
 }
 
 .link {
@@ -21,6 +25,10 @@ svg {
   filter: drop-shadow(0 0 0 rgb(0, 0, 0, 1));
   cursor: pointer;
   animation: pulse 2s infinite;
+}
+
+.node:hover {
+  font-size: 1.1rem;
 }
 
 @keyframes pulse {
@@ -39,5 +47,5 @@ svg {
 
 .text {
   fill: white;
-  cursor: pointer
+  cursor: pointer;
 }

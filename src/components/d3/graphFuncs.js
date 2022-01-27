@@ -1,13 +1,12 @@
-import * as d3 from "d3";
+/* graph component creation functions */
 
 export function createNodes(svg, data, eventHandler) {
   const nodes = svg
     .selectAll(".node")
     .data(data)
     .join("circle")
-    .attr("r", 10)
-    .attr("cx", (node) => node.x)
-    .attr("cy", (node) => node.y)
+    .attr("r", 30)
+    .attr("fill", (datum) => randomBackgroundColor(datum.id))
     .classed("node", true)
     .on("mousedown", (event, datum) => {
       eventHandler(datum);
@@ -21,17 +20,43 @@ export function createLinks(svg, data) {
     .selectAll(".link")
     .data(data)
     .join("line")
-    .attr("x1", (link) => link.source.x)
-    .attr("y1", (link) => link.source.y)
-    .attr("x2", (link) => link.target.x)
-    .attr("y2", (link) => link.target.y)
     .classed("link", true)
     .on("click", () => alert("clicked link"));
 
   return links;
 }
 
-export function randomBackgroundColor(datum) {
+export function createNodeText(svg, data, eventHandler) {
+  const texts = svg
+    .selectAll(".text")
+    .data(data)
+    .join("text")
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle")
+    // .attr("dy", "0.35em")
+    .text((datum) => setInitials(datum))
+    .classed("text", true)
+    .on("mousedown", (event, datum) => {
+      eventHandler(datum);
+    });
+
+  return texts;
+}
+
+/* graph event handlers */
+export function onTick(links, nodes, texts) {
+  links
+    .attr("x1", (link) => link.source.x)
+    .attr("y1", (link) => link.source.y)
+    .attr("x2", (link) => link.target.x)
+    .attr("y2", (link) => link.target.y);
+  nodes.attr("cx", (node) => node.x).attr("cy", (node) => node.y);
+  texts.attr("x", (node) => node.x).attr("y", (node) => node.y);
+}
+
+/* styling helper functions */
+
+function randomBackgroundColor(datum) {
   const COLORS = [
     "#7094cf",
     "#cf9c70",
@@ -46,7 +71,7 @@ export function randomBackgroundColor(datum) {
   return COLORS[random];
 }
 
-export function setInitials(datum) {
+function setInitials(datum) {
   const initials = datum.firstName
     ? (datum.firstName[0] + datum.lastName[0]).toUpperCase()
     : "";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function AddFriendNode(props) {
   const [formVals, setFormVals] = useState({
-    id: "",
+    id: 4,
     firstName: "",
     lastName: "",
     phone: "",
@@ -28,7 +28,7 @@ export default function AddFriendNode(props) {
         firstName: formVals.firstName,
         lastName: formVals.lastName,
         phone: formVals.phone,
-        interactions: 1, /* DEFAULT FOR NOW */
+        interactions: 1 /* DEFAULT FOR NOW */,
         imageUrl: formVals.imageUrl,
         strength: formVals.strength,
       },
@@ -36,9 +36,9 @@ export default function AddFriendNode(props) {
     };
 
     props.addData(newData);
-    
+
     setFormVals((prevFormVals) => ({
-      id: "",
+      id: formVals.id + 1,
       firstName: "",
       lastName: "",
       phone: "",
@@ -54,9 +54,9 @@ export default function AddFriendNode(props) {
         Temp ID:
         <input
           type="number"
-          placeholder="add"
+          placeholder="id..."
           value={formVals.id}
-          name="friend"
+          name="id"
           onChange={updateOnChange}
         />
       </label>
