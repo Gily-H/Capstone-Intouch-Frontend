@@ -19,11 +19,17 @@ export default function Login() {
   }
 
   function handleLogin() {
-    window.open(
-      "https://crud-intouch-backend.herokuapp.com/auth/google",
-      "_self"
-    );
+    setRedirect(true);
   }
+
+  useEffect(() => {
+    if (redirect) {
+      window.open(
+        "https://crud-intouch-backend.herokuapp.com/auth/google",
+        "_self"
+      );
+    }
+  }, [redirect]);
 
   const logo =
     "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
