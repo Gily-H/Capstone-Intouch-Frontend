@@ -3,16 +3,14 @@ import axios from "axios";
 import Graph from "./components/d3/Graph";
 import AddFriendNode from "./components/AddFriendNode";
 import FriendSlide from "./components/FriendSlide";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import About from "./components/About";
 import Login from "./components/Login";
-import Signup from "./components/SignUp"
+import Signup from "./components/SignUp";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
-
-
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -74,7 +72,7 @@ function App() {
       phone: friend.phone,
       imageUrl: friend.imageUrl,
       interactions: friend.interactions,
-      strength: 100, /* DEFAULT FOR NOW */
+      strength: 100 /* DEFAULT FOR NOW */,
       /* ADDITIONAL FIELD FOR TESTING PURPOSES ONLY */
       days: Math.ceil(Math.random() * 40),
     }));
@@ -155,15 +153,21 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />}/>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/home" element={<HomePage/>}/>
-        <Route path="/userGraph" element={<div className="App">
-          <AddFriendNode addData={addGraphData} />
-           {displayGraph}
-           {selectedPerson && displayFriendPanel} */}
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signUp" element={<Signup/>}/>
+        <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/userGraph"
+          element={
+            <div className="App">
+              <AddFriendNode addData={addGraphData} />
+              {displayGraph}
+              {selectedPerson && displayFriendPanel}
+            </div>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<Signup />} />
       </Routes>
     </Router>
   );
