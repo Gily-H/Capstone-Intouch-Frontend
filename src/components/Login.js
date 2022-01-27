@@ -23,7 +23,6 @@ export default function Login() {
     axios.post("https://crud-intouch-backend.herokuapp.com/customAuth/signin", signIn);
   }
 
-
   function handleLogin() {
     setRedirect(true);
   }

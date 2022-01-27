@@ -12,8 +12,7 @@ import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
 
 import ProfilePage from "./components/ProfilePage";
-import Prince from "./images/prince-akachi.jpg"
-
+import Prince from "./images/prince-akachi.jpg";
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -22,7 +21,7 @@ function App() {
   };
 
   const [isLoading, setLoading] = useState(true);
-  const [friendsData, setFriendsData] = useState({
+  const [peopleData, setPeopleData] = useState({
     root: {}, // Will use google id
     friends: [],
   });
@@ -48,7 +47,7 @@ function App() {
         "http://crud-intouch-backend.herokuapp.com/auth/login/success"
       );
 
-      setCurrentUser(resObject);
+      // setCurrentUser(resObject);
     };
 
     getUser();
@@ -56,59 +55,59 @@ function App() {
 
   /* data fetching  */
 
-  async function fetchPeopleData() {
-    const friends = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/api/friends/"
-    );
+  // async function fetchPeopleData() {
+  //   const friends = await axios.get(
+  //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
+  //   );
 
-    setFriendsData({
-      friends: friends.data,
-    });
+  //   setFriendsData({
+  //     friends: friends.data,
+  //   });
 
-    const userData = rootUser.data;
-    const userId = userData.googleId || userData.id; // if no google, backend creates id
-    setCurrentUserId(userId);
+  //   const userData = rootUser.data;
+  //   const userId = userData.googleId || userData.id; // if no google, backend creates id
+  //   setCurrentUserId(userId);
 
-    const rootNode = {
-      id: userId,
-      // index: 0,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      imageUrl: userData.imageUrl,
-      // password: userData.password ||
-      /* additional required fields for fixed position */
-      fx: CANVAS_DIMENSIONS.width / 2,
-      fy: CANVAS_DIMENSIONS.height / 2,
-    };
+  //   const rootNode = {
+  //     id: userId,
+  //     // index: 0,
+  //     firstName: userData.firstName,
+  //     lastName: userData.lastName,
+  //     imageUrl: userData.imageUrl,
+  //     // password: userData.password ||
+  //     /* additional required fields for fixed position */
+  //     fx: CANVAS_DIMENSIONS.width / 2,
+  //     fy: CANVAS_DIMENSIONS.height / 2,
+  //   };
 
-    // create nodes for all friends
-    const friendIds = friends.data.map((friend) => ({
-      id: friend.friend_id,
-      index: friend.friend_id,
-      firstName: friend.firstName,
-      lastName: friend.lastName,
-      phone: friend.phone,
-      imageUrl: friend.imageUrl,
-      strength: friend.strength,
-      lastContact: friend.lastContact,
-      userId: userId,
-    }));
+  //   // create nodes for all friends
+  //   const friendIds = friends.data.map((friend) => ({
+  //     id: friend.friend_id,
+  //     index: friend.friend_id,
+  //     firstName: friend.firstName,
+  //     lastName: friend.lastName,
+  //     phone: friend.phone,
+  //     imageUrl: friend.imageUrl,
+  //     strength: friend.strength,
+  //     lastContact: friend.lastContact,
+  //     userId: userId,
+  //   }));
 
-    const friendLinks = friends.data.map((friend) => ({
-      source: userId,
-      target: friend.friend_id,
-      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-    }));
+  //   const friendLinks = friends.data.map((friend) => ({
+  //     source: userId,
+  //     target: friend.friend_id,
+  //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+  //   }));
 
-    setGraphData({
-      nodes: [rootNode, ...friendIds], // keep the root user in the first position
-      links: [...friendLinks],
-    });
+  //   setGraphData({
+  //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
+  //     links: [...friendLinks],
+  //   });
 
-    setLoading(false);
-  }
+  //   setLoading(false);
+  // }
 
-  useEffect(() => fetchPeopleData(), [currentUserId]);
+  // useEffect(() => fetchPeopleData(), [currentUserId]);
 
   /* state handlers */
 
@@ -129,7 +128,7 @@ function App() {
       return;
     }
 
-    const updatedFriends = friendsData.friends.filter(
+    const updatedFriends = peopleData.friends.filter(
       (friend) => friend.friend_id !== removeId
     );
 
@@ -138,7 +137,7 @@ function App() {
       links: graphData.links.filter((link) => link.target.id !== removeId),
     };
 
-    setFriendsData((prevPeopleData) => ({
+    setPeopleData((prevPeopleData) => ({
       ...prevPeopleData,
       friends: updatedFriends,
     }));
@@ -177,7 +176,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage {...peopleData}/>} />
+        <Route path="/profile" element={<ProfilePage {...peopleData} />} />
         <Route
           path="/userGraph"
           element={
