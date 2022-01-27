@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Graph from "./components/d3/Graph";
-import AddNode from "./components/AddNode";
+import AddFriendNode from "./components/AddFriendNode";
 import FriendSlide from "./components/FriendSlide";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import "./styles/App.css";
@@ -15,19 +15,20 @@ import LandingPage from "./components/LandingPage";
 
 
 function App() {
+  const CANVAS_DIMENSIONS = {
+    width: 1000,
+    height: 1000,
+  };
+
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
-    root: {},
+    root: {}, // Will use google idea
     friends: [],
   });
   const [graphData, setGraphData] = useState({
     nodes: [],
     links: [],
   });
-  const CANVAS_DIMENSIONS = {
-    width: 1000,
-    height: 1000,
-  };
   const [selectedPerson, setselectedPerson] = useState("");
 
   /* data fetching  */
@@ -47,19 +48,21 @@ function App() {
     });
 
     const rootData = rootUser.data;
-    const rootId = rootData.id - 1; // should be 0
+
+    /* FIND BETTER WAY TO CREATE ID -> BAD TO KEEP SUBTRACTING BY 1 EVERYWHERE */
+    const rootId = rootData.id - 1; /* should be 0 in this case */
 
     // create node for root user
     const rootNode = {
       id: rootId,
       index: rootId,
-      fx: CANVAS_DIMENSIONS.width / 2, // fixed x position on canvas
-      fy: CANVAS_DIMENSIONS.height / 2, // fixed y position on canvas
       firstName: rootData.firstName,
       lastName: rootData.lastName,
       phone: rootData.phone,
       imageUrl: rootData.imageUrl,
-      updatedAt: rootData.updatedAt,
+      /* additional required fields */
+      fx: CANVAS_DIMENSIONS.width / 2, // fixed-x position on canvas
+      fy: CANVAS_DIMENSIONS.height / 2, // fixed-y position on canvas
     };
 
     // create nodes for all friends
@@ -71,11 +74,16 @@ function App() {
       phone: friend.phone,
       imageUrl: friend.imageUrl,
       interactions: friend.interactions,
+      strength: 100, /* DEFAULT FOR NOW */
+      /* ADDITIONAL FIELD FOR TESTING PURPOSES ONLY */
+      days: Math.ceil(Math.random() * 40),
     }));
 
     const friendLinks = friends.data.map((friend) => ({
-      source: 0, // root should always be in the first position
+      source:
+        rootId /* root should always be in the first position - See Line #44 */,
       target: friend.id,
+      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
     }));
 
     setGraphData({
@@ -88,7 +96,7 @@ function App() {
 
   useEffect(() => fetchPeopleData(), []);
 
-  /* handlers */
+  /* state handlers */
 
   function addGraphData(data) {
     setGraphData((prevGraphData) => ({
@@ -97,8 +105,31 @@ function App() {
     }));
   }
 
-  function retrieveselectedPerson(selected) {
+  function retrieveSelectedPerson(selected) {
     setselectedPerson(selected);
+  }
+
+  function deleteFriend(removeId) {
+    // precaution to avoid deletion of root user
+    if (removeId === 0 /* peopleData.root.id - 1 */) {
+      return;
+    }
+
+    const updatedFriends = peopleData.friends.filter(
+      (friend) => friend.id !== removeId
+    );
+    const updatedGraphData = {
+      nodes: graphData.nodes.filter((node) => node.id !== removeId),
+      links: graphData.links.filter((link) => link.target.id !== removeId),
+    };
+
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      friends: updatedFriends,
+    }));
+
+    setGraphData((prevGraphData) => updatedGraphData);
+    selectedPerson && setselectedPerson((prevSelectedPerson) => "");
   }
 
   /* display section  */
@@ -108,18 +139,16 @@ function App() {
   ) : (
     <Graph
       data={graphData}
-      retrieveHandler={retrieveselectedPerson}
+      retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
     />
   );
 
-  const displaySelected = (
+  const displayFriendPanel = (
     <FriendSlide
-      firstName={selectedPerson.firstName}
-      lastName={selectedPerson.lastName}
-      imageUrl={selectedPerson.imageUrl}
-      phone={selectedPerson.phone}
-      updatedAt={selectedPerson.updatedAt}
+      friend={selectedPerson}
+      rootUserId={0}
+      /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
     />
   );
 
@@ -130,10 +159,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage/>}/>
         <Route path="/userGraph" element={<div className="App">
-          <AddNode addData={addGraphData} />
-          {displayGraph}
-          {selectedPerson && displaySelected}
-        </div>} />
+          <AddFriendNode addData={addGraphData} />
+           {displayGraph}
+           {selectedPerson && displayFriendPanel} */}
         <Route path="/login" element={<Login/>}/>
         <Route path="/signUp" element={<Signup/>}/>
       </Routes>
@@ -144,6 +172,7 @@ function App() {
 export default App;
 
 /* 
+    BAREBONES SAMPLE DATA
 {
     // nodes can be anything
     nodes: [

@@ -1,11 +1,18 @@
 import React from "react";
+import RemoveFriendNode from "./RemoveFriendNode";
 import Navbar from "./Navbar";
 
+
 export default function FriendSlide(props) {
-  const name = `${props.firstName} ${props.lastName}`;
-  const phone = props.phone;
-  const imageUrl = props.imageUrl;
-  const updatedAt = props.updatedAt;
+  const friendId = props.friend.id;
+  const name = `${props.friend.firstName} ${props.friend.lastName}`;
+  const phone = props.friend.phone;
+  const imageUrl = props.friend.imageUrl;
+  const updatedAt = props.friend.updatedAt;
+
+  const displayRemoveButton = props.rootUserId !== friendId && (
+    <RemoveFriendNode deleteHandler={props.deleteHandler} selectedId={friendId} />
+  );
 
   return (
     <div className="friend-slide">
@@ -13,9 +20,8 @@ export default function FriendSlide(props) {
       <h2 className="friend-name">{name}</h2>
       <p className="friend-phone">Phone: {phone}</p>
       <p className="friend-last-contact">Last Connection {updatedAt}</p>
-      <button className="friend-contact">
-        (message icon) Send a Messge
-      </button>
+      <button className="friend-contact">(message icon) Send a Messge</button>
+      {displayRemoveButton}
     </div>
   );
 }
