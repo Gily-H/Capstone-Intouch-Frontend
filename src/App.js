@@ -10,7 +10,7 @@ import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
-import Prince from "./images/prince-akachi.jpg"
+import Prince from "./images/prince-akachi.jpg";
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -19,15 +19,17 @@ function App() {
   };
 
   const [isLoading, setLoading] = useState(true);
-  const [peopleData, setPeopleData] = useState({
+  const [friendsData, setFriendsData] = useState({
     root: {}, // Will use google id
     friends: [],
   });
-  const [currentUser, setCurrentUser] = useState({
-    id: "",
-    name: "",
-    image: "",
-  });
+
+  // const [currentUser, setCurrentUser] = useState({
+  //   id: "",
+  //   name: "",
+  //   image: "",
+  // });
+
   const [currentUserId, setCurrentUserId] = useState("");
 
   const [graphData, setGraphData] = useState({
@@ -38,82 +40,72 @@ function App() {
 
   /* user login */
   useEffect(() => {
-    const getUser = () => {
-      axios
-        .get("http://crud-intouch-backend.herokuapp.com/auth/login/success")
-        .then((response) => {
-          if (response.status === 200) return response.json();
-          throw new Error("authentication has been failed!");
-        })
-        .then((resObject) => {
-          console.log(resObject);
-          setCurrentUserId(resObject.id);
-        })
-        .catch((err) => console.log(err));
+    const getUser = async () => {
+      const resObject = await axios.get(
+        "http://crud-intouch-backend.herokuapp.com/auth/login/success"
+      );
+
+      setCurrentUser(resObject);
     };
+
     getUser();
   }, []);
 
   /* data fetching  */
 
-  // async function fetchPeopleData() {
+  async function fetchPeopleData() {
+    const friends = await axios.get(
+      "https://crud-intouch-backend.herokuapp.com/api/friends/"
+    );
 
-  //   if (currentUser) {
+    setFriendsData({
+      friends: friends.data,
+    });
 
-  //   const friends = await axios.get(
-  //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
-  //   );
+    const userData = rootUser.data;
+    const userId = userData.googleId || userData.id; // if no google, backend creates id
+    setCurrentUserId(userId);
 
-  //   setPeopleData({
-  //     root: rootUser.data,
-  //     friends: friends.data,
-  //   });
+    const rootNode = {
+      id: userId,
+      // index: 0,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      imageUrl: userData.imageUrl,
+      // password: userData.password ||
+      /* additional required fields for fixed position */
+      fx: CANVAS_DIMENSIONS.width / 2,
+      fy: CANVAS_DIMENSIONS.height / 2,
+    };
 
-  //   const userData = rootUser.data;
-  //   const userId = userData.googleId || userData.id; // if no google, backend creates id
-  //   setCurrentUserId(userId);
+    // create nodes for all friends
+    const friendIds = friends.data.map((friend) => ({
+      id: friend.friend_id,
+      index: friend.friend_id,
+      firstName: friend.firstName,
+      lastName: friend.lastName,
+      phone: friend.phone,
+      imageUrl: friend.imageUrl,
+      strength: friend.strength,
+      lastContact: friend.lastContact,
+      userId: userId,
+    }));
 
-  //   const rootNode = {
-  //     id: userId,
-  //     // index: 0,
-  //     firstName: userData.firstName,
-  //     lastName: userData.lastName,
-  //     imageUrl: userData.imageUrl,
-  //     // password: userData.password ||
-  //     /* additional required fields for fixed position */
-  //     fx: CANVAS_DIMENSIONS.width / 2,
-  //     fy: CANVAS_DIMENSIONS.height / 2,
-  //   };
+    const friendLinks = friends.data.map((friend) => ({
+      source: userId,
+      target: friend.friend_id,
+      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+    }));
 
-  //   // create nodes for all friends
-  //   const friendIds = friends.data.map((friend) => ({
-  //     id: friend.friend_id,
-  //     index: friend.friend_id,
-  //     firstName: friend.firstName,
-  //     lastName: friend.lastName,
-  //     phone: friend.phone,
-  //     imageUrl: friend.imageUrl,
-  //     strength: friend.strength,
-  //     lastContact: friend.lastContact,
-  //     userId: userId,
-  //   }));
+    setGraphData({
+      nodes: [rootNode, ...friendIds], // keep the root user in the first position
+      links: [...friendLinks],
+    });
 
-  //   const friendLinks = friends.data.map((friend) => ({
-  //     source: userId,
-  //     target: friend.friend_id,
-  //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-  //   }));
+    setLoading(false);
+  }
 
-  //   setGraphData({
-  //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
-  //     links: [...friendLinks],
-  //   });
-
-  //   setLoading(false);
-  //   }
-  // }
-
-  // useEffect(() => fetchPeopleData(), [currentUserId]);
+  useEffect(() => fetchPeopleData(), [currentUserId]);
 
   /* state handlers */
 
@@ -134,7 +126,7 @@ function App() {
       return;
     }
 
-    const updatedFriends = peopleData.friends.filter(
+    const updatedFriends = friendsData.friends.filter(
       (friend) => friend.friend_id !== removeId
     );
 
@@ -143,7 +135,7 @@ function App() {
       links: graphData.links.filter((link) => link.target.id !== removeId),
     };
 
-    setPeopleData((prevPeopleData) => ({
+    setFriendsData((prevPeopleData) => ({
       ...prevPeopleData,
       friends: updatedFriends,
     }));
@@ -164,18 +156,15 @@ function App() {
     />
   );
   const testImages = {
-    image1: Prince
-  }
+    image1: Prince,
+  };
 
   const displayFriendPanel = (
     <FriendSlide
       friend={selectedPerson}
-
       rootUserId={currentUserId}
-
-      image={testImages.image1}//image prop for testing
-
-      /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
+      image={testImages.image1} //image prop for testing
+      /* friendsData.root.id - 1 */ deleteHandler={deleteFriend}
     />
   );
 
@@ -191,8 +180,8 @@ function App() {
             <div className="App">
               <AddFriendNode addData={addGraphData} userId={currentUserId} />
               {displayGraph}
-             {selectedPerson && displayFriendPanel}  {/* {selectedPerson && displayFriendPanel}   original line*/}
-            {displayFriendPanel}          {/* Added in order to do styling without graph */}
+              {selectedPerson && displayFriendPanel}
+              {displayFriendPanel}
             </div>
           }
         />
