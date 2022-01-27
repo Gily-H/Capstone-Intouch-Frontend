@@ -1,0 +1,57 @@
+.nav-body{
+    /* background-color: rgb(19, 55, 56); */
+    background-color: white;
+    color: black;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    top:0;
+    position: absolute;
+    width: 100%;
+    height: 230px;
+    margin-top: -50px;
+
+    text-align: left;
+    left: 0;  
+}
+.nav-header{
+    display: flex;
+    
+    /* background-image: linear-gradient(to bottom, white, rgb(19, 55, 56)); */
+}
+.nav-title{
+    margin-top: 50px;
+    margin-left: 30px;
+    font-size: 50px;
+}
+.logo{
+    margin-top: 30px;
+    margin-left: 30px;
+    width: 150px;
+    height: 150px;
+}
+.nav-links{
+    background-color: rgb(29, 28, 28);
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    
+    
+    font-size: 20px;
+    display: inline;
+    
+    
+}
+.nav-link{
+    text-decoration: none;
+    color: white;
+    margin-left: 30px;
+    margin-top: 30px;
+    display: inline-block;
+}
+.nav-login-btn{
+    float: right;
+    margin-right: 50px;
+}
+
+.nav-link:hover{
+    color: rgb(16, 82, 182);
+}

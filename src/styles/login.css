@@ -1,0 +1,120 @@
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+.login-box{
+	width: 525px;
+	height: 700px;
+	border: none;
+	border-radius: 20px;
+	position: relative;
+    top: 60%;
+    left: 50%;
+    /* margin-right: -50%;  */
+	transform: translate(-50%, 50%);
+	/* background-color: rgb(2, 88, 114); */
+	background-color: rgb(201, 201, 201);
+	
+}
+.logo{
+	margin-top: 10;
+	height: 80px;
+	width: 100px;
+	/* background-color: blue; */
+	margin-left: 40%;
+}
+.login-msg{
+	font-size: 30px;
+	text-align: center;
+	/* background-color: coral; */
+	margin-inline: auto;
+	margin-top: 30px;
+}
+.login-form{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 10px;
+	
+}
+.login-input{
+	background-color: rgb(217, 217, 223);
+	width: 270px;
+	height: 45px;
+	border-radius: 20px;
+	margin-top: 20px;
+	padding-left: 10px;
+	font-size: 20px;
+}
+.login-btns{
+	color: rgb(255, 255, 255);
+	width: 240px;
+	height: 45px;
+	font-size: 20px;
+	border-radius: 20px;
+	cursor: pointer;
+	border-style: none;
+	
+}
+.login-submit-btn{
+	background-color: rgb(0, 0, 0);
+	margin-top: 20px;
+}
+.login-fb-btn{
+	background-color: rgb(20, 96, 247);
+	margin-top: -15px;
+	width: 240px;
+	display: inline-flex;
+	text-align: left;
+	font-size: 16px;
+}
+.fb-logo{
+	height: 30px;
+	width: 50px;
+	margin-left: -10px;
+	margin-top: 5px;
+}
+.fb-text{
+	margin-top: 12px;
+}
+
+.login-google-btn{
+	background-color: rgb(255, 255, 255);
+	color: black;
+	margin-top: 10px;
+	width: 240px;
+	display: inline-flex;
+	text-align: left;
+	font-size: 16px;
+}
+.google-logo{
+	height: 20px;
+	width: 20px;
+	margin-top: 10px;
+	margin-left: 5px;
+}
+.google-text{
+	margin-top: 12px;
+	margin-left: 15px;
+}
+.login-OR{
+	font-size: 30px;
+	margin-top: 10px;
+}
+.sign-up-msg{
+	text-align: center;
+	width: 300px;
+	font-size: 20px;
+	margin:0 auto;
+	margin-top: 20px;
+}
+.login-footer-line{
+	width:50%;
+    margin:20px auto;
+}
+.login-footer-msg{
+	text-align: center;
+	width: 300px;
+	font-size: 15px;
+	margin:0 auto;
+}
+
+
