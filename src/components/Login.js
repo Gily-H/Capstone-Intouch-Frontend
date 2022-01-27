@@ -5,21 +5,34 @@ import "../styles/login.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 
+const logo =
+  "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
+
+const google_logo =
+  "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
+
 export default function Login() {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
   const [redirect, setRedirect] = useState(false);
+  const [signIn, setSignIn] = useState({
+    userName: "",
+    password: "",
+  });
 
-  console.log(userName);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    //  await axios.post(`INSERT LINK HERE`, {userName, password})
-    setRedirect(true);
+  function handleForm(event) {
+    const userLogin = signIn;
+    axios.post("https://crud-intouch-backend.herokuapp.com/customAuth/signin", signIn);
   }
+
 
   function handleLogin() {
     setRedirect(true);
+  }
+
+  function handleChange(event) {
+    setSignIn((prevSignIn) => ({
+      ...prevSignIn,
+      [event.target.name]: event.target.value,
+    }));
   }
 
   useEffect(() => {
@@ -31,11 +44,6 @@ export default function Login() {
     }
   }, [redirect]);
 
-  const logo =
-    "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
-
-  const google_logo =
-    "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
   return (
     <div>
       <Navbar />
@@ -43,23 +51,23 @@ export default function Login() {
         {/* <img src={logo} className="logo"/> */}
 
         <h1 className="login-msg">Login to your account</h1>
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleForm} className="login-form">
           <label className="login-username">
             <input
               className="login-input"
               placeholder="Username"
               type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={signIn.userName}
+              onChange={handleChange}
             />
           </label>
           <label className="login-password">
             <input
               className="login-input"
               placeholder="Password"
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              value={signIn.password}
+              onChange={handleChange}
             />
           </label>
           <input
@@ -68,15 +76,16 @@ export default function Login() {
             className="login-btns login-submit-btn"
           />
           <p className="login-OR"> or</p>
-
-          <button className="login-btns login-google-btn" onClick={handleLogin}>
-            <img src={google_logo} className="google-logo" />
-            <p className="google-text">Continue with Google</p>
-          </button>
           <p className="sign-up-msg">
             Dont have an account? <a href="/signUp">Sign Up</a>
           </p>
         </form>
+
+        <button className="login-btns login-google-btn" onClick={handleLogin}>
+          <img src={google_logo} className="google-logo" alt="google-icon" />
+          <p className="google-text">Continue with Google</p>
+        </button>
+
         <hr className="login-footer-line" />
         <p className="login-footer-msg">
           By continuing in you agree to the in-Touch's Terms of Service, Privacy
