@@ -28,7 +28,7 @@ export default function Login(props) {
       )
       .then((res) => {
         navigate("../");
-        // props.handleSuccessfulLogin(true);
+        props.handleSuccessfulLogin(true);
         console.log("sent request to sign up");
       })
       .catch((err) => console.log(err));

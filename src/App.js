@@ -33,7 +33,7 @@ function App() {
   // });
 
   const [currentUserId, setCurrentUserId] = useState("");
-  const [successfulLogin, setSeuccesFulLogin] = useState(false);
+  const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [graphData, setGraphData] = useState({
     nodes: [],
     links: [],
@@ -56,8 +56,10 @@ function App() {
 
     };
 
-    getUser();
-  }, []);
+    if (successfulLogin) {
+      getUser();
+    }
+  }, [successfulLogin]);
 
   /* data fetching  */
 
@@ -177,6 +179,10 @@ function App() {
     />
   );
 
+  function handleSuccesfulLogin() {
+    setSuccessfulLogin(true);
+  }
+
   return (
     <Router>
       <Routes>
@@ -195,8 +201,14 @@ function App() {
             </div>
           }
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signUp" element={<Signup />} />
+        <Route
+          path="/login"
+          element={<Login handleSuccessfulLogin={handleSuccesfulLogin} />}
+        />
+        <Route
+          path="/signUp"
+          element={<Signup handleSuccessfulLogin={handleSuccesfulLogin} />}
+        />
       </Routes>
     </Router>
   );
