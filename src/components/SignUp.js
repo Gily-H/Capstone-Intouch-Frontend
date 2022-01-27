@@ -14,7 +14,7 @@ const google_logo =
 export default function Login() {
   const [redirect, setRedirect] = useState(false);
   const [signUp, setSignUp] = useState({
-    userName: "",
+    firstName: "",
     password: "",
   });
 
@@ -23,7 +23,7 @@ export default function Login() {
     axios.post(
       "https://crud-intouch-backend.herokuapp.com/customAuth/signup ",
       signUp
-    );
+    ).then(res => console.log("sent request to sign up")).catch(err => console.log(err))
   }
 
   function handleChange(event) {
@@ -33,10 +33,10 @@ export default function Login() {
     }));
   }
 
- function handleLogin() {
-   setRedirect(true);
- }
- 
+  function handleLogin() {
+    setRedirect(true);
+  }
+
   useEffect(() => {
     if (redirect) {
       window.open(
@@ -59,9 +59,9 @@ export default function Login() {
               className="login-input"
               placeholder="Username"
               type="text"
-              value={signUp.userName}
+              value={signUp.firstName}
               onChange={handleChange}
-              name="userName"
+              name="firstName"
             />
           </label>
           <label className="login-password">

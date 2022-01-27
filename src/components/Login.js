@@ -14,16 +14,19 @@ const google_logo =
 export default function Login() {
   const [redirect, setRedirect] = useState(false);
   const [signIn, setSignIn] = useState({
-    userName: "",
+    firstName: "",
     password: "",
   });
 
   function handleForm(event) {
     const userLogin = signIn;
-    axios.post(
-      "https://crud-intouch-backend.herokuapp.com/customAuth/signin",
-      userLogin
-    );
+    axios
+      .post(
+        "https://crud-intouch-backend.herokuapp.com/customAuth/signin",
+        userLogin
+      )
+      .then((res) => console.log("sent request to sign in"))
+      .catch((err) => console.log(err));
   }
 
   function handleLogin() {
@@ -59,9 +62,9 @@ export default function Login() {
               className="login-input"
               placeholder="Username"
               type="text"
-              value={signIn.userName}
+              value={signIn.firstName}
               onChange={handleChange}
-              name="userName"
+              name="firstName"
             />
           </label>
           <label className="login-password">
