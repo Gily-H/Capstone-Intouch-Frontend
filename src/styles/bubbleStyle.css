@@ -1,0 +1,26 @@
+
+
+img{
+    position: relative;
+    border-radius: 50%;
+    
+}
+
+.bubble-text{
+    position: relative;
+    text-align: center;
+    width:fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:-60%;
+    color: white;
+    font-size: 30px;
+
+}
+
+a{
+    text-decoration: none;
+}
+
+
+  

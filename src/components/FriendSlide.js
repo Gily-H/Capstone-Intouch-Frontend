@@ -1,5 +1,7 @@
 import React from "react";
 import RemoveFriendNode from "./RemoveFriendNode";
+import Navbar from "./Navbar";
+
 
 export default function FriendSlide(props) {
   const friendId = props.friend.id;

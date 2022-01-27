@@ -8,6 +8,7 @@ import {
   setInitials,
 } from "./graphFuncs";
 import "../../styles/Graph.css";
+import Navbar from "../Navbar";
 
 export default function Graph(props) {
   /* 
