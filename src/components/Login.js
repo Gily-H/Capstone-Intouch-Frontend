@@ -19,6 +19,7 @@ export default function Login() {
   });
 
   function handleForm(event) {
+    event.preventDefault();
     const userLogin = signIn;
     axios
       .post(
