@@ -23,6 +23,11 @@ function App() {
     root: {}, // Will use google id
     friends: [],
   });
+  const [currentUser, setCurrentUser] = useState({
+    id: "",
+    name: "",
+    image: "",
+  });
   const [currentUserId, setCurrentUserId] = useState("");
 
   const [graphData, setGraphData] = useState({
@@ -34,15 +39,8 @@ function App() {
   /* user login */
   useEffect(() => {
     const getUser = () => {
-      fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-        },
-      })
+      axios
+        .get("http://crud-intouch-backend.herokuapp.com/auth/login/success")
         .then((response) => {
           if (response.status === 200) return response.json();
           throw new Error("authentication has been failed!");
@@ -59,6 +57,9 @@ function App() {
   /* data fetching  */
 
   // async function fetchPeopleData() {
+
+  //   if (currentUser) {
+
   //   const friends = await axios.get(
   //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
   //   );
@@ -109,6 +110,7 @@ function App() {
   //   });
 
   //   setLoading(false);
+  //   }
   // }
 
   // useEffect(() => fetchPeopleData(), [currentUserId]);
