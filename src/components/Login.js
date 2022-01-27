@@ -23,11 +23,6 @@ export default function Login() {
     axios.post("https://crud-intouch-backend.herokuapp.com/customAuth/signin", signIn);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    //  await axios.post(`INSERT LINK HERE`, {userName, password})
-    setRedirect(true);
-  }
 
   function handleLogin() {
     setRedirect(true);
@@ -56,7 +51,7 @@ export default function Login() {
         {/* <img src={logo} className="logo"/> */}
 
         <h1 className="login-msg">Login to your account</h1>
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleForm} className="login-form">
           <label className="login-username">
             <input
               className="login-input"
