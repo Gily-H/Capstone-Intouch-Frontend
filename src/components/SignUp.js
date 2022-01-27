@@ -10,17 +10,26 @@ export default function Login() {
   const google_logo =
     "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
 
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [signUp, setSignUp] = useState({
+    userName: "",
+    password: "",
+  });
   const [redirect, setRedirect] = useState(false);
 
-	async function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     // await axios.post(`INSERT LINK HERE`, {userName, password})
     setRedirect(true);
   }
 
-	return (
+  function handleChange(event) {
+    setSignUp((prevSignUp) => ({
+      ...prevSignUp,
+      [event.target.name]: event.target.value,
+    }));
+  }
+
+  return (
     <div>
       <Navbar />
       <div className="login-box">
