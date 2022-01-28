@@ -12,10 +12,10 @@ export default function Graph(props) {
     return strengthList;
   });
 
-  function updateConnection(index) {
+  function updateConnection(index, factor) {
     setStrengths((prevStrengths) => {
       const currentStrengths = [...prevStrengths];
-      const newStrength = currentStrengths[index] - 20;
+      const newStrength = currentStrengths[index] - factor;
       currentStrengths[index] = newStrength;
       return currentStrengths;
     });
@@ -69,8 +69,13 @@ export default function Graph(props) {
             console.log(link, i);
             const edgeLength = strengths[i];
             if (edgeLength  <= 0) {
-              return props.dimensions.width / 2; // TOUCH OUTER RADIAL EDGE
+              return 0; // TOUCH OUTER RADIAL EDGE
             }
+            else if(edgeLength * EDGE_GROWTH_FACTOR > 500) {
+              return 500;
+            }
+
+              
             return edgeLength; // MOVE EDGE CLOSER TO RADIAL EDGE
           })
       )

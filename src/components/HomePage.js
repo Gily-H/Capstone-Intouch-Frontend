@@ -40,7 +40,7 @@ export default function HomePage(props) {
             </div>
             <div className="bottom-bubbles">
                 <div id="left-btm-bubble">
-                    <Link to={`/profile/${props.user.id? props.user.id : ""}`}><Bubbles image={NewBlackCircle} label={"Profile"} startOp={.5} /></Link>
+                    <Link to={`/profile/${props.user.id? props.user.id : ""}`}><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.5} /></Link>
                 </div>
                 <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.5} />
             </div>

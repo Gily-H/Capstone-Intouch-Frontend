@@ -34,6 +34,11 @@ export default function FriendSlide(props) {
         onClick={() => props.updateConnection(friend)}>
         Send a Messge
       </button>
+      <button
+        className="friend-contact"
+        onClick={() => props.updateConnection(friend, -20)}>
+        Wait to connect
+      </button>
       <div className="delete-btn">{displayRemoveButton}</div>
     </div>
   );
