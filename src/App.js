@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Graph from "./components/d3/Graph";
-import AddFriendNode from "./components/AddFriendNode";
-import FriendSlide from "./components/FriendSlide";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 import About from "./components/About";
@@ -11,7 +9,7 @@ import Signup from "./components/SignUp";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
-import Prince from "./images/prince-akachi.jpg"
+import { rootUser } from "./data";
 
 function App() {
 
@@ -21,19 +19,40 @@ function App() {
     width: 1000,
     height: 1000,
   };
-
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
-    root: {}, // Will use google id
+    rootUser: rootUser, // Will use google id
     friends: [],
   });
-  const [currentUserId, setCurrentUserId] = useState("");
-
   const [graphData, setGraphData] = useState({
     nodes: [],
     links: [],
   });
   const [selectedPerson, setselectedPerson] = useState("");
+
+
+  /* data fetching  */
+
+  async function fetchPeopleData() {
+    const friends = await axios.get(
+      "https://crud-intouch-backend.herokuapp.com/api/friends/"
+    );
+
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      friends: friends.data,
+    }));
+
+    const rootNode = {
+      id: rootUser.id,
+      firstName: rootUser.firstName,
+      lastName: rootUser.lastName,
+      imageUrl: rootUser.imageUrl,
+      // password: userData.password ||
+      /* additional required fields for fixed position */
+      fx: CANVAS_DIMENSIONS.width / 2,
+      fy: CANVAS_DIMENSIONS.height / 2,
+    };
 
   
 
@@ -67,62 +86,33 @@ function App() {
   //   getUser();
   // }, []);
 
-  /* data fetching  */
 
-  // async function fetchPeopleData() {
-  //   const friends = await axios.get(
-  //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
-  //   );
+    // create nodes for all friends
+    const friendIds = friends.data.map((friend) => ({
+      id: friend.friendId,
+      firstName: friend.firstName,
+      lastName: friend.lastName,
+      phone: friend.phone,
+      imageUrl: friend.imageUrl,
+      strength: friend.strength,
+      lastContact: friend.lastContact,
+      userId: rootUser.id,
+    }));
 
-  //   setPeopleData({
-  //     root: rootUser.data,
-  //     friends: friends.data,
-  //   });
+    const friendLinks = friends.data.map((friend) => ({
+      source: rootUser.id,
+      target: friend.friendId,
+      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+    }));
 
-  //   const userData = rootUser.data;
-  //   const userId = userData.googleId || userData.id; // if no google, backend creates id
-  //   setCurrentUserId(userId);
+    setGraphData({
+      nodes: [rootNode, ...friendIds], // keep the root user in the first position
+      links: [...friendLinks],
+    });
 
-  //   const rootNode = {
-  //     id: userId,
-  //     // index: 0,
-  //     firstName: userData.firstName,
-  //     lastName: userData.lastName,
-  //     imageUrl: userData.imageUrl,
-  //     // password: userData.password ||
-  //     /* additional required fields for fixed position */
-  //     fx: CANVAS_DIMENSIONS.width / 2,
-  //     fy: CANVAS_DIMENSIONS.height / 2,
-  //   };
-
-  //   // create nodes for all friends
-  //   const friendIds = friends.data.map((friend) => ({
-  //     id: friend.friend_id,
-  //     index: friend.friend_id,
-  //     firstName: friend.firstName,
-  //     lastName: friend.lastName,
-  //     phone: friend.phone,
-  //     imageUrl: friend.imageUrl,
-  //     strength: friend.strength,
-  //     lastContact: friend.lastContact,
-  //     userId: userId,
-  //   }));
-
-  //   const friendLinks = friends.data.map((friend) => ({
-  //     source: userId,
-  //     target: friend.friend_id,
-  //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-  //   }));
-
-  //   setGraphData({
-  //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
-  //     links: [...friendLinks],
-  //   });
-
-  //   setLoading(false);
-  // }
-
-  // useEffect(() => fetchPeopleData(), [currentUserId]);
+    setLoading(false);
+  }
+  useEffect(() => fetchPeopleData(), []);
 
   /* state handlers */
 
@@ -139,7 +129,7 @@ function App() {
 
   function deleteFriend(removeId) {
     // precaution to avoid deletion of root user
-    if (removeId === currentUserId) {
+    if (removeId === rootUser.id) {
       return;
     }
     
@@ -153,6 +143,13 @@ function App() {
       links: graphData.links.filter((link) => link.target.id !== removeId),
     };
 
+    axios
+      .delete(
+        `https://crud-intouch-backend.herokuapp.com/api/friends/${removeId}`
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
     setPeopleData((prevPeopleData) => ({
       ...prevPeopleData,
       friends: updatedFriends,
@@ -162,6 +159,25 @@ function App() {
     selectedPerson && setselectedPerson((prevSelectedPerson) => "");
   }
 
+  function updateFriendConnection(friendId) {
+    console.log(peopleData.friends);
+    console.log("here");
+    const updatedList = peopleData.friends.map((friend) => {
+      const newStrength = friend.strength - 20;
+      return friendId === friend.id
+        ? {
+            ...friend,
+            strength: newStrength < 0 ? 0 : newStrength,
+          }
+        : friend;
+    });
+
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      friends: updatedList,
+    }));
+  }
+
   /* display section  */
 
   const displayGraph = isLoading ? (
@@ -169,23 +185,12 @@ function App() {
   ) : (
     <Graph
       data={graphData}
+      friends={peopleData.friends}
       retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
-    />
-  );
-  const testImages = {
-    image1: Prince
-  }
-
-  const displayFriendPanel = (
-    <FriendSlide
-      friend={selectedPerson}
-
-      rootUserId={currentUserId}
-
-      image={testImages.image1}//image prop for testing
-
-      /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
+      selectedPerson={selectedPerson}
+      rootUserId={rootUser.id}
+      deleteFriend={deleteFriend}
     />
   );
   
@@ -202,19 +207,25 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
+
         <Route path="/home" element={<HomePage user={user}/>} />
         <Route path="/profile/:id" element={user && <ProfilePage {...peopleData} />} />
         {/* <Route path="/profile" element={<Login userData={setUserData}/>}/> */}
+
+        <Route
+          path="/profile"
+          element={
+            <ProfilePage
+              {...peopleData}
+              userId={rootUser.id}
+              addData={addGraphData}
+            />
+          }
+        />
+
         <Route
           path="/userGraph"
-          element={
-            <div className="App">
-              <AddFriendNode addData={addGraphData} userId={currentUserId} />
-              {displayGraph}
-             {selectedPerson && displayFriendPanel}  {/* {selectedPerson && displayFriendPanel}   original line*/}
-            {displayFriendPanel}          {/* Added in order to do styling without graph */}
-            </div>
-          }
+          element={<div className="App">{displayGraph}</div>}
         />
         <Route path="/login" element={<Login userData={setUserData}/>} />
         <Route path="/signUp" element={<Signup />} />
@@ -224,38 +235,3 @@ function App() {
 }
 
 export default App;
-
-/* 
-    BAREBONES SAMPLE DATA
-{
-    // nodes can be anything
-    nodes: [
-      { id: 0, index: 0 },
-      // { id: 1 },
-      // { id: 2 },
-      // { id: 3 },
-      // { id: 4 },
-      // { id: 5 },
-      // { id: 6 },
-      // { id: 7 },
-      // { id: 8 },
-      // { id: 9 },
-      // { id: 10 },
-    ],
-
-    // links refer to INDEX of nodes by default
-    // id(d > d.property) to change id property
-    links: [
-      // { source: 0, target: 1 },
-      // { source: 0, target: 2 },
-      // { source: 0, target: 3 },
-      // { source: 0, target: 4 },
-      // { source: 0, target: 5 },
-      // { source: 0, target: 6 },
-      // { source: 0, target: 7 },
-      // { source: 0, target: 8 },
-      // { source: 0, target: 9 },
-      // { source: 0, target: 10 },
-    ],
-  }
-*/

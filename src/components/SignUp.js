@@ -1,3 +1,4 @@
+
 import React from 'react'
 import {Link} from 'react-router-dom'
 import { useState, useEffect } from 'react'
@@ -9,10 +10,6 @@ export default function Login(){
 
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
-
-	
-
-	console.log(userName);
 
     // async function handleSubmit(e){
     //     e.preventDefault()
@@ -78,20 +75,24 @@ export default function Login(){
 				<input type="submit" value="Create Account" className="login-btns login-submit-btn"/>
 				<p className="login-OR"> or</p>
 
-				<button className="login-btns login-google-btn">
-					<img src={google_logo} className="google-logo"/> 
-					<p className="google-text">Continue with Google</p>
-				</button>
-				<p className="sign-up-msg"> 
-					Already a member? <a href="/login">Login</a>
-				</p>
-			</form>
-			<hr className="login-footer-line"/>
-			<p className="login-footer-msg"> 
-			By continuing in you agree to the in-Touch's Terms of Service, Privacy Policy
-			</p>
-			
-			</div>
-		</div>
-    )
+
+        <button className="login-btns login-google-btn">
+          <img src={google_logo} className="google-logo" />
+          <p className="google-text">Continue with Google</p>
+        </button>
+
+         <p className="sign-up-msg">
+            Already a member? <a href="/login">Login</a>
+          </p>
+            
+      </form>
+            
+        <hr className="login-footer-line" />
+        <p className="login-footer-msg">
+          By continuing in you agree to the in-Touch's Terms of Service, Privacy
+          Policy
+        </p>
+      </div>
+    </div>
+  );
 }

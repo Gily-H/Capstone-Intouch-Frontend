@@ -11,8 +11,6 @@ export default function Login(props) {
   
   const navigate = useNavigate()
 
-  console.log(userName);
-
   // function handleSubmit(e) {
   //   e.preventDefault();
   //   //  await axios.post(`INSERT LINK HERE`, {userName, password})
@@ -23,9 +21,6 @@ export default function Login(props) {
   //   })
     
   // }
-
-  
-
 
   function handleForm(event) {
     event.preventDefault();
@@ -47,7 +42,6 @@ export default function Login(props) {
         props.userData(res.data)
       })
       .catch((err) => console.log(err));
-
   }
 
 
@@ -55,17 +49,37 @@ export default function Login(props) {
 
 
   function handleLogin() {
+    function handleLogin() {
     window.open(
       "https://crud-intouch-backend.herokuapp.com/auth/google",
       "_self"
-    );
+      );
+    }
   }
 
-  const logo =
-    "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
+const logo =
+  "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
 
-  const google_logo =
-    "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
+const google_logo =
+  "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg"
+    
+    
+  function handleChange(event) {
+    setSignIn((prevSignIn) => ({
+      ...prevSignIn,
+      [event.target.name]: event.target.value,
+    }));
+  }
+
+  useEffect(() => {
+    if (redirect) {
+      window.open(
+        "https://crud-intouch-backend.herokuapp.com/auth/google",
+        "_self"
+      );
+    }
+  }, [redirect]);
+
   return (
     <div>
       <Navbar />
@@ -79,17 +93,19 @@ export default function Login(props) {
               className="login-input"
               placeholder="Username"
               type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={signIn.firstName}
+              onChange={handleChange}
+              name="firstName"
             />
           </label>
           <label className="login-password">
             <input
               className="login-input"
               placeholder="Password"
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              value={signIn.password}
+              onChange={handleChange}
+              name="password"
             />
           </label>
           <input
@@ -98,6 +114,10 @@ export default function Login(props) {
             className="login-btns login-submit-btn"
           />
           <p className="login-OR"> or</p>
+          <p className="sign-up-msg">
+            Dont have an account? <a href="/signUp">Sign Up</a>
+          </p>
+
 
 				<button className="login-btns login-google-btn">
 					<img src={google_logo} className="google-logo"/> 

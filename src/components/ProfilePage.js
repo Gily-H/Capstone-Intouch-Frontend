@@ -1,3 +1,4 @@
+
 import React from 'react'
 import Navbar from './Navbar'
 import {useState, useEffect} from 'react'
@@ -7,10 +8,41 @@ import './profile.css'
 import { useParams } from 'react-router-dom'
 
 
+export default function ProfilePage(props) {
+  const userInitials = "JN";
+  const friendsData = props.friends;
+  console.log(props.friends);
+  const [formVals, setFormVals] = useState({
+    id: 4,
+    firstName: "",
+    lastName: "",
+    phone: "",
+    imageUrl: "",
+    strength: "",
+    lastContacted: "",
+  });
 
-export default function ProfilePage(props){
-    
-    const userInitials="JN"
+  function updateOnChange(event) {
+    setFormVals((prevFormVals) => ({
+      ...prevFormVals,
+      [event.target.name]: event.target.value,
+    }));
+  }
+
+  const sendData = (newFriendData) => {
+    axios
+      .post(
+        "https://crud-intouch-backend.herokuapp.com/api/friends/",
+        newFriendData
+      )
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
     
     const id = useParams()
@@ -53,14 +85,14 @@ export default function ProfilePage(props){
                 firstName: formVals.firstName,
                 lastName: formVals.lastName,
                 phone: formVals.phone,
-                strength: 1
+                strength: formVals.strength || 100,
                 // interactions: 1 /* DEFAULT FOR NOW */,
                 // imageUrl: formVals.imageUrl,
                 // strength: formVals.strength,
         };
         console.log(addFriend);
         sendData(addFriend);
-
+        props.addData(addFriend);
         // setFormVals((prevFormVals) => ({
         //   id: formVals.id + 1,
         //   firstName: "",
@@ -126,6 +158,16 @@ export default function ProfilePage(props){
                             onChange={updateOnChange}
                             />
                         </label>
+                           <label>
+                      <input
+                        placeholder="Relationship Strength"
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={formVals.strength || 1}
+                        name="strength"
+                        onChange={updateOnChange}
+                      />
                         <input type="submit" value="Add Contact" className="login-btns login-submit-btn add-contact-btn"/>
                     </form>
 
@@ -145,8 +187,9 @@ export default function ProfilePage(props){
                 <div>
                     
             </div>
+
         </div>
+      </div>
     </div>
-        </div>
-    )
+  );
 }

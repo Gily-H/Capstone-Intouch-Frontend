@@ -5,13 +5,14 @@ export function createNodes(svg, data, eventHandler) {
     .selectAll(".node")
     .data(data)
     .join("circle")
-    .attr("r", 30)
-    .attr("fill", (datum) => randomBackgroundColor(datum.id))
+    .attr("r", 20)
+    .attr("fill", (datum, index) => randomBackgroundColor(index))
     .classed("node", true)
     .on("mousedown", (event, datum) => {
       eventHandler(datum);
     });
 
+  nodes.transition().duration(2000).attr("r", 35);
   return nodes;
 }
 
@@ -20,9 +21,11 @@ export function createLinks(svg, data) {
     .selectAll(".link")
     .data(data)
     .join("line")
+    .attr("stroke-width", "0px")
     .classed("link", true)
     .on("click", () => alert("clicked link"));
 
+  links.transition().duration(5000).attr("stroke-width", "1.5px");
   return links;
 }
 
