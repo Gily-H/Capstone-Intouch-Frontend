@@ -3,33 +3,62 @@ import {Link} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../styles/login.css'
 import Navbar from './Navbar'
+import axios from "axios"
+
 export default function Login(){
 
-	const [userName, setUserName] = useState();
-	const [password, setPassword] = useState();
+	const [userName, setUserName] = useState("");
+	const [password, setPassword] = useState("");
 
-	const [redirect, setRedirect] = useState(false)
+	
 
 	console.log(userName);
 
-    async function handleSubmit(e){
-        e.preventDefault()
-        // await axios.post(`INSERT LINK HERE`, {userName, password})
-        setRedirect(true)
-    }
+    // async function handleSubmit(e){
+    //     e.preventDefault()
+    //     // await axios.post(`INSERT LINK HERE`, {userName, password})
+      
+    // }
+
+	function handleForm(event) {
+		event.preventDefault();
+		setUserName(event.target[0].value)
+		setPassword(event.target[1].value)
+		
+		console.log(event.target[0].value)
+		axios
+		  .post(
+			"https://crud-intouch-backend.herokuapp.com/customAuth/signup",
+			{
+			  firstName: userName,
+			  password: password
+			}
+		  )
+		  .then((res) => {
+			//navigate("../");
+	
+			//props.handleSuccessfulLogin(true);
+			console.log("sent request to sign up");
+				console.log(res.data)
+			//props.user(res.data)
+		  })
+		  .catch((err) => console.log(err));
+	  }
+	
+	
 	const logo = "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png"
 	
 	const google_logo = "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg"
 	return(
 		
 		<div>
-			<Navbar/>
+			<Navbar />
 			<div className="login-box">
 				
 				{/* <img src={logo} className="logo"/> */}
 
 				<h1 className="login-msg">Let's get in touch...</h1>
-			<form onSubmit={handleSubmit} className="login-form">
+			<form onSubmit={handleForm} className="login-form">
 				<label className="login-username">
 					<input className="login-input"
 					placeholder="Username"

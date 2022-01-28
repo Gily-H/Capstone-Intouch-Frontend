@@ -1,22 +1,58 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/login.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 
-export default function Login() {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
-  const [redirect, setRedirect] = useState(false);
+export default function Login(props) {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const navigate = useNavigate()
 
   console.log(userName);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    //  await axios.post(`INSERT LINK HERE`, {userName, password})
-    setRedirect(true);
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   //  await axios.post(`INSERT LINK HERE`, {userName, password})
+  //   axios.post("https://crud-intouch-backend.herokuapp.com/customAuth/signin")
+  //   .then(res => {
+  //     console.log(res)
+
+  //   })
+    
+  // }
+
+  
+
+
+  function handleForm(event) {
+    event.preventDefault();
+    setUserName(event.target[0].value)
+    setPassword(event.target[1].value)
+
+    axios
+      .post(
+        "https://crud-intouch-backend.herokuapp.com/customAuth/signin",
+        {
+          firstName: userName,
+          password: password
+        }
+      )
+      .then((res) => {
+        setTimeout(() => navigate("/home"),500)
+        console.log("sent request to sign in");
+		    console.log(res.data)
+        props.userData(res.data)
+      })
+      .catch((err) => console.log(err));
+
   }
+
+
+
+
 
   function handleLogin() {
     window.open(
@@ -37,7 +73,7 @@ export default function Login() {
         {/* <img src={logo} className="logo"/> */}
 
         <h1 className="login-msg">Login to your account</h1>
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleForm} className="login-form">
           <label className="login-username">
             <input
               className="login-input"

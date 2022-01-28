@@ -4,12 +4,16 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { nanoid } from 'nanoid'
 import './profile.css'
+import { useParams } from 'react-router-dom'
 
 
 
 export default function ProfilePage(props){
     
     const userInitials="JN"
+
+    
+    const id = useParams()
 
     const friendsData = props.friends;
     console.log(props.friends)
@@ -69,6 +73,7 @@ export default function ProfilePage(props){
     return (
         <div>
             <Navbar/>
+            {/* {id!==props.userId? <p>Not signed In</p>: */}
 
             <div className="profile-panels">
                 <div className="profile-left-panel">

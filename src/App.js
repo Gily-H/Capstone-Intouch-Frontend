@@ -35,30 +35,37 @@ function App() {
   });
   const [selectedPerson, setselectedPerson] = useState("");
 
+  
+
+  
+
+
+
+
   /* user login */
-  useEffect(() => {
-    const getUser = () => {
-      fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) return response.json();
-          throw new Error("authentication has been failed!");
-        })
-        .then((resObject) => {
-          console.log(resObject);
-          setCurrentUserId(resObject.id);
-        })
-        .catch((err) => console.log(err));
-    };
-    getUser();
-  }, []);
+  //  useEffect(() => {
+  //   const getUser = () => {
+  //     fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Credentials": true,
+  //       },
+  //     })
+  //       .then((response) => {
+  //         if (response.status === 200) return response.json();
+  //         throw new Error("authentication has been failed!");
+  //       })
+  //       .then((resObject) => {
+  //         console.log(resObject);
+  //         setCurrentUserId(resObject.id);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
+  //   getUser();
+  // }, []);
 
   /* data fetching  */
 
@@ -181,14 +188,23 @@ function App() {
       /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
     />
   );
+  
+  const [user, setUser] = useState(null)
+
+  function setUserData(data){
+    setUser(data)
+  }
+  
+
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage {...peopleData}/>} />
+        <Route path="/home" element={<HomePage user={user}/>} />
+        <Route path="/profile/:id" element={user && <ProfilePage {...peopleData} />} />
+        {/* <Route path="/profile" element={<Login userData={setUserData}/>}/> */}
         <Route
           path="/userGraph"
           element={
@@ -200,7 +216,7 @@ function App() {
             </div>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login userData={setUserData}/>} />
         <Route path="/signUp" element={<Signup />} />
       </Routes>
     </Router>
