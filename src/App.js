@@ -12,6 +12,7 @@ import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
 import Prince from "./images/prince-akachi.jpg"
+import { rootUser } from "./data";
 
 function App() {
 
@@ -24,10 +25,10 @@ function App() {
 
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
-    root: {}, // Will use google id
+    root: rootUser, // Will use google id
     friends: [],
   });
-  const [currentUserId, setCurrentUserId] = useState("");
+  
 
   const [graphData, setGraphData] = useState({
     nodes: [],
@@ -69,60 +70,53 @@ function App() {
 
   /* data fetching  */
 
-  // async function fetchPeopleData() {
-  //   const friends = await axios.get(
-  //     "https://crud-intouch-backend.herokuapp.com/api/friends/"
-  //   );
+  async function fetchPeopleData() {
+    const friends = await axios.get(
+      "https://crud-intouch-backend.herokuapp.com/api/friends/"
+    );
 
-  //   setPeopleData({
-  //     root: rootUser.data,
-  //     friends: friends.data,
-  //   });
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      friends: friends.data,
+    }));
 
-  //   const userData = rootUser.data;
-  //   const userId = userData.googleId || userData.id; // if no google, backend creates id
-  //   setCurrentUserId(userId);
+    const rootNode = {
+      id: rootUser.id,
+      firstName: rootUser.firstName,
+      lastName: rootUser.lastName,
+      imageUrl: rootUser.imageUrl,
+      // password: userData.password ||
+      /* additional required fields for fixed position */
+      fx: CANVAS_DIMENSIONS.width / 2,
+      fy: CANVAS_DIMENSIONS.height / 2,
+    };
 
-  //   const rootNode = {
-  //     id: userId,
-  //     // index: 0,
-  //     firstName: userData.firstName,
-  //     lastName: userData.lastName,
-  //     imageUrl: userData.imageUrl,
-  //     // password: userData.password ||
-  //     /* additional required fields for fixed position */
-  //     fx: CANVAS_DIMENSIONS.width / 2,
-  //     fy: CANVAS_DIMENSIONS.height / 2,
-  //   };
+    // create nodes for all friends
+    const friendIds = friends.data.map((friend) => ({
+      id: friend.friendId,
+      firstName: friend.firstName,
+      lastName: friend.lastName,
+      phone: friend.phone,
+      imageUrl: friend.imageUrl,
+      strength: friend.strength,
+      lastContact: friend.lastContact,
+      userId: rootUser.id,
+    }));
 
-  //   // create nodes for all friends
-  //   const friendIds = friends.data.map((friend) => ({
-  //     id: friend.friend_id,
-  //     index: friend.friend_id,
-  //     firstName: friend.firstName,
-  //     lastName: friend.lastName,
-  //     phone: friend.phone,
-  //     imageUrl: friend.imageUrl,
-  //     strength: friend.strength,
-  //     lastContact: friend.lastContact,
-  //     userId: userId,
-  //   }));
+    const friendLinks = friends.data.map((friend) => ({
+      source: rootUser.id,
+      target: friend.friendId,
+      /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
+    }));
 
-  //   const friendLinks = friends.data.map((friend) => ({
-  //     source: userId,
-  //     target: friend.friend_id,
-  //     /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
-  //   }));
+    setGraphData({
+      nodes: [rootNode, ...friendIds], // keep the root user in the first position
+      links: [...friendLinks],
+    });
 
-  //   setGraphData({
-  //     nodes: [rootNode, ...friendIds], // keep the root user in the first position
-  //     links: [...friendLinks],
-  //   });
-
-  //   setLoading(false);
-  // }
-
-  // useEffect(() => fetchPeopleData(), [currentUserId]);
+    setLoading(false);
+  }
+  useEffect(() => fetchPeopleData(), []);
 
   /* state handlers */
 
@@ -139,7 +133,7 @@ function App() {
 
   function deleteFriend(removeId) {
     // precaution to avoid deletion of root user
-    if (removeId === currentUserId) {
+    if (removeId === rootUser.id) {
       return;
     }
     
@@ -169,25 +163,19 @@ function App() {
   ) : (
     <Graph
       data={graphData}
+      friends={peopleData.friends}
       retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
+      selectedPerson={selectedPerson}
+      rootUserId={rootUser.id}
+      deleteFriend={deleteFriend}
     />
   );
   const testImages = {
     image1: Prince
   }
 
-  const displayFriendPanel = (
-    <FriendSlide
-      friend={selectedPerson}
-
-      rootUserId={currentUserId}
-
-      image={testImages.image1}//image prop for testing
-
-      /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
-    />
-  );
+  
   
   const [user, setUser] = useState(null)
 
@@ -209,10 +197,7 @@ function App() {
           path="/userGraph"
           element={
             <div className="App">
-              <AddFriendNode addData={addGraphData} userId={currentUserId} />
               {displayGraph}
-             {selectedPerson && displayFriendPanel}  {/* {selectedPerson && displayFriendPanel}   original line*/}
-            {displayFriendPanel}          {/* Added in order to do styling without graph */}
             </div>
           }
         />
