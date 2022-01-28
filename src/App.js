@@ -14,6 +14,9 @@ import ProfilePage from "./components/ProfilePage";
 import Prince from "./images/prince-akachi.jpg"
 
 function App() {
+
+
+
   const CANVAS_DIMENSIONS = {
     width: 1000,
     height: 1000,
@@ -132,6 +135,7 @@ function App() {
     if (removeId === currentUserId) {
       return;
     }
+    
 
     const updatedFriends = peopleData.friends.filter(
       (friend) => friend.friend_id !== removeId

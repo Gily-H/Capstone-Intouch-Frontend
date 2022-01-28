@@ -63,20 +63,20 @@ export default function Login() {
           />
           <p className="login-OR"> or</p>
 
-          <button className="login-btns login-google-btn" onClick={handleLogin}>
-            <img src={google_logo} className="google-logo" />
-            <p className="google-text">Continue with Google</p>
-          </button>
-          <p className="sign-up-msg">
-            Dont have an account? <a href="/signUp">Sign Up</a>
-          </p>
-        </form>
-        <hr className="login-footer-line" />
-        <p className="login-footer-msg">
-          By continuing in you agree to the in-Touch's Terms of Service, Privacy
-          Policy
-        </p>
-      </div>
-    </div>
-  );
+				<button className="login-btns login-google-btn">
+					<img src={google_logo} className="google-logo"/> 
+					<p className="google-text">Continue with Google</p>
+				</button>
+			</form>
+			<p className="sign-up-msg"> 
+					Dont have an account? <a href="/signUp">Sign Up</a>
+			</p>
+			<hr className="login-footer-line"/>
+			<p className="login-footer-msg"> 
+			By continuing in you agree to the in-Touch's Terms of Service, Privacy Policy
+			</p>
+			
+			</div>
+		</div>
+    )
 }
