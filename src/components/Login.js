@@ -5,41 +5,65 @@ import "../styles/login.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 
-const logo =
-  "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
-
-const google_logo =
-  "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg";
-
 export default function Login(props) {
-  const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
-  const [signIn, setSignIn] = useState({
-    firstName: "",
-    password: "",
-  });
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const navigate = useNavigate()
+
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   //  await axios.post(`INSERT LINK HERE`, {userName, password})
+  //   axios.post("https://crud-intouch-backend.herokuapp.com/customAuth/signin")
+  //   .then(res => {
+  //     console.log(res)
+
+  //   })
+    
+  // }
 
   function handleForm(event) {
     event.preventDefault();
-    const userLogin = signIn;
+    setUserName(event.target[0].value)
+    setPassword(event.target[1].value)
+
     axios
       .post(
         "https://crud-intouch-backend.herokuapp.com/customAuth/signin",
-        userLogin
+        {
+          firstName: userName,
+          password: password
+        }
       )
       .then((res) => {
-        navigate("../");
-
-        props.handleSuccessfulLogin(true);
+        setTimeout(() => navigate("/home"),500)
         console.log("sent request to sign in");
+		    console.log(res.data)
+        props.userData(res.data)
       })
       .catch((err) => console.log(err));
   }
 
+
+
+
+
   function handleLogin() {
-    setRedirect(true);
+    function handleLogin() {
+    window.open(
+      "https://crud-intouch-backend.herokuapp.com/auth/google",
+      "_self"
+      );
+    }
   }
 
+const logo =
+  "https://w7.pngwing.com/pngs/489/253/png-transparent-circular-economy-logo-ellen-macarthur-foundation-circle-company-service-logo.png";
+
+const google_logo =
+  "https://p1.hiclipart.com/preview/209/923/667/google-logo-background-g-suite-google-pay-google-doodle-text-circle-line-area-png-clipart.jpg"
+    
+    
   function handleChange(event) {
     setSignIn((prevSignIn) => ({
       ...prevSignIn,
@@ -94,20 +118,21 @@ export default function Login(props) {
             Dont have an account? <a href="/signUp">Sign Up</a>
           </p>
 
-          <button className="login-btns login-google-btn">
-            <img src={google_logo} className="google-logo" />
-            <p className="google-text">Continue with Google</p>
-          </button>
-        </form>
-        <p className="sign-up-msg">
-          Dont have an account? <a href="/signUp">Sign Up</a>
-        </p>
-        <hr className="login-footer-line" />
-        <p className="login-footer-msg">
-          By continuing in you agree to the in-Touch's Terms of Service, Privacy
-          Policy
-        </p>
-      </div>
-    </div>
-  );
+
+				<button className="login-btns login-google-btn">
+					<img src={google_logo} className="google-logo"/> 
+					<p className="google-text">Continue with Google</p>
+				</button>
+			</form>
+			<p className="sign-up-msg"> 
+					Dont have an account? <a href="/signUp">Sign Up</a>
+			</p>
+			<hr className="login-footer-line"/>
+			<p className="login-footer-msg"> 
+			By continuing in you agree to the in-Touch's Terms of Service, Privacy Policy
+			</p>
+			
+			</div>
+		</div>
+    )
 }

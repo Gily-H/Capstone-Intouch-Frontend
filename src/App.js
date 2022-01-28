@@ -12,6 +12,9 @@ import ProfilePage from "./components/ProfilePage";
 import { rootUser } from "./data";
 
 function App() {
+
+
+
   const CANVAS_DIMENSIONS = {
     width: 1000,
     height: 1000,
@@ -26,6 +29,7 @@ function App() {
     links: [],
   });
   const [selectedPerson, setselectedPerson] = useState("");
+
 
   /* data fetching  */
 
@@ -49,6 +53,39 @@ function App() {
       fx: CANVAS_DIMENSIONS.width / 2,
       fy: CANVAS_DIMENSIONS.height / 2,
     };
+
+  
+
+  
+
+
+
+
+  /* user login */
+  //  useEffect(() => {
+  //   const getUser = () => {
+  //     fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Credentials": true,
+  //       },
+  //     })
+  //       .then((response) => {
+  //         if (response.status === 200) return response.json();
+  //         throw new Error("authentication has been failed!");
+  //       })
+  //       .then((resObject) => {
+  //         console.log(resObject);
+  //         setCurrentUserId(resObject.id);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
+  //   getUser();
+  // }, []);
+
 
     // create nodes for all friends
     const friendIds = friends.data.map((friend) => ({
@@ -95,6 +132,7 @@ function App() {
     if (removeId === rootUser.id) {
       return;
     }
+    
 
     const updatedFriends = peopleData.friends.filter(
       (friend) => friend.friend_id !== removeId
@@ -155,13 +193,25 @@ function App() {
       deleteFriend={deleteFriend}
     />
   );
+  
+  const [user, setUser] = useState(null)
+
+  function setUserData(data){
+    setUser(data)
+  }
+  
+
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/home" element={<HomePage />} />
+
+        <Route path="/home" element={<HomePage user={user}/>} />
+        <Route path="/profile/:id" element={user && <ProfilePage {...peopleData} />} />
+        {/* <Route path="/profile" element={<Login userData={setUserData}/>}/> */}
+
         <Route
           path="/profile"
           element={
@@ -172,11 +222,12 @@ function App() {
             />
           }
         />
+
         <Route
           path="/userGraph"
           element={<div className="App">{displayGraph}</div>}
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login userData={setUserData}/>} />
         <Route path="/signUp" element={<Signup />} />
       </Routes>
     </Router>
