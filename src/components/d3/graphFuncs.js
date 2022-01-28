@@ -12,7 +12,7 @@ export function createNodes(svg, data, eventHandler) {
       eventHandler(datum);
     });
 
-  nodes.transition().duration(2000).attr("r", 40);
+  nodes.transition().duration(2000).attr("r", 35);
   return nodes;
 }
 

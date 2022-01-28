@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { zoomTransform } from "d3-zoom";
 import { createNodes, createLinks, createNodeText, onTick } from "./graphFuncs";
@@ -6,19 +6,27 @@ import "../../styles/Graph.css";
 import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
-  /* 
-    radius of outer circle / 30 units of time -> (30 is a temporary unit of time measure that we need to decide on) 
-    graph edge will grow approximately 17 pixels per unit of time that passes
-    Avoiding using floating point -> 17 is a close enough approximation  
-  */
+  const [strengths, setStrengths] = useState(() => {
+    const strengthList = props.data.nodes.map((node) => node.strength || 0);
+    strengthList.shift();
+    return strengthList;
+  });
+
+  function updateConnection(index) {
+    setStrengths((prevStrengths) => {
+      const currentStrengths = [...prevStrengths];
+      const newStrength = currentStrengths[index] - 20;
+      currentStrengths[index] = newStrength;
+      return currentStrengths;
+    });
+  }
 
   const EDGE_GROWTH_FACTOR = 5;
   const networkGraph = useRef();
-  console.log(props.data);
+
   useEffect(() => {
     const svg = d3
       .select(networkGraph.current)
-      .html("")
       .attr("viewbox", [0, 0, props.dimensions.width, props.dimensions.height]);
 
     /* graph components */
@@ -33,7 +41,7 @@ export default function Graph(props) {
         "charge",
         d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
       ) // magnetic force between nodes, positive attracts, default -30
-      .force("collide", d3.forceCollide(20)) // prevent node overlap
+      .force("collide", d3.forceCollide(100)) // prevent node overlap
       .force(
         "center",
         d3
@@ -57,9 +65,9 @@ export default function Graph(props) {
         d3
           .forceLink(props.data.links)
           .id((datum) => datum.id)
-          .distance((link, i, nodes) => {
-            console.log(link.target.strength);
-            const edgeLength = link.target.strength;
+          .distance((link, i) => {
+            console.log(link, i);
+            const edgeLength = strengths[i];
             if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
               return props.dimensions.width / 2; // TOUCH OUTER RADIAL EDGE
             }
@@ -76,7 +84,7 @@ export default function Graph(props) {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([1, 10])
+      .scaleExtent([1, 3])
       .on("zoom", () => {
         const zoomState = zoomTransform(svg.node());
         links.attr("transform", zoomState);
@@ -85,15 +93,17 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes, props.people]);
+  }, [props.data.nodes, strengths]);
 
   return (
     <div>
       {props.selectedPerson && (
         <FriendSlide
+          friends={props.friends}
           friend={props.selectedPerson}
           rootUserId={props.rootId}
           deleteHandler={props.deleteFriend}
+          updateConnection={updateConnection}
         />
       )}
       <div className="svg-container">

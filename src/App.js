@@ -9,13 +9,9 @@ import Signup from "./components/SignUp";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
-import AddFriendNode from "./components/AddFriendNode";
 import { rootUser } from "./data";
 
 function App() {
-
-
-
   const CANVAS_DIMENSIONS = {
     width: 1000,
     height: 1000,
@@ -79,7 +75,6 @@ function App() {
 
     setLoading(false);
   }
-
   useEffect(() => fetchPeopleData(), []);
 
   /* state handlers */
@@ -100,7 +95,6 @@ function App() {
     if (removeId === rootUser.id) {
       return;
     }
-    
 
     const updatedFriends = peopleData.friends.filter(
       (friend) => friend.friend_id !== removeId
@@ -110,6 +104,13 @@ function App() {
       nodes: graphData.nodes.filter((node) => node.id !== removeId),
       links: graphData.links.filter((link) => link.target.id !== removeId),
     };
+
+    axios
+      .delete(
+        `https://crud-intouch-backend.herokuapp.com/api/friends/${removeId}`
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
 
     setPeopleData((prevPeopleData) => ({
       ...prevPeopleData,
@@ -146,7 +147,7 @@ function App() {
   ) : (
     <Graph
       data={graphData}
-      people={peopleData}
+      friends={peopleData.friends}
       retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
       selectedPerson={selectedPerson}
@@ -161,15 +162,19 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage {...peopleData} />} />
+        <Route
+          path="/profile"
+          element={
+            <ProfilePage
+              {...peopleData}
+              userId={rootUser.id}
+              addData={addGraphData}
+            />
+          }
+        />
         <Route
           path="/userGraph"
-          element={
-            <div className="App">
-              <AddFriendNode addData={addGraphData} rootUserId={rootUser.id} />
-              {displayGraph}
-            </div>
-          }
+          element={<div className="App">{displayGraph}</div>}
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<Signup />} />
