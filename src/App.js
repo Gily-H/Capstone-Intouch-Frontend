@@ -13,6 +13,9 @@ import AddFriendNode from "./components/AddFriendNode";
 import { rootUser } from "./data";
 
 function App() {
+
+
+
   const CANVAS_DIMENSIONS = {
     width: 1000,
     height: 1000,
@@ -97,6 +100,7 @@ function App() {
     if (removeId === rootUser.id) {
       return;
     }
+    
 
     const updatedFriends = peopleData.friends.filter(
       (friend) => friend.friend_id !== removeId
