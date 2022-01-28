@@ -10,7 +10,7 @@ import Bubbles from "./Bubbles"
 import { useEffect } from "react/cjs/react.development"
 
 
-export default function LandingPage() {
+export default function LandingPage(props) {
     const [open, toggle] = useState(false)
     const effs = useSpring({ from: { transform: "translateY(200%)" }, to: { transform: open ? "translateY(0%)" : "translateY(200%)", opacity: open ? 1 : 0 } , config: config.wobbly})
     const leftEffs = useSpring({ from: { transform: "translate(100%,-90%)" }, to: { transform: open ? "translate(0%,0%)" : "translate(100%,-90%)", opacity: open ? 1 : 0 } , config: config.wobbly})
@@ -20,7 +20,7 @@ export default function LandingPage() {
 
     return (
         <div id="home">
-            <Navbar />
+            <Navbar user={props.user}/>
             <animated.div style={effs} className="top-bubble">
                 <Link to="/userGraph"><Bubbles image={blueCircle} label={"Connects"} startOp={.8} /></Link>
             </animated.div>
@@ -32,7 +32,7 @@ export default function LandingPage() {
             </animated.div>
             <div className="bottom-bubbles">
                 <animated.div style={leftEffs} id="left-btm-bubble">
-                <Link to="/profile"><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.8} /></Link>
+                <Link to={props.user? `/profile/${props.user.id}`:"/login"}><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.8} /></Link>
                 </animated.div>
                 <animated.div style={rightEffs}>
                     <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.8} />

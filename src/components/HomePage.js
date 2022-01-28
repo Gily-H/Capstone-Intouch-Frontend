@@ -1,14 +1,33 @@
-import React from "react"
+import React, {useState} from "react"
 import { animated, useSpring } from "react-spring"
 import Navbar from "./Navbar"
 import Bubbles from "./Bubbles"
 import NewBlackCircle from "../images/NewBlackCircle.png"
 import blueCircle from "../images/blueCircle.png"
 import "../styles/homePage.css"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useEffect } from "react/cjs/react.development"
+import axios from "axios"
 
 
-export default function HomePage() {
+export default function HomePage(props) {
+
+    
+
+    // useEffect(() => {
+    //     async function getSomething(){
+    //         await axios.get("https://crud-intouch-backend.herokuapp.com/customAuth/me")
+    //         .then(res => {
+    //           console.log(res)
+    //           setUser(res.data)
+    //         })
+    //         .catch(err => console.log(err))
+    //     }
+    //     getSomething()
+    // })
+    console.log(props.user? props.user: "")
+    console.log(props.user)
+
     return (
 
         <div id="home">
@@ -21,7 +40,7 @@ export default function HomePage() {
             </div>
             <div className="bottom-bubbles">
                 <div id="left-btm-bubble">
-                    <Link to="/profile"><Bubbles image={NewBlackCircle} label={"Profile"} startOp={.5} /></Link>
+                    <Link to={props.user? `/profile/${props.user.id}`:"/login"}><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.5} /></Link>
                 </div>
                 <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.5} />
             </div>

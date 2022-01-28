@@ -1,22 +1,32 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { zoomTransform } from "d3-zoom";
 import { createNodes, createLinks, createNodeText, onTick } from "./graphFuncs";
 import "../../styles/Graph.css";
+import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
-  /* 
-    radius of outer circle / 30 units of time -> (30 is a temporary unit of time measure that we need to decide on) 
-    graph edge will grow approximately 17 pixels per unit of time that passes
-    Avoiding using floating point -> 17 is a close enough approximation  
-  */
-  const EDGE_GROWTH_FACTOR = 17;
+  const [strengths, setStrengths] = useState(() => {
+    const strengthList = props.data.nodes.map((node) => node.strength || 0);
+    strengthList.shift();
+    return strengthList;
+  });
+
+  function updateConnection(index, factor) {
+    setStrengths((prevStrengths) => {
+      const currentStrengths = [...prevStrengths];
+      const newStrength = currentStrengths[index] - factor;
+      currentStrengths[index] = newStrength;
+      return currentStrengths;
+    });
+  }
+
+  const EDGE_GROWTH_FACTOR = 5;
   const networkGraph = useRef();
 
   useEffect(() => {
     const svg = d3
       .select(networkGraph.current)
-      .html("")
       .attr("viewbox", [0, 0, props.dimensions.width, props.dimensions.height]);
 
     /* graph components */
@@ -27,8 +37,11 @@ export default function Graph(props) {
     /* graph forces */
     const simulation = d3
       .forceSimulation(props.data.nodes)
-      .force("charge", d3.forceManyBody().strength(10)) // magnetic force between nodes, positive attracts, default -30
-      .force("collide", d3.forceCollide(20)) // prevent node overlap
+      .force(
+        "charge",
+        d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
+      ) // magnetic force between nodes, positive attracts, default -30
+      .force("collide", d3.forceCollide(100)) // prevent node overlap
       .force(
         "center",
         d3
@@ -52,13 +65,18 @@ export default function Graph(props) {
         d3
           .forceLink(props.data.links)
           .id((datum) => datum.id)
-          .distance((link) => {
-            // limit how far the nodes can move - CHANGE THE LINK VALUE BASED ON TIME DIFF INSTEAD OF PERSON's ID VALUE
-            // console.log(`${link.target.firstName} ${link.target.days}`);
-            if (30 * EDGE_GROWTH_FACTOR > 500) {
-              return props.dimensions.width / 2; // TOUCH OUTER RADIAL EDGE
+          .distance((link, i) => {
+            console.log(link, i);
+            const edgeLength = strengths[i];
+            if (edgeLength  <= 0) {
+              return 0; // TOUCH OUTER RADIAL EDGE
             }
-            return 30 * EDGE_GROWTH_FACTOR; // MOVE EDGE CLOSER TO RADIAL EDGE
+            else if(edgeLength * EDGE_GROWTH_FACTOR > 500) {
+              return 500;
+            }
+
+              
+            return edgeLength; // MOVE EDGE CLOSER TO RADIAL EDGE
           })
       )
       // .alpha(0.9) // will decay until reaches default break point of 0.001
@@ -71,21 +89,31 @@ export default function Graph(props) {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([1, 10])
+      .scaleExtent([1, 3])
       .on("zoom", () => {
         const zoomState = zoomTransform(svg.node());
         links.attr("transform", zoomState);
         nodes.attr("transform", zoomState);
         text.attr("transform", zoomState);
-        console.log(zoomState);
       });
 
     svg.call(zoom);
-  }, [props.data.nodes.length]);
+  }, [props.data.nodes, strengths]);
 
   return (
-    <div className="svg-container">
-      <svg className="graph" ref={networkGraph}></svg>
+    <div>
+      {props.selectedPerson && (
+        <FriendSlide
+          friends={props.friends}
+          friend={props.selectedPerson}
+          rootUserId={props.rootId}
+          deleteHandler={props.deleteFriend}
+          updateConnection={updateConnection}
+        />
+      )}
+      <div className="svg-container">
+        <svg className="graph" ref={networkGraph}></svg>
+      </div>
     </div>
   );
 }

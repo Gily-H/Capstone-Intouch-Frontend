@@ -1,13 +1,9 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React from "react"
+import {Link} from "react-router-dom"
+import { animated,useSpring } from "react-spring"
 import '../styles/navbar2.css'
-import Login from './Login'
-import {animated, useSpring} from "react-spring"
 
-
-
-export default function Navbar(props){
-
+export default function navBarSignedIn(){
     const effs = useSpring({from: {opacity: 0, marginTop: -200},to: {opacity: 1, marginTop: 0}, config:{duration: 500}})
 
     return(
@@ -18,7 +14,7 @@ export default function Navbar(props){
             <div className="nav-header">
                 {/* <img src={logo} className="bank-logo"/> */}
                 {/* <h1 className="nav-title">In-Touch</h1> */}
-                <Link to={props.user? "/home":"/"} className="nav-link">Home</Link>
+                <Link to="/" className="nav-link">Home</Link>
             </div>
 
             <div className="nav-links">
