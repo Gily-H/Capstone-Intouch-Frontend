@@ -10,7 +10,7 @@ import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
 import AddFriendNode from "./components/AddFriendNode";
-import { rootUser, friends } from "./data";
+import { rootUser } from "./data";
 
 function App() {
   const CANVAS_DIMENSIONS = {
@@ -19,7 +19,7 @@ function App() {
   };
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
-    root: {}, // Will use google id
+    rootUser: rootUser, // Will use google id
     friends: [],
   });
   const [graphData, setGraphData] = useState({
@@ -31,7 +31,14 @@ function App() {
   /* data fetching  */
 
   async function fetchPeopleData() {
-    /* MISSING FETCH REQUESTS */
+    const friends = await axios.get(
+      "https://crud-intouch-backend.herokuapp.com/api/friends/"
+    );
+
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      friends: friends.data,
+    }));
 
     const rootNode = {
       id: rootUser.id,
@@ -46,7 +53,7 @@ function App() {
 
     // create nodes for all friends
     const friendIds = friends.data.map((friend) => ({
-      id: friend.id,
+      id: friend.friendId,
       firstName: friend.firstName,
       lastName: friend.lastName,
       phone: friend.phone,
@@ -58,7 +65,7 @@ function App() {
 
     const friendLinks = friends.data.map((friend) => ({
       source: rootUser.id,
-      target: friend.id,
+      target: friend.friendId,
       /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
     }));
 
@@ -109,6 +116,25 @@ function App() {
     selectedPerson && setselectedPerson((prevSelectedPerson) => "");
   }
 
+  function updateFriendConnection(friendId) {
+    console.log(peopleData.friends);
+    console.log("here");
+    const updatedList = peopleData.friends.map((friend) => {
+      const newStrength = friend.strength - 20;
+      return friendId === friend.id
+        ? {
+            ...friend,
+            strength: newStrength < 0 ? 0 : newStrength,
+          }
+        : friend;
+    });
+
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      friends: updatedList,
+    }));
+  }
+
   /* display section  */
 
   const displayGraph = isLoading ? (
@@ -116,6 +142,7 @@ function App() {
   ) : (
     <Graph
       data={graphData}
+      people={peopleData}
       retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
       selectedPerson={selectedPerson}

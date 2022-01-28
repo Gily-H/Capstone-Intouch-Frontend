@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
+import axios from "axios";
 
 export default function AddFriendNode(props) {
   const [formVals, setFormVals] = useState({
-    friend_id: "",
     firstName: "",
     lastName: "",
     phone: "",
@@ -37,10 +37,14 @@ export default function AddFriendNode(props) {
       link: { source: props.rootUserId, target: friendId }, // stays constant
     };
 
+    axios
+      .post("https://crud-intouch-backend.herokuapp.com/api/friends", newData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
     props.addData(newData);
 
     setFormVals((prevFormVals) => ({
-      friend_id: "",
       firstName: "",
       lastName: "",
       phone: "",

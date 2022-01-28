@@ -12,9 +12,9 @@ export default function Graph(props) {
     Avoiding using floating point -> 17 is a close enough approximation  
   */
 
-  const EDGE_GROWTH_FACTOR = 17;
+  const EDGE_GROWTH_FACTOR = 5;
   const networkGraph = useRef();
-
+  console.log(props.data);
   useEffect(() => {
     const svg = d3
       .select(networkGraph.current)
@@ -29,7 +29,10 @@ export default function Graph(props) {
     /* graph forces */
     const simulation = d3
       .forceSimulation(props.data.nodes)
-      .force("charge", d3.forceManyBody().strength(10)) // magnetic force between nodes, positive attracts, default -30
+      .force(
+        "charge",
+        d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
+      ) // magnetic force between nodes, positive attracts, default -30
       .force("collide", d3.forceCollide(20)) // prevent node overlap
       .force(
         "center",
@@ -54,13 +57,13 @@ export default function Graph(props) {
         d3
           .forceLink(props.data.links)
           .id((datum) => datum.id)
-          .distance((link) => {
-            // limit how far the nodes can move - CHANGE THE LINK VALUE BASED ON TIME DIFF INSTEAD OF PERSON's ID VALUE
-            // console.log(`${link.target.firstName} ${link.target.days}`);
-            if (30 * EDGE_GROWTH_FACTOR > 500) {
+          .distance((link, i, nodes) => {
+            console.log(link.target.strength);
+            const edgeLength = link.target.strength;
+            if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
               return props.dimensions.width / 2; // TOUCH OUTER RADIAL EDGE
             }
-            return 30 * EDGE_GROWTH_FACTOR; // MOVE EDGE CLOSER TO RADIAL EDGE
+            return edgeLength * EDGE_GROWTH_FACTOR; // MOVE EDGE CLOSER TO RADIAL EDGE
           })
       )
       // .alpha(0.9) // will decay until reaches default break point of 0.001
@@ -82,7 +85,7 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes.length]);
+  }, [props.data.nodes, props.people]);
 
   return (
     <div>
