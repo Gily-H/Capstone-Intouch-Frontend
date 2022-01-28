@@ -3,7 +3,7 @@ import axios from "axios";
 import Graph from "./components/d3/Graph";
 import AddFriendNode from "./components/AddFriendNode";
 import FriendSlide from "./components/FriendSlide";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import "./styles/App.css";
 import About from "./components/About";
 import Login from "./components/Login";
@@ -182,16 +182,18 @@ function App() {
   function setUserData(data){
     setUser(data)
   }
-  
 
+  
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage user={user}/>} />
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<HomePage user={user}/>} />
-        <Route path="/profile/:id" element={user && <ProfilePage {...peopleData} />} />
+        <Route path="/profile/:id" element={<ProfilePage {...peopleData} user={user}/>} />
+       
+        
         {/* <Route path="/profile" element={<Login userData={setUserData}/>}/> */}
         <Route
           path="/userGraph"

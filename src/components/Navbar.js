@@ -6,7 +6,7 @@ import {animated, useSpring} from "react-spring"
 
 
 
-export default function Navbar(){
+export default function Navbar(props){
 
     const effs = useSpring({from: {opacity: 0, marginTop: -200},to: {opacity: 1, marginTop: 0}, config:{duration: 500}})
 
@@ -18,7 +18,7 @@ export default function Navbar(){
             <div className="nav-header">
                 {/* <img src={logo} className="bank-logo"/> */}
                 {/* <h1 className="nav-title">In-Touch</h1> */}
-                <Link to="/home" className="nav-link">Home</Link>
+                <Link to={props.user? "/home":"/"} className="nav-link">Home</Link>
             </div>
 
             <div className="nav-links">

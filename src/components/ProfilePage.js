@@ -4,11 +4,17 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { nanoid } from 'nanoid'
 import './profile.css'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 
 export default function ProfilePage(props){
+
+    const navigate = useNavigate()
+    if(props.user === null){
+        navigate("/login")
+    }
+    console.log(props.user)
     
     const userInitials="JN"
 
@@ -82,7 +88,7 @@ export default function ProfilePage(props){
                         <p className="profile-initials">{userInitials.charAt(0)} {userInitials.charAt(1)}</p>
                     </div>
                     <div className="profile-user-info">
-                        <h1 className="profile-username">John Nelson</h1>
+                        <h1 className="profile-username">{props.user? `${props.user.firstName}`: "Name not Available"}</h1>
                         <p className="profile-phone"> 209 - 563 - 7170</p>
                     </div>
                 </div>

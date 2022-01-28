@@ -1,15 +1,15 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../styles/login.css'
 import Navbar from './Navbar'
 import axios from "axios"
 
-export default function Login(){
+export default function SignUp(){
 
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
-
+	const navigate = useNavigate()
 	
 
 	console.log(userName);
@@ -35,7 +35,7 @@ export default function Login(){
 			}
 		  )
 		  .then((res) => {
-			//navigate("../");
+			navigate("/home");
 	
 			//props.handleSuccessfulLogin(true);
 			console.log("sent request to sign up");
