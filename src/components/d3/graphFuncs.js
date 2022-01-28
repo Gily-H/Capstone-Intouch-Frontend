@@ -6,7 +6,7 @@ export function createNodes(svg, data, eventHandler) {
     .data(data)
     .join("circle")
     .attr("r", 30)
-    .attr("fill", (datum) => randomBackgroundColor(datum.id))
+    .attr("fill", (datum, index) => randomBackgroundColor(index))
     .classed("node", true)
     .on("mousedown", (event, datum) => {
       eventHandler(datum);

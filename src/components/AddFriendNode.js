@@ -22,18 +22,19 @@ export default function AddFriendNode(props) {
 
   function formSubmitHandler(event) {
     event.preventDefault();
+    const friendId = nanoid();
     const newData = {
       node: {
-        friend_id: nanoid(),
-        firstName: formVals.firstName,
-        lastName: formVals.lastName,
+        id: friendId,
+        firstName: formVals.firstName || "?",
+        lastName: formVals.lastName || "?",
         phone: formVals.phone,
         imageUrl: formVals.imageUrl,
-        strength: formVals.strength,
-        lastContact: Date.now(), /* CREATE TIMESTAMP */
+        strength: formVals.strength || 100,
+        lastContact: Date.now() /* CREATE TIMESTAMP */,
         userId: props.userId,
       },
-      link: { source: 0, target: formVals.id }, // stays constant
+      link: { source: props.rootUserId, target: friendId }, // stays constant
     };
 
     props.addData(newData);
@@ -99,13 +100,14 @@ export default function AddFriendNode(props) {
       <label>
         Strength of Relationship:
         <input
-          type="text"
+          type="range"
           min="1"
           max="100"
-          value={formVals.strength}
+          value={formVals.strength || 1}
           name="strength"
           onChange={updateOnChange}
         />
+        <label>{formVals.strength}</label>
       </label>
 
       <button>Add Friend</button>

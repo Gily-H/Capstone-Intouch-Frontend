@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { zoomTransform } from "d3-zoom";
 import { createNodes, createLinks, createNodeText, onTick } from "./graphFuncs";
 import "../../styles/Graph.css";
+import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
   /* 
@@ -10,6 +11,7 @@ export default function Graph(props) {
     graph edge will grow approximately 17 pixels per unit of time that passes
     Avoiding using floating point -> 17 is a close enough approximation  
   */
+
   const EDGE_GROWTH_FACTOR = 17;
   const networkGraph = useRef();
 
@@ -77,15 +79,23 @@ export default function Graph(props) {
         links.attr("transform", zoomState);
         nodes.attr("transform", zoomState);
         text.attr("transform", zoomState);
-        console.log(zoomState);
       });
 
     svg.call(zoom);
   }, [props.data.nodes.length]);
 
   return (
-    <div className="svg-container">
-      <svg className="graph" ref={networkGraph}></svg>
+    <div>
+      {props.selectedPerson && (
+        <FriendSlide
+          friend={props.selectedPerson}
+          rootUserId={props.rootId}
+          deleteHandler={props.deleteFriend}
+        />
+      )}
+      <div className="svg-container">
+        <svg className="graph" ref={networkGraph}></svg>
+      </div>
     </div>
   );
 }
