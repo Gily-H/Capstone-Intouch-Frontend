@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from './Navbar'
 import {useState, useEffect} from 'react'
+import axios from 'axios'
+import { nanoid } from 'nanoid'
 import './profile.css'
 
 
@@ -9,77 +11,65 @@ export default function ProfilePage(props){
     
     const userInitials="JN"
 
-    const [firstName, setFirstName] = useState();
-    const [lastName, setLastName] = useState();
-    const [phoneNum, setPhoneNum] = useState();
-
-	const [redirect, setRedirect] = useState(false)
-
-	console.log(firstName + "" + lastName + "" + phoneNum);
-
-    async function handleSubmit(e){
-        e.preventDefault()
-    //  await axios.post(`INSERT LINK HERE`, {firstName, lastName, phoneNum})
-        setRedirect(true)
+    const friendsData = props.friends;
+    console.log(props.friends)
+    const [formVals, setFormVals] = useState({
+        id: 4,
+        firstName: "",
+        lastName: "",
+        phone: "",
+        imageUrl: "",
+        strength: "",
+        lastContacted: "",
+    });
+    function updateOnChange(event) {
+        setFormVals((prevFormVals) => ({
+          ...prevFormVals,
+          [event.target.name]: event.target.value,
+        }));
+    }
+    const sendData = (newFriendData) => { 
+        axios.post('https://crud-intouch-backend.herokuapp.com/api/friends/', newFriendData)
+        .then((res) => {
+            console.log(res);
+            window.location.reload();
+          })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
-    const [friendData, setFriendData] = useState();
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        
+        const addFriend = {
+                userId: 1, 
+                friendId: JSON.stringify(nanoid()),
+                firstName: formVals.firstName,
+                lastName: formVals.lastName,
+                phone: formVals.phone,
+                strength: 1
+                // interactions: 1 /* DEFAULT FOR NOW */,
+                // imageUrl: formVals.imageUrl,
+                // strength: formVals.strength,
+        };
+        console.log(addFriend);
+        sendData(addFriend);
 
-    useEffect(() => {
-        setFriendData([
-            {
-                firstName: "Andrew",
-                lastName: "Roberts"
-            },
-            {
-                firstName: "Samantha",
-                lastName: "Green"
-            },
-            {
-                firstName: "Brandon",
-                lastName: "Gates"
-            },
-            {
-                firstName: "Andrew",
-                lastName: "Roberts"
-            },
-            {
-                firstName: "Samantha",
-                lastName: "Green"
-            },
-            {
-                firstName: "Brandon",
-                lastName: "Gates"
-            },
-            {
-                firstName: "Brandon",
-                lastName: "Gates"
-            },
-            {
-                firstName: "Andrew",
-                lastName: "Roberts"
-            },
-            {
-                firstName: "Samantha",
-                lastName: "Green"
-            },
-            {
-                firstName: "Brandon",
-                lastName: "Gates"
-            }
-        ]);
-
-    }, [])
-
+        // setFormVals((prevFormVals) => ({
+        //   id: formVals.id + 1,
+        //   firstName: "",
+        //   lastName: "",
+        //   phone: "",
+        //   imageUrl: "",
+        // }));
+      }
 
     return (
         <div>
             <Navbar/>
-            
-            {/* <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="8" cy="6" r="4"/>
-            </svg> */}
+
             <div className="profile-panels">
                 <div className="profile-left-panel">
                     <div className="profile-pic-container">
@@ -98,25 +88,37 @@ export default function ProfilePage(props){
                             <input className="login-input"
                             placeholder="First Name"
                             type="text" 
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            name="firstName"
+                            value={formVals.firstName}
+                            onChange={updateOnChange}
                             />
                         </label>
                         <label className="login-password">
                             <input className="login-input"
                             placeholder="Last Name"
                             type="text" 
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            name="lastName"
+                            value={formVals.lastName}
+                            onChange={updateOnChange}
                             />
                         </label>
                         <label className="phone-input">
                             <input className="login-input"
-                            placeholder="Phone#: XXX-XXX-XXXX"
-                            type="tel" 
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                            value={phoneNum}
-                            onChange={(e) => setPhoneNum(e.target.value)}
+                            placeholder="Phone#:"
+                            type="number" 
+                            name="phone"
+                            // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                            value={formVals.phone}
+                            onChange={updateOnChange}
+                            />
+                        </label>
+                        <label className="login-password">
+                            <input className="login-input"
+                            placeholder="Image URL"
+                            type="text" 
+                            name="imageUrl"
+                            value={formVals.imageUrl}
+                            onChange={updateOnChange}
                             />
                         </label>
                         <input type="submit" value="Add Contact" className="login-btns login-submit-btn add-contact-btn"/>
@@ -124,7 +126,7 @@ export default function ProfilePage(props){
 
                     <div className="contacts-panel-bottom">
                         {
-                            friendData?.map((item, index) =>{
+                            friendsData?.map((item, index) =>{
                                 return(
                                     <div className="contact-card" key={index}>
                                         <img src="https://w7.pngwing.com/pngs/529/816/png-transparent-computer-icons-user-profile-avatar-heroes-monochrome-black-thumbnail.png"/>

@@ -14,6 +14,9 @@ import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
 
 function App() {
+
+
+
   const CANVAS_DIMENSIONS = {
     width: 1000,
     height: 1000,
@@ -115,6 +118,7 @@ function App() {
     if (removeId === 0 /* peopleData.root.id - 1 */) {
       return;
     }
+    
 
     const updatedFriends = peopleData.friends.filter(
       (friend) => friend.id !== removeId

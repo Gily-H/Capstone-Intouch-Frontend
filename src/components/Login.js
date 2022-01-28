@@ -53,10 +53,10 @@ export default function Login(){
 					<img src={google_logo} className="google-logo"/> 
 					<p className="google-text">Continue with Google</p>
 				</button>
-				<p className="sign-up-msg"> 
-					Dont have an account? <a href="/signUp">Sign Up</a>
-				</p>
 			</form>
+			<p className="sign-up-msg"> 
+					Dont have an account? <a href="/signUp">Sign Up</a>
+			</p>
 			<hr className="login-footer-line"/>
 			<p className="login-footer-msg"> 
 			By continuing in you agree to the in-Touch's Terms of Service, Privacy Policy
