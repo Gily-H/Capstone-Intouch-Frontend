@@ -1,13 +1,10 @@
 import React, { useState } from "react"
 import { animated, useSpring, config } from "react-spring"
-import Navbar from "./Navbar"
-import NewBlackCircle from "../images/NewBlackCircle.png"
-import "../styles/homePage.css"
-import blueCircle from "../images/blueCircle.png"
-import "../styles/homePage.css"
 import { Link } from "react-router-dom"
-import Bubbles from "./Bubbles"
-import { useEffect } from "react/cjs/react.development"
+import NewBlackCircle from "../../images/NewBlackCircle.png"
+import blueCircle from "../../images/blueCircle.png"
+import Bubbles from "../Bubbles"
+import "../../styles/homePage.css"
 
 
 export default function LandingPage(props) {
@@ -20,7 +17,6 @@ export default function LandingPage(props) {
 
     return (
         <div id="home">
-            <Navbar user={props.user}/>
             <animated.div style={effs} className="top-bubble">
                 <Link to="/userGraph"><Bubbles image={blueCircle} label={"Connects"} startOp={.8} /></Link>
             </animated.div>
