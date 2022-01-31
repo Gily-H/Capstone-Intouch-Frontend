@@ -89,12 +89,22 @@ function App() {
   }
 
   function updateConnectionStrength(friendId, factor) {
-    const updatedStrengths = peopleData.relations.map((friend) => {
-      return friendId === friend.friendId ? { ...friend, strength: friend.strength - factor } : friend;
-    });
+    const updatedFriend = peopleData.relations.find((friend) => friend.friendId === friendId);
+    const newStrength = updatedFriend.strength - factor;
+    if (newStrength >= 100) {
+      updatedFriend.strength = 100;
+    } else if (newStrength <= 0) {
+      updatedFriend.strength = 1;
+    } else {
+      updatedFriend.strength = newStrength;
+    }
+
+    const updatedStrengths = peopleData.relations.map((friend) =>
+      friendId === friend.friendId ? updatedFriend : friend
+    );
 
     axios
-      .patch(`http://localhost:5000/api/friends/${friendId}`)
+      .patch(`http://localhost:5000/api/friends/${friendId}`, updatedFriend)
       .then((res) => {
         setPeopleDataRelations(updatedStrengths);
       })

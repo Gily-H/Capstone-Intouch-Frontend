@@ -6,17 +6,20 @@ import "../../styles/Graph.css";
 import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
-  const [strengths, setStrengths] = useState(() => {
-    const strengthList = props.data.nodes.map((node) => node.strength || 0);
-    strengthList.shift();
-    return strengthList;
-  });
+  const [strengths, setStrengths] = useState(() => props.friends.map((friend) => friend.strength));
 
+  // coupled with update function in App component
   function updateConnection(index, factor) {
     setStrengths((prevStrengths) => {
       const currentStrengths = [...prevStrengths];
       const newStrength = currentStrengths[index] - factor;
-      currentStrengths[index] = newStrength;
+      if (newStrength >= 100) {
+        currentStrengths[index] = 100;
+      } else if (newStrength <= 0) {
+        currentStrengths[index] = 1;
+      } else {
+        currentStrengths[index] = newStrength;
+      }
       return currentStrengths;
     });
   }
@@ -61,8 +64,8 @@ export default function Graph(props) {
           .forceLink(props.data.links)
           .id((datum) => datum.id)
           .distance((link, i) => {
-            // console.log(link.target);
-            const edgeLength = link.target.strength;
+            console.log(strengths[i]);
+            const edgeLength = strengths[i];
             if (edgeLength <= 0) {
               return 0; // prevent node from moving past central node
             } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
@@ -91,17 +94,17 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes]);
+  }, [props.data.nodes, strengths]);
 
   return (
     <div>
       {props.selectedPerson && (
         <FriendSlide
-          friends={props.friends}
           friend={props.selectedPerson}
           rootUserId={props.rootUserId}
           deleteHandler={props.deleteFriend}
-          updateConnection={props.connectionStrengthHandler}
+          updateStrengthConnection={props.connectionStrengthHandler}
+          connectionHandler={updateConnection}
         />
       )}
       <div className="svg-container">
