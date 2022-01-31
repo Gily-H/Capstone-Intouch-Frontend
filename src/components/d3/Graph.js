@@ -6,27 +6,10 @@ import "../../styles/Graph.css";
 import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
-  const [strengths, setStrengths] = useState(() => props.friends.map((friend) => friend.strength));
-
-  // coupled with update function in App component
-  function updateConnection(index, factor) {
-    setStrengths((prevStrengths) => {
-      const currentStrengths = [...prevStrengths];
-      const newStrength = currentStrengths[index] - factor;
-      if (newStrength >= 100) {
-        currentStrengths[index] = 100;
-      } else if (newStrength <= 0) {
-        currentStrengths[index] = 1;
-      } else {
-        currentStrengths[index] = newStrength;
-      }
-      return currentStrengths;
-    });
-  }
-
   const EDGE_GROWTH_FACTOR = 5;
   const networkGraph = useRef();
 
+  // console.log(props.strengthData);
   useEffect(() => {
     const svg = d3
       .select(networkGraph.current)
@@ -64,8 +47,8 @@ export default function Graph(props) {
           .forceLink(props.data.links)
           .id((datum) => datum.id)
           .distance((link, i) => {
-            console.log(strengths[i]);
-            const edgeLength = strengths[i];
+            console.log(props.strengthData[i]);
+            const edgeLength = props.strengthData[i];
             if (edgeLength <= 0) {
               return 0; // prevent node from moving past central node
             } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
@@ -94,7 +77,7 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes, strengths]);
+  }, [props.data.nodes, props.strengthData]);
 
   return (
     <div>
@@ -104,7 +87,6 @@ export default function Graph(props) {
           rootUserId={props.rootUserId}
           deleteHandler={props.deleteFriend}
           updateStrengthConnection={props.connectionStrengthHandler}
-          connectionHandler={updateConnection}
         />
       )}
       <div className="svg-container">

@@ -18,6 +18,7 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData, setPeopleDataRelations] = usePeople();
   const [graphData, addGraphData, addSingleGraphData] = useGraph();
+  const [strengths, setStrengths] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState("");
   const [user, setUser] = useState(null);
 
@@ -60,6 +61,7 @@ function App() {
       friends: friendsData,
     });
     setUser(userData); // set user as person retrieved from database FOR TESTING
+    setStrengths([...friendsData.map((friend) => friend.strength)]);
     const rootNode = createRootData(userData, CANVAS_DIMENSIONS);
     const friendIds = createNodesData(friendsData, userData.id);
     const friendLinks = createNodeLinks(friendsData, userData.id);
@@ -88,7 +90,7 @@ function App() {
     setSelectedPerson(selected);
   }
 
-  function updateConnectionStrength(friendId, factor) {
+  function updateConnectionStrength(friendId, factor) { // maybe use index instead of friendId
     const updatedFriend = peopleData.relations.find((friend) => friend.friendId === friendId);
     const newStrength = updatedFriend.strength - factor;
     if (newStrength >= 100) {
@@ -99,14 +101,16 @@ function App() {
       updatedFriend.strength = newStrength;
     }
 
-    const updatedStrengths = peopleData.relations.map((friend) =>
+    const updatedFriends = peopleData.relations.map((friend) =>
       friendId === friend.friendId ? updatedFriend : friend
     );
+    const updatedStrengths = updatedFriends.map((friend) => friend.strength);
 
     axios
       .patch(`http://localhost:5000/api/friends/${friendId}`, updatedFriend)
       .then((res) => {
-        setPeopleDataRelations(updatedStrengths);
+        setPeopleDataRelations(updatedFriends);
+        setStrengths(updatedStrengths);
       })
       .catch((err) => console.log(err));
   }
@@ -140,6 +144,7 @@ function App() {
   ) : (
     <Graph
       data={graphData}
+      strengthData={strengths}
       friends={peopleData.relations}
       retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
