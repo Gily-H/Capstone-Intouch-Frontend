@@ -12,7 +12,7 @@ export function createNodes(svg, data, eventHandler) {
       eventHandler(datum);
     });
 
-  nodes.transition().duration(2000).attr("r", 35);
+  nodes.transition().duration(1000).attr("r", 35);
   return nodes;
 }
 
@@ -25,7 +25,7 @@ export function createLinks(svg, data) {
     .classed("link", true)
     .on("click", () => alert("clicked link"));
 
-  links.transition().duration(5000).attr("stroke-width", "1.5px");
+  links.transition().duration(2000).attr("stroke-width", "1.5px");
   return links;
 }
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { zoomTransform } from "d3-zoom";
 import { createNodes, createLinks, createNodeText, onTick } from "./graphFuncs";
+import { FriendSlide } from "..";
 import "../../styles/Graph.css";
-import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
   const EDGE_GROWTH_FACTOR = 5;
@@ -27,9 +27,26 @@ export default function Graph(props) {
         "charge",
         d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
       ) // magnetic force between nodes, positive attracts, default -30
-      .force("collide", d3.forceCollide(100)) // prevent node overlap
+      .force("collide", d3.forceCollide(80)) // prevent node overlap
       .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(1)) // force exerted from center point - evenly spreads distance between nodes
 
+      .force(
+        "links",
+        d3
+          .forceLink(props.data.links)
+          .id((datum) => datum.id)
+          .distance((link, i) => {
+            console.log(link.target);
+            const edgeLength = props.strengthData[i];
+            if (edgeLength <= 0) {
+              return 1; // prevent node from moving past central node
+            } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
+              return 500; // limit how far node can move
+            }
+
+            return edgeLength * EDGE_GROWTH_FACTOR;
+          })
+      )
       // creates a circle that applies a pulling force to all nodes
       // .force(
       //   "enclosure",
@@ -41,23 +58,7 @@ export default function Graph(props) {
       //     )
       //     .strength(0.05) // maybe update this value to move nodes closer
       // )
-      .force(
-        "links",
-        d3
-          .forceLink(props.data.links)
-          .id((datum) => datum.id)
-          .distance((link, i) => {
-            console.log(props.strengthData[i]);
-            const edgeLength = props.strengthData[i];
-            if (edgeLength <= 0) {
-              return 0; // prevent node from moving past central node
-            } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
-              return 500; // limit how far node can move
-            }
 
-            return edgeLength;
-          })
-      )
       // .alpha(0.9) // will decay until reaches default break point of 0.001
       // .alphaMin(0.01) // without this -> infinite loop
       // .alphaDecay(0.05) // rate of decay
@@ -80,7 +81,7 @@ export default function Graph(props) {
   }, [props.data.nodes, props.strengthData]);
 
   return (
-    <div>
+    <div className="svg-container">
       {props.selectedPerson && (
         <FriendSlide
           friend={props.selectedPerson}
@@ -89,9 +90,7 @@ export default function Graph(props) {
           updateStrengthConnection={props.connectionStrengthHandler}
         />
       )}
-      <div className="svg-container">
-        <svg className="graph" ref={networkGraph}></svg>
-      </div>
+      <svg className="graph" ref={networkGraph}></svg>
     </div>
   );
 }

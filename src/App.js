@@ -12,8 +12,8 @@ import "./styles/App.css";
 
 function App() {
   const CANVAS_DIMENSIONS = {
-    width: 1000,
-    height: 1000,
+    width: 1500,
+    height:1500,
   };
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData, setPeopleDataRelations] = usePeople();
