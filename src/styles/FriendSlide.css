@@ -1,0 +1,95 @@
+.friend-slide {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 420px;
+  height: 100%;
+  padding: 1.5rem;
+  gap: 1.3rem;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.friend-img {
+  margin-top: 20%;
+  max-height: 400px;
+  max-width: 330px;
+  border-radius: 50%;
+}
+
+.friend-name {
+  margin-top: 2rem;
+  font-size: 3.4rem;
+}
+
+.friend-hr-line {
+  border: 1px solid rgba(179, 179, 179, 0.356);
+  max-width: 30%;
+  margin: 1rem auto;
+}
+
+.friend-phone {
+  font-size: 1.4rem;
+}
+
+.friend-last-contact {
+  font-size: 1.2rem;
+}
+
+.friend-contact-buttons {
+  margin-top: 1rem;
+}
+
+.friend-contact {
+  color: white;
+  background-color: blue;
+  padding: 1.2rem 1.2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.message-btn {
+  margin-right: 1.2rem;
+}
+
+.delete-btn {
+  margin-top: auto;
+}
+
+.delete-btn button {
+  background-color: red;
+  color: white;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-style: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.friend-slide-footer {
+  margin: 1rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 1.6rem;
+}
+
+.fa-home {
+  margin-right: 1rem;
+}
+
+.friend-slide-home-btn {
+  color: white;
+  margin-right: 1rem;
+}
+
+.friend-slide-add-friend-btn {
+  color: white;
+}
