@@ -9,53 +9,61 @@ import { DEFAULT_PROFILE_IMAGE, DEFAULT_PERSON_IMAGE } from "../../resources/pro
 import "../../styles/profile.css";
 
 export default function ProfilePage(props) {
+  const navigate = useNavigate();
+  if (props.user === null) {
+    navigate("/login");
+  }
+
   const [personInfo, handleChange, clearForm] = useForm({
-    friendId: "",
     firstName: "",
     lastName: "",
     phone: "",
     imageUrl: "",
     strength: "",
-    userId: "",
   });
-  const navigate = useNavigate();
 
-  if (props.user === null) {
-    navigate("/login");
-  }
-
-  const id = useParams();
-  const userInitials = "JN";
-  console.log(props.user);
-  console.log(props.nonRoot);
+  // const id = useParams();
+  // console.log(props.user);
+  // console.log(props.friends);
 
   function handleSubmit(event) {
     event.preventDefault();
-
+    const id = nanoid();
     const addPerson = {
       ...personInfo,
-      userId: 1,
-      friendId: nanoid(),
+      strength: personInfo.strength || 100,
+      friendId: id,
+      lastContact: Date.now(),
+      userId: props.user.id,
     };
 
-    console.log(addPerson);
+    const addPersonNode = {
+      ...personInfo,
+      strength: personInfo.strength || 100,
+      id: id, // need field this to update the graph in real time without errors
+      lastContact: Date.now(),
+      userId: props.user.id,
+    };
+
+    // console.log(addPerson);
 
     axios
-      .post("https://crud-intouch-backend.herokuapp.com/api/friends/", addPerson)
-      .then((res) => console.log(res))
+      .post("http://localhost:5000/api/friends", addPerson)
+      // .post("https://crud-intouch-backend.herokuapp.com/api/friends/", addPerson)
+      .then((res) => props.addRelationHandler(addPerson, addPersonNode))
       .catch((error) => console.log(error));
 
     clearForm();
   }
 
   /* display the friend cards  */
-  const friendsData = props.nonRoot;
-  const friendCards = friendsData?.map((item, index) => {
+  const friendsData = props.friends;
+  const friendCards = friendsData?.map((friend, index) => {
     return (
       <div className="contact-card" key={index}>
-        <img src={DEFAULT_PERSON_IMAGE} alt="default-person-img" />
+        <img src={friend.imageUrl || DEFAULT_PERSON_IMAGE} alt="default-person-img" />
         <p className="contact-name">
-          {item.firstName} {item.lastName}
+          {friend.firstName} {friend.lastName}
         </p>
       </div>
     );
@@ -65,10 +73,14 @@ export default function ProfilePage(props) {
   const profileCard = (
     <div className="profile-left-panel">
       <div className="profile-pic-container">
-        <img className="profile-pic" src={DEFAULT_PROFILE_IMAGE} alt="default-profile-img" />
-        <p className="profile-initials">
-          {userInitials.charAt(0)} {userInitials.charAt(1)}
-        </p>
+        <img className="profile-pic" src={props.user.imageUrl || DEFAULT_PROFILE_IMAGE} alt="default-profile-img" />
+        {props.user.imageUrl ? (
+          ""
+        ) : (
+          <p className="profile-initials">
+            {props.user.firstName[0]} {props.user.lastName[0]}
+          </p>
+        )}
       </div>
 
       <div className="profile-user-info">

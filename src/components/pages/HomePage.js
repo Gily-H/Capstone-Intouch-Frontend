@@ -18,8 +18,8 @@ export default function HomePage(props) {
   //     }
   //     getSomething()
   // })
-  console.log(props.user ? props.user : "");
-  console.log(props.user);
+  // console.log(props.user ? props.user : "");
+  // console.log(props.user);
 
   return (
     <div id="home">

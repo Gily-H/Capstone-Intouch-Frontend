@@ -42,12 +42,7 @@ export default function Graph(props) {
         d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
       ) // magnetic force between nodes, positive attracts, default -30
       .force("collide", d3.forceCollide(100)) // prevent node overlap
-      .force(
-        "center",
-        d3
-          .forceCenter(props.dimensions.width / 2, props.dimensions.height / 2)
-          .strength(1)
-      ) // force exerted from center point - evenly spreads distance between nodes
+      .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(1)) // force exerted from center point - evenly spreads distance between nodes
 
       // creates a circle that applies a pulling force to all nodes
       // .force(
@@ -66,17 +61,15 @@ export default function Graph(props) {
           .forceLink(props.data.links)
           .id((datum) => datum.id)
           .distance((link, i) => {
-            console.log(link, i);
-            const edgeLength = strengths[i];
-            if (edgeLength  <= 0) {
-              return 0; // TOUCH OUTER RADIAL EDGE
-            }
-            else if(edgeLength * EDGE_GROWTH_FACTOR > 500) {
-              return 500;
+            // console.log(link.target);
+            const edgeLength = link.target.strength;
+            if (edgeLength <= 0) {
+              return 0; // prevent node from moving past central node
+            } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
+              return 500; // limit how far node can move
             }
 
-              
-            return edgeLength; // MOVE EDGE CLOSER TO RADIAL EDGE
+            return edgeLength;
           })
       )
       // .alpha(0.9) // will decay until reaches default break point of 0.001
@@ -98,7 +91,7 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes, strengths]);
+  }, [props.data.nodes]);
 
   return (
     <div>
@@ -106,9 +99,9 @@ export default function Graph(props) {
         <FriendSlide
           friends={props.friends}
           friend={props.selectedPerson}
-          rootUserId={props.rootId}
+          rootUserId={props.rootUserId}
           deleteHandler={props.deleteFriend}
-          updateConnection={updateConnection}
+          updateConnection={props.connectionStrengthHandler}
         />
       )}
       <div className="svg-container">

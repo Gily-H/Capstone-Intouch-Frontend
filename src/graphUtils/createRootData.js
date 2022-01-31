@@ -4,6 +4,7 @@ export default function createRootData(rootData, dimensions) {
     firstName: rootData.firstName,
     lastName: rootData.lastName,
     imageUrl: rootData.imageUrl,
+    googleId: rootData.googleId,
     fx: dimensions.width / 2,
     fy: dimensions.width / 2,
   };

@@ -6,7 +6,7 @@ import axios from "axios";
 import Graph from "./components/d3/Graph";
 import { LandingPage, HomePage, SignUp, Login, ProfilePage, About } from "./components/pages";
 import { Navbar } from "./components";
-import { rootUser } from "./data";
+// import { rootUser } from "./data";
 import { createNodeLinks, createNodesData, createRootData } from "./graphUtils";
 import "./styles/App.css";
 
@@ -16,8 +16,8 @@ function App() {
     height: 1000,
   };
   const [isLoading, setLoading] = useState(true);
-  const [peopleData, setPeopleData] = usePeople(rootUser.id);
-  const [graphData, setGraphData] = useGraph();
+  const [peopleData, setPeopleData, setPeopleDataRelations] = usePeople();
+  const [graphData, addGraphData, addSingleGraphData] = useGraph();
   const [selectedPerson, setSelectedPerson] = useState("");
   const [user, setUser] = useState(null);
 
@@ -49,12 +49,21 @@ function App() {
   /* data fetching  */
 
   async function fetchPeopleData() {
-    const friends = await axios.get("https://crud-intouch-backend.herokuapp.com/api/friends/");
-    setPeopleData(friends.data);
-    const rootNode = createRootData(rootUser, CANVAS_DIMENSIONS);
-    const friendIds = createNodesData(friends.data, rootUser.id);
-    const friendLinks = createNodeLinks(friends.data, rootUser.id);
-    setGraphData({
+    console.log("I am in the app component");
+    // const friends = await axios.get("https://crud-intouch-backend.herokuapp.com/api/friends/");
+    const rootUser = await axios.get(`http://localhost:5000/api/users/${1}`);
+    const friends = await axios.get("http://localhost:5000/api/friends");
+    const userData = rootUser.data;
+    const friendsData = friends.data;
+    setPeopleData({
+      user: userData,
+      friends: friendsData,
+    });
+    setUser(userData); // set user as person retrieved from database FOR TESTING
+    const rootNode = createRootData(userData, CANVAS_DIMENSIONS);
+    const friendIds = createNodesData(friendsData, userData.id);
+    const friendLinks = createNodeLinks(friendsData, userData.id);
+    addGraphData({
       nodes: [rootNode, ...friendIds], // keep the root user in the first position
       links: [...friendLinks],
     });
@@ -62,49 +71,74 @@ function App() {
   }
   useEffect(() => fetchPeopleData(), []);
 
-  /* display section  */
+  /* =========================== state handlers =============================== */
 
-  const displayGraph = isLoading ? (
-    <p>Loading</p>
-  ) : (
-    <Graph
-      data={graphData}
-      friends={peopleData.nonRoot}
-      retrieveHandler={retrieveSelectedPerson}
-      dimensions={CANVAS_DIMENSIONS}
-      selectedPerson={selectedPerson}
-      rootUserId={rootUser.id}
-      deleteFriend={deleteFriend}
-    />
-  );
-
-  /* state handlers */
-
-  // function addGraphData(data) {
-  //   setGraphData(data);
-  // }
+  // updates local state, no need to refresh profile page to see changes
+  function addRelationHandler(relationData, nodeData) {
+    /* Come back to this and review */
+    setPeopleDataRelations([...peopleData.relations, relationData]);
+    addSingleGraphData({
+      nodes: nodeData, // needs to have id key field (NOT friendId)
+      links: { source: relationData.userId, target: relationData.friendId },
+    });
+    setSelectedPerson(relationData);
+  }
 
   function retrieveSelectedPerson(selected) {
     setSelectedPerson(selected);
   }
 
-  function deleteFriend(removeId) {
-    if (removeId !== rootUser.id) {
-      const updatedFriends = peopleData.nonRoot.filter((friend) => friend.friend_id !== removeId);
-      const updatedGraphData = {
-        nodes: graphData.nodes.filter((node) => node.id !== removeId),
-        links: graphData.links.filter((link) => link.target.id !== removeId),
-      };
+  function updateConnectionStrength(friendId, factor) {
+    const updatedStrengths = peopleData.relations.map((friend) => {
+      return friendId === friend.friendId ? { ...friend, strength: friend.strength - factor } : friend;
+    });
 
-      setPeopleData(updatedFriends);
-      setGraphData((prevGraphData) => updatedGraphData);
-      selectedPerson && setSelectedPerson((prevSelectedPerson) => "");
+    axios
+      .patch(`http://localhost:5000/api/friends/${friendId}`)
+      .then((res) => {
+        setPeopleDataRelations(updatedStrengths);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function deleteFriend(removeId) {
+    if (removeId !== peopleData.root.id) {
+      axios
+        .delete(`http://localhost:5000/api/friends/${removeId}`)
+        .then((res) => {
+          const updatedFriends = peopleData.relations.filter((friend) => friend.friendId !== removeId);
+          const updatedGraphData = {
+            nodes: graphData.nodes.filter((node) => node.id !== removeId),
+            links: graphData.links.filter((link) => link.target.id !== removeId),
+          };
+
+          setPeopleDataRelations(updatedFriends);
+          addGraphData(updatedGraphData);
+          selectedPerson && setSelectedPerson((prevSelectedPerson) => "");
+        })
+        .catch((err) => console.log(err));
     }
   }
 
   function setUserData(data) {
     setUser(data);
   }
+
+  /* display Graph  */
+  const displayGraph = isLoading ? (
+    <p>Loading</p>
+  ) : (
+    <Graph
+      data={graphData}
+      friends={peopleData.relations}
+      retrieveHandler={retrieveSelectedPerson}
+      dimensions={CANVAS_DIMENSIONS}
+      selectedPerson={selectedPerson}
+      rootUserId={user.id}
+      deleteFriend={deleteFriend}
+      connectionStrengthHandler={updateConnectionStrength}
+    />
+  );
 
   return (
     <Router>
@@ -114,7 +148,10 @@ function App() {
           <Route path="home" element={<HomePage user={user} />} />
           <Route path="login" element={<Login userData={setUserData} />} />
           <Route path="signUp" element={<SignUp />} />
-          <Route path="profile/:id" element={<ProfilePage {...peopleData} user={user} />} />
+          <Route
+            path="profile/:id"
+            element={<ProfilePage friends={peopleData.relations} user={user} addRelationHandler={addRelationHandler} />}
+          />
           <Route path="about" element={<About />} />
           <Route index element={<LandingPage user={user} />} />
         </Route>

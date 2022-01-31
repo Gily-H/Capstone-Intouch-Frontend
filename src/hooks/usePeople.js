@@ -1,17 +1,24 @@
 import { useState } from "react";
 
-export default function usePeople(rootUserId) {
+export default function usePeople() {
   const [peopleData, setPeopleData] = useState({
-    root: rootUserId,
-    nonRoot: [],
+    root: {},
+    relations: [],
   });
 
   function changePeople(people) {
     setPeopleData((prevPeopleData) => ({
-      ...prevPeopleData,
-      nonRoot: people,
+      root: people.user,
+      relations: people.friends,
     }));
   }
 
-  return [peopleData, changePeople];
+  function changeRelations(newRelation) {
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      relations: [...newRelation],
+    }));
+  }
+
+  return [peopleData, changePeople, changeRelations];
 }

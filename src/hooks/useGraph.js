@@ -8,10 +8,17 @@ export default function useGraph() {
 
   function addData(data) {
     setGraphData((prevGraphData) => ({
-      nodes: [...prevGraphData.nodes, ...data.nodes],
-      links: [...prevGraphData.links, ...data.links],
+      nodes: data.nodes,
+      links: data.links,
     }));
   }
 
-  return [graphData, addData];
+  function addSingleData(data) {
+    setGraphData((prevGraphData) => ({
+      nodes: [...prevGraphData.nodes, data.nodes],
+      links: [...prevGraphData.links, data.links],
+    }));
+  }
+
+  return [graphData, addData, addSingleData];
 }
