@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { animated, useSpring } from "react-spring"
 import Navbar from "./Navbar"
 import Bubbles from "./Bubbles"
@@ -12,7 +12,7 @@ import axios from "axios"
 
 export default function HomePage(props) {
 
-    
+
 
     // useEffect(() => {
     //     async function getSomething(){
@@ -25,24 +25,26 @@ export default function HomePage(props) {
     //     }
     //     getSomething()
     // })
-    console.log(props.user? props.user: "")
+    console.log(props.user ? props.user : "")
     console.log(props.user)
 
     return (
 
         <div id="home">
             <Navbar />
-            <div className="top-bubble">
-                <Link to="/userGraph"><Bubbles image={blueCircle} label={"Connects"} startOp={.5} /></Link>
-            </div>
-            <div className="center-bubble">
-                <Bubbles label={"In-Touch"} image={NewBlackCircle} startOp={1} />
-            </div>
-            <div className="bottom-bubbles">
-                <div id="left-btm-bubble">
-                    <Link to={props.user? `/profile/${props.user.id}`:"/login"}><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.5} /></Link>
+            <div className="home-bubbles">
+                <div className="top-bubble">
+                    <Link to="/userGraph"><Bubbles image={blueCircle} label={"Connects"} startOp={.5} /></Link>
                 </div>
-                <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.5} />
+                <div className="center-bubble">
+                    <Bubbles label={"In-Touch"} image={NewBlackCircle} startOp={1} />
+                </div>
+                <div className="bottom-bubbles">
+                    <div id="left-btm-bubble">
+                        <Link to={props.user ? `/profile/${props.user.id}` : "/login"}><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.5} /></Link>
+                    </div>
+                    <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.5} />
+                </div>
             </div>
         </div>
     )

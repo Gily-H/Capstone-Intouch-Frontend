@@ -4,39 +4,35 @@ import Navbar from "./Navbar"
 import NewBlackCircle from "../images/NewBlackCircle.png"
 import "../styles/homePage.css"
 import blueCircle from "../images/blueCircle.png"
-import "../styles/homePage.css"
-import { Link } from "react-router-dom"
+import "../styles/landingPage.css"
+import { Link, useNavigate } from "react-router-dom"
 import Bubbles from "./Bubbles"
 import { useEffect } from "react/cjs/react.development"
 
 
 export default function LandingPage(props) {
     const [open, toggle] = useState(false)
-    const effs = useSpring({ from: { transform: "translateY(200%)" }, to: { transform: open ? "translateY(0%)" : "translateY(200%)", opacity: open ? 1 : 0 } , config: config.wobbly})
-    const leftEffs = useSpring({ from: { transform: "translate(100%,-90%)" }, to: { transform: open ? "translate(0%,0%)" : "translate(100%,-90%)", opacity: open ? 1 : 0 } , config: config.wobbly})
-    const rightEffs = useSpring({ from: { transform: "translate(-100%,-90%)"}, to: { transform: open ? "translate(0%,0%)" : "translate(-100%,-90%)", opacity: open ? 1 : 0 }, config: config.wobbly})
-    const barEffs = useSpring({from: {transform: "translateY(0%)",opacity: open? 0:1}, to: {transform: "translateY(-300%)",opacity: open? 0:1},loop: true,config: config.gentle})
-    const centerEffs = useSpring({from: {opacity: open? 1 : 0.4}, to: {opacity: open? 0.4 : 1}})
+    const navigate = useNavigate()
 
     return (
         <div id="home">
-            <Navbar user={props.user}/>
-            <animated.div style={effs} className="top-bubble">
-                <Link to="/userGraph"><Bubbles image={blueCircle} label={"Connects"} startOp={.8} /></Link>
-            </animated.div>
-            <animated.div style = {centerEffs} className="center-bubble" onMouseDown={() => toggle(!open)}>
-                <Bubbles label={"In-Touch"} image={NewBlackCircle} startOp={1} />
-            </animated.div>
-            <animated.div style={barEffs}>
-                {/* <div id="bubble-bar"></div> */}
-            </animated.div>
-            <div className="bottom-bubbles">
-                <animated.div style={leftEffs} id="left-btm-bubble">
-                <Link to={props.user? `/profile/${props.user.id}`:"/login"}><Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.8} /></Link>
-                </animated.div>
-                <animated.div style={rightEffs}>
-                    <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.8} />
-                </animated.div>
+            <Navbar user={props.user} />
+            <div className="landing">
+                <div className="landing-text">
+                    <h1>In-Touch</h1>
+                    <h2>Developed by a group of four exceptional students attending Brooklyn College, In-Touch is an excercise in interconnectivity.
+                        Designed from the ground up, to visualize our interactions with those close to us.</h2>
+                </div>
+                <div className="landing-bubbles">
+                    <animated.div className="center-bubb"><h3>In-Touch</h3></animated.div>
+                   
+                    <animated.div className="bottom">
+                        <animated.div onClick={() => navigate("/userGraph")} className="bottom-bubbs" id="left-bubb"><h3>Connects</h3></animated.div>
+                        <animated.div  onClick={() => props.user? navigate("/profile"): navigate("login")} className="bottom-bubbs" id="right-bubb"><h3>Add Friends</h3></animated.div>
+
+                    </animated.div>
+
+                </div>
             </div>
         </div>
     )
