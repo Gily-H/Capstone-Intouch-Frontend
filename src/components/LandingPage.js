@@ -13,9 +13,10 @@ import { useEffect } from "react/cjs/react.development"
 export default function LandingPage(props) {
     const [open, toggle] = useState(false)
     const navigate = useNavigate()
+    const effs = useSpring()
 
     return (
-        <div id="home">
+        <animated.div style={effs} id="home">
             <Navbar user={props.user} />
             <div className="landing">
                 <div className="landing-text">
@@ -24,16 +25,15 @@ export default function LandingPage(props) {
                         Designed from the ground up, to visualize our interactions with those close to us.</h2>
                 </div>
                 <div className="landing-bubbles">
-                    <animated.div className="center-bubb"><h3>In-Touch</h3></animated.div>
+                    <animated.div onClick={() => toggle(!open)}className="center-bubb"><h3>In-Touch</h3></animated.div>
                    
                     <animated.div className="bottom">
                         <animated.div onClick={() => navigate("/userGraph")} className="bottom-bubbs" id="left-bubb"><h3>Connects</h3></animated.div>
                         <animated.div  onClick={() => props.user? navigate("/profile"): navigate("login")} className="bottom-bubbs" id="right-bubb"><h3>Add Friends</h3></animated.div>
 
                     </animated.div>
-
                 </div>
             </div>
-        </div>
+        </animated.div>
     )
 }
