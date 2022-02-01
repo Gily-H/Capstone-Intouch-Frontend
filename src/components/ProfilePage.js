@@ -9,9 +9,10 @@ import './profile.css'
 
 export default function ProfilePage(props){
     
-    const userInitials="JN"
-
     const friendsData = props.friends;
+    
+    
+    const userInitials="JN"
     console.log(props.friends)
     const [formVals, setFormVals] = useState({
         id: 4,
@@ -22,12 +23,16 @@ export default function ProfilePage(props){
         strength: "",
         lastContacted: "",
     });
+
     function updateOnChange(event) {
         setFormVals((prevFormVals) => ({
           ...prevFormVals,
           [event.target.name]: event.target.value,
         }));
     }
+
+
+    
     const sendData = (newFriendData) => { 
         axios.post('https://crud-intouch-backend.herokuapp.com/api/friends/', newFriendData)
         .then((res) => {
@@ -83,7 +88,7 @@ export default function ProfilePage(props){
                 </div>
                 <div className="profile-middle-panel">
                     <form onSubmit={handleSubmit} className="login-form add-contact-form">
-                        <h1 className="add-contact-form-title">Get in touch</h1>
+                        <h1 className="add-contact-form-title">Add a connection</h1>
                         <label className="login-username">
                             <input className="login-input"
                             placeholder="First Name"
@@ -129,7 +134,7 @@ export default function ProfilePage(props){
                             friendsData?.map((item, index) =>{
                                 return(
                                     <div className="contact-card" key={index}>
-                                        <img src="https://w7.pngwing.com/pngs/529/816/png-transparent-computer-icons-user-profile-avatar-heroes-monochrome-black-thumbnail.png"/>
+                                        <img src={item.imageUrl}/>
                                         <p className="contact-name">{item.firstName} {item.lastName}</p>
                                     </div>
                                 )
