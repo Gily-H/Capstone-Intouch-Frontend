@@ -29,14 +29,26 @@ export default function FriendSlide(props) {
       <p className="friend-phone">Phone: {phone}</p>
       <p className="friend-last-contact">Last Connection {updatedAt}</p>
 
-      <div className="friend-contact-buttons">
-        <button className="friend-contact message-btn" onClick={() => updateStrength(friendId, 20)}>
-          Send a Messge
-        </button>
-        <button className="friend-contact" onClick={() => updateStrength(friendId, -20)}>
-          Wait to connect
-        </button>
-      </div>
+      {props.isMessage ? (
+        <div className="friend-message-container">
+          <textarea className="friend-message" placeholder="message..." rows="7" cols="20" />
+          <button className="friend-contact send-btn" onClick={() => updateStrength(friendId, 20)}>
+            Send
+          </button>
+          <button className="friend-contact cancel-btn" onClick={props.closeMessageBoxHandler}>
+            Cancel
+          </button>
+        </div>
+      ) : (
+        <div className="friend-contact-buttons">
+          <button className="friend-contact message-btn" onClick={props.openMessageBoxHandler}>
+            Send a Messge
+          </button>
+          <button className="friend-contact" onClick={() => updateStrength(friendId, -20)}>
+            Wait to connect
+          </button>
+        </div>
+      )}
 
       <div className="delete-btn">{displayRemoveButton}</div>
 

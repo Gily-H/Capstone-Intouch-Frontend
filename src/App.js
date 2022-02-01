@@ -12,8 +12,8 @@ import "./styles/App.css";
 
 function App() {
   const CANVAS_DIMENSIONS = {
-    width: 1500,
-    height:1500,
+    width: 2000,
+    height: 2000,
   };
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData, setPeopleDataRelations] = usePeople();
@@ -21,6 +21,12 @@ function App() {
   const [strengths, setStrengths] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState("");
   const [user, setUser] = useState(null);
+
+  const [isMessageBoxOpen, setIsMessageBoxOpen] = useState(false);
+  const [messageToSend, setMessageToSend] = useState({
+    phone: "",
+    message: "",
+  });
 
   /* user login */
   //  useEffect(() => {
@@ -75,7 +81,6 @@ function App() {
 
   /* =========================== state handlers =============================== */
 
-  // updates local state, no need to refresh profile page to see changes
   function addRelationHandler(relationData, nodeData) {
     /* Come back to this and review */
     setPeopleDataRelations([...peopleData.relations, relationData]);
@@ -90,7 +95,8 @@ function App() {
     setSelectedPerson(selected);
   }
 
-  function updateConnectionStrength(friendId, factor) { // maybe use index instead of friendId
+  function updateConnectionStrength(friendId, factor) {
+    // maybe use index instead of friendId
     const updatedFriend = peopleData.relations.find((friend) => friend.friendId === friendId);
     const newStrength = updatedFriend.strength - factor;
     if (newStrength >= 100) {
@@ -138,6 +144,19 @@ function App() {
     setUser(data);
   }
 
+  /* CONTINUE TO WORK ON */
+  function createMessage(phone, message) {
+    setMessageToSend({ phone: phone, message: message });
+  }
+
+  function openMessageBox() {
+    setIsMessageBoxOpen(true);
+  }
+
+  function closeMessageBox() {
+    setIsMessageBoxOpen(false);
+  }
+
   /* display Graph  */
   const displayGraph = isLoading ? (
     <p>Loading</p>
@@ -152,6 +171,10 @@ function App() {
       rootUserId={user.id}
       deleteFriend={deleteFriend}
       connectionStrengthHandler={updateConnectionStrength}
+      isMessage={isMessageBoxOpen}
+      messageData={messageToSend}
+      openMessageBoxHandler={openMessageBox}
+      closeMessageBoxHandler={closeMessageBox}
     />
   );
 

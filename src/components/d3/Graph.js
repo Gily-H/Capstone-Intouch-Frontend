@@ -42,9 +42,9 @@ export default function Graph(props) {
               return 1; // prevent node from moving past central node
             } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
               return 500; // limit how far node can move
+            } else {
+              return edgeLength * EDGE_GROWTH_FACTOR;
             }
-
-            return edgeLength * EDGE_GROWTH_FACTOR;
           })
       )
       // creates a circle that applies a pulling force to all nodes
@@ -88,6 +88,9 @@ export default function Graph(props) {
           rootUserId={props.rootUserId}
           deleteHandler={props.deleteFriend}
           updateStrengthConnection={props.connectionStrengthHandler}
+          isMessage={props.isMessage}
+          openMessageBoxHandler={props.openMessageBoxHandler}
+          closeMessageBoxHandler={props.closeMessageBoxHandler}
         />
       )}
       <svg className="graph" ref={networkGraph}></svg>
