@@ -16,9 +16,10 @@ export default function LandingPage(props) {
     const [hover2, toggleHover2] = useState(false)
     const [hover3, toggleHover3] = useState(false)
     const navigate = useNavigate()
-    const bubbEffs = useSpring({transform: hover? "scale(1.8)": "scale(1.0)"})
+    const bubbEffs = useSpring({transform: hover? "scale(1.5)": "scale(1.0)"})
     const centerEffs = useSpring({transform: hover2? "scale(1.8)": "scale(1.0)"})
-    const rigthEffs = useSpring({transform: hover3? "scale(1.8)": "scale(1.0)"})
+    const rigthEffs = useSpring({transform: hover3? "scale(1.5)": "scale(1.0)"})
+    // const borderEffs = useSpring( {loop: {reverse: true},from: {borderColor: "blue"}, to: {borderColor: "white"}})
 
     return (
         <animated.div id="home">
@@ -29,7 +30,8 @@ export default function LandingPage(props) {
                     <h2>Developed by a group of four exceptional students attending Brooklyn College, In-Touch is an excercise in interconnectivity.
                         Designed from the ground up, to visualize our interactions with those close to us.</h2>
                 </div>
-                <div className="landing-bubbles">
+                
+                <animated.div  className="landing-bubbles">
                     <animated.div 
                     style={centerEffs}
                     onClick={() => toggle(!open)}
@@ -51,7 +53,11 @@ export default function LandingPage(props) {
                         className="bottom-bubbs" id="right-bubb"><h3>Add Friends</h3></animated.div>
 
                     </animated.div>
-                </div>
+                </animated.div>
+                
+                <animated.div onClick={() => navigate("/about")}className="about-bubb">
+                    <h2>To learn more about the team and the project, head over to our about page by pressing this bubble</h2>
+                </animated.div>
             </div>
         </animated.div>
     )
