@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Login from "./pages/Login";
 import { animated, useSpring } from "react-spring";
 import "../styles/navbar2.css";
 
 export default function Navbar(props) {
+  const navigate = useNavigate();
   const effs = useSpring({
     from: { opacity: 0, marginTop: -200 },
     to: { opacity: 1, marginTop: 0 },
@@ -19,6 +20,7 @@ export default function Navbar(props) {
       })
       .then((res) => {
         props.handleUser("");
+        navigate(0);
         console.log(res);
       })
       .catch((err) => console.log(err));

@@ -78,7 +78,7 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes, props.strengthData]);
+  }, [props.data.nodes, props.strengthData, props.user]);
 
   return (
     <div className="svg-container">

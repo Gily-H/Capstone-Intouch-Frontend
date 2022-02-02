@@ -183,6 +183,7 @@ function App() {
     <p>Loading</p>
   ) : (
     <Graph
+      user={user}
       data={graphData}
       strengthData={strengths}
       friends={peopleData.relations}
