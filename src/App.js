@@ -56,28 +56,27 @@ function App() {
   /* data fetching  */
 
   async function fetchPeopleData() {
-    console.log("I am in the app component");
     // const friends = await axios.get("https://crud-intouch-backend.herokuapp.com/api/friends/");
-    const rootUser = await axios.get(`http://localhost:5000/api/users/${1}`);
-    const friends = await axios.get("http://localhost:5000/api/friends");
-    const userData = rootUser.data;
+    // const rootUser = await axios.get(`http://localhost:5000/api/users/${1}`);
+    const friends = await axios.get(`https://crud-intouch-backend.herokuapp.com/api/friends/user/${user.id}`);
+    // const userData = rootUser.data;
     const friendsData = friends.data;
     setPeopleData({
-      user: userData,
+      user: user, // userData,
       friends: friendsData,
     });
-    setUser(userData); // set user as person retrieved from database FOR TESTING
+    // setUser(userData); // set user as person retrieved from database FOR TESTING
     setStrengths([...friendsData.map((friend) => friend.strength)]);
-    const rootNode = createRootData(userData, CANVAS_DIMENSIONS);
-    const friendIds = createNodesData(friendsData, userData.id);
-    const friendLinks = createNodeLinks(friendsData, userData.id);
+    const rootNode = createRootData(user /* userData */, CANVAS_DIMENSIONS);
+    const friendIds = createNodesData(friendsData, user.id /* userData.id */);
+    const friendLinks = createNodeLinks(friendsData, user.id /* userData.id */);
     addGraphData({
       nodes: [rootNode, ...friendIds], // keep the root user in the first position
       links: [...friendLinks],
     });
     setLoading(false);
   }
-  useEffect(() => fetchPeopleData(), []);
+  useEffect(() => fetchPeopleData(), [user]);
 
   /* =========================== state handlers =============================== */
 
@@ -113,7 +112,7 @@ function App() {
     const updatedStrengths = updatedFriends.map((friend) => friend.strength);
 
     axios
-      .patch(`http://localhost:5000/api/friends/${friendId}`, updatedFriend)
+      .patch(`https://crud-intouch-backend.herokuapp.com/api/friends/${friendId}`, updatedFriend)
       .then((res) => {
         setPeopleDataRelations(updatedFriends);
         setStrengths(updatedStrengths);
@@ -124,7 +123,7 @@ function App() {
   function deleteFriend(removeId) {
     if (removeId !== peopleData.root.id) {
       axios
-        .delete(`http://localhost:5000/api/friends/${removeId}`)
+        .delete(`https://crud-intouch-backend.herokuapp.com/api/friends/${removeId}`)
         .then((res) => {
           const updatedFriends = peopleData.relations.filter((friend) => friend.friendId !== removeId);
           const updatedGraphData = {
