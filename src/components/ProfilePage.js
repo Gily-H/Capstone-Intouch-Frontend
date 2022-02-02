@@ -11,7 +11,6 @@ export default function ProfilePage(props){
     
     const friendsData = props.friends;
     
-    
     const userInitials="JN"
     console.log(props.friends)
     const [formVals, setFormVals] = useState({
