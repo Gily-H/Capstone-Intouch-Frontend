@@ -97,7 +97,7 @@
 }
 
 .friend-slide-footer {
-  margin: 1rem 0;
+  margin: auto 0 1rem;
   width: 100%;
   display: flex;
   justify-content: space-evenly;

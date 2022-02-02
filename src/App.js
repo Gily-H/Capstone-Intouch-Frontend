@@ -28,7 +28,18 @@ function App() {
     message: "",
   });
 
-  /* user login */
+  axios.defaults.withCredentials = true; /* cookie sessions */
+
+  useEffect(() => {
+    axios
+      .get("https://crud-intouch-backend.herokuapp.com/auth/login/success")
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data.user);
+      })
+      .catch((err) => console.log("catch block", err));
+  }, []);
+
   //  useEffect(() => {
   //   const getUser = () => {
   //     fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
@@ -58,23 +69,25 @@ function App() {
   async function fetchPeopleData() {
     // const friends = await axios.get("https://crud-intouch-backend.herokuapp.com/api/friends/");
     // const rootUser = await axios.get(`http://localhost:5000/api/users/${1}`);
-    const friends = await axios.get(`https://crud-intouch-backend.herokuapp.com/api/friends/user/${user.id}`);
-    // const userData = rootUser.data;
-    const friendsData = friends.data;
-    setPeopleData({
-      user: user, // userData,
-      friends: friendsData,
-    });
-    // setUser(userData); // set user as person retrieved from database FOR TESTING
-    setStrengths([...friendsData.map((friend) => friend.strength)]);
-    const rootNode = createRootData(user /* userData */, CANVAS_DIMENSIONS);
-    const friendIds = createNodesData(friendsData, user.id /* userData.id */);
-    const friendLinks = createNodeLinks(friendsData, user.id /* userData.id */);
-    addGraphData({
-      nodes: [rootNode, ...friendIds], // keep the root user in the first position
-      links: [...friendLinks],
-    });
-    setLoading(false);
+    if (user) {
+      const friends = await axios.get(`https://crud-intouch-backend.herokuapp.com/api/friends/user/${user.id}`);
+      // const userData = rootUser.data;
+      const friendsData = friends.data;
+      setPeopleData({
+        user: user, // userData,
+        friends: friendsData,
+      });
+      // setUser(userData); // set user as person retrieved from database FOR TESTING
+      setStrengths([...friendsData.map((friend) => friend.strength)]);
+      const rootNode = createRootData(user /* userData */, CANVAS_DIMENSIONS);
+      const friendIds = createNodesData(friendsData, user.id /* userData.id */);
+      const friendLinks = createNodeLinks(friendsData, user.id /* userData.id */);
+      addGraphData({
+        nodes: [rootNode, ...friendIds], // keep the root user in the first position
+        links: [...friendLinks],
+      });
+      setLoading(false);
+    }
   }
   useEffect(() => fetchPeopleData(), [user]);
 
@@ -146,6 +159,15 @@ function App() {
   /* CONTINUE TO WORK ON */
   function createMessage(phone, message) {
     setMessageToSend({ phone: phone, message: message });
+
+    console.log(phone, message);
+    axios
+      .get(`https://crud-intouch-backend.herokuapp.com/sms/send?recipient=${phone}&message=${message}`)
+      .then((res) => {
+        console.log(res);
+        console.log("Sent the request");
+      })
+      .catch((err) => console.log(err));
   }
 
   function openMessageBox() {
@@ -171,7 +193,7 @@ function App() {
       deleteFriend={deleteFriend}
       connectionStrengthHandler={updateConnectionStrength}
       isMessage={isMessageBoxOpen}
-      messageData={messageToSend}
+      messageHandler={createMessage}
       openMessageBoxHandler={openMessageBox}
       closeMessageBoxHandler={closeMessageBox}
     />
@@ -180,7 +202,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route to="/" element={<Navbar user={user} />}>
+        <Route to="/" element={<Navbar user={user} handleUser={setUserData} />}>
           <Route path="landing" element={<LandingPage user={user} />} />
           <Route path="home" element={<HomePage user={user} />} />
           <Route path="login" element={<Login userData={setUserData} />} />

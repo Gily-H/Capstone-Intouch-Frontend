@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,7 +8,7 @@ import "../../styles/login.css";
 
 export default function Login(props) {
   const [loginInfo, handleChange, clearForm] = useForm({
-    username: "",
+    firstName: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -27,6 +27,8 @@ export default function Login(props) {
       })
       .catch((err) => console.log(err));
   }
+
+  
 
   // function handleLogin() {
   //   window.open("https://crud-intouch-backend.herokuapp.com/auth/google", "_self");

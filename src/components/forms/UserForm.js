@@ -12,8 +12,8 @@ export default function UserForm(props) {
             className="login-input"
             placeholder="Username"
             type="text"
-            name="username"
-            value={props.userInfo.username}
+            name="firstName"
+            value={props.userInfo.firstName}
             onChange={props.handleInputChange}
           />
         </label>

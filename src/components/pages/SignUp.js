@@ -8,8 +8,10 @@ import "../../styles/login.css";
 
 export default function SignUp() {
   const [signupInfo, handleChange, clearForm] = useForm({
-    username: "",
+    firstName: "",
     password: "",
+    lastName: "",
+    imageUrl: "",
   });
   const navigate = useNavigate();
 

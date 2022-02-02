@@ -76,7 +76,7 @@ function randomBackgroundColor(datum) {
 
 function setInitials(datum) {
   const initials = datum.firstName
-    ? (datum.firstName[0] + datum.lastName[0]).toUpperCase()
+    ? (datum.firstName[0] /* + datum.lastName[0] */).toUpperCase()
     : "";
   return initials;
 }

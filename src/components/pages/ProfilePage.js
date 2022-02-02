@@ -48,7 +48,7 @@ export default function ProfilePage(props) {
     // console.log(addPerson);
 
     axios
-      .post("http://localhost:5000/api/friends", addPerson)
+      .post("https://crud-intouch-backend.herokuapp.com/api/friends", addPerson)
       // .post("https://crud-intouch-backend.herokuapp.com/api/friends/", addPerson)
       .then((res) => props.addRelationHandler(addPerson, addPersonNode))
       .catch((error) => console.log(error));
@@ -78,7 +78,7 @@ export default function ProfilePage(props) {
           ""
         ) : (
           <p className="profile-initials">
-            {props.user.firstName[0]} {props.user.lastName[0]}
+            {props.user.firstName[0]} {/* props.user.lastName[0] */}
           </p>
         )}
       </div>

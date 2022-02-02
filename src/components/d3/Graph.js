@@ -36,7 +36,7 @@ export default function Graph(props) {
           .forceLink(props.data.links)
           .id((datum) => datum.id)
           .distance((link, i) => {
-            console.log(link.target);
+            // console.log(link.target);
             const edgeLength = props.strengthData[i];
             if (edgeLength <= 0) {
               return 1; // prevent node from moving past central node
@@ -89,6 +89,7 @@ export default function Graph(props) {
           deleteHandler={props.deleteFriend}
           updateStrengthConnection={props.connectionStrengthHandler}
           isMessage={props.isMessage}
+          messageHandler={props.messageHandler}
           openMessageBoxHandler={props.openMessageBoxHandler}
           closeMessageBoxHandler={props.closeMessageBoxHandler}
         />
