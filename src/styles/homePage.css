@@ -38,22 +38,23 @@ body{
 
 .top-bubble{
     display: flex;
-    width:fit-content;
+    width: 18vw;
+    
+     
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 150px;
-    margin-top: 20px;
-    
+    margin-bottom: 10%;
+    margin-top: 10%;
+    background-color: black;
+
 }
 
-.top-bubble img{
-    height: 250px;
-}
-
+ 
 
 .bottom-bubbles{
     display: flex;
-    width:1000px;
+    width: auto;
+    max-width: 40%;
     margin-left: auto;
     margin-right: auto;
     transform: translateY(200%);
@@ -81,6 +82,15 @@ body{
 
 #home{
     height: auto;
+    width: auto;
 }
 
+.home-bubbles{
+    background-color: blue;
+    margin-top: -9%;
+    width: 50%;
+    height: 0;
+    padding-bottom: 50%;
+    margin-top: 1%;
+}
 

@@ -1,126 +1,115 @@
-body{
-    min-height: 1100px;
+.profile-pic-container {
+  position: absolute;
+  color: white;
 }
-.profile-pic-container{
-    position: absolute;
-    color: white;
-    
+.profile-pic {
+  margin-top: 10%;
+  margin-left: 18%;
+  width: 275px;
+  height: 275px;
 }
-.profile-pic{
-    margin-top: 10%;
-    margin-left: 18%;
-    width: 275px;
-    height: 275px;
+.profile-user-info {
+  /* border-style: solid; */
+  position: absolute;
+  margin-top: 18%;
+  width: 20%;
 }
-.profile-user-info{
-    /* border-style: solid; */
-    position: absolute;
-    margin-top: 18%;
-    width: 20%;
-    
-}
-.profile-username{
-    margin-top: 10%;
-    margin-left: 13%;
-    font-size: 50px;
+.profile-username {
+  margin-top: 10%;
+  margin-left: 13%;
+  font-size: 50px;
 }
 
-.profile-phone{
-    margin-top: 10%;
-    margin-left: 19%;
-    font-size: 30px;
+.profile-phone {
+  margin-top: 10%;
+  margin-left: 19%;
+  font-size: 30px;
 }
 .profile-initials {
-    position: relative;
-    top: 10%;
-    left: 47%;
-    transform: translate(0%, -180%);
-    font-size: 90px;
-  }
-.profile-panels{
-    display: flex;
-    flex-direction: row;
-    /* border-style: solid;  */
+  position: relative;
+  top: 10%;
+  left: 47%;
+  transform: translate(0%, -180%);
+  font-size: 90px;
 }
-.profile-left-panel{
-    margin-left:1%;
-    width: 25%;
-    height: 900px;
-    margin-top: 2%;
-  
-    /* border-style: solid; */
+.profile-panels {
+  display: flex;
+  flex-direction: row;
+  /* border-style: solid;  */
 }
-.profile-middle-panel{
- 
-    width: 65%;
-    height: 100%;
-    height: 900px;
-    /* border-style: solid; */
+.profile-left-panel {
+  margin-left: 1%;
+  width: 25%;
+  height: 900px;
+  margin-top: 2%;
+
+  /* border-style: solid; */
 }
-.add-contact-form-title{
-    margin-top: 0px;
-    margin-bottom: 8%;
-    font-size: 40px;
+.profile-middle-panel {
+  width: 65%;
+  height: 100%;
+  height: 900px;
+  /* border-style: solid; */
 }
-.add-contact-form{
-    margin-top: 5%;
-    font-size: 26px;
-    width: 400px;
-    margin-left: 25%;
-    
+.add-contact-form-title {
+  margin-top: 0px;
+  margin-bottom: 8%;
+  font-size: 40px;
 }
-.add-contact-btn{
-    background-color: rgb(12, 9, 155);
-    font-size: 26px;
+.add-contact-form {
+  margin-top: 5%;
+  font-size: 26px;
+  width: 400px;
+  margin-left: 25%;
 }
-.phone-input{
-    margin-top: 25px;
-    
+.add-contact-btn {
+  background-color: rgb(12, 9, 155);
+  font-size: 26px;
+}
+.phone-input {
+  margin-top: 25px;
 }
 .contacts-panel-bottom {
-    /* background-color: rgb(255, 255, 255);  */
-    display: flex;
-    overflow: scroll ;
-    white-space: nowrap;
-    margin-top:8%;
-    margin-left: -10%;
-    padding-top: 5%;
-    padding-left: 4%;
-    height: 45%;
-    width: 99%;
-    bottom:0;
-    overflow-y:hidden;
-    padding-bottom: 20px;
-   
+  display: flex;
+  overflow: scroll;
+  white-space: nowrap;
+  margin-top: 8%;
+  margin-left: -10%;
+  padding-top: 5%;
+  padding-left: 4%;
+  height: 45%;
+  width: 99%;
+  bottom: 0;
+  overflow-y: hidden;
+  padding-bottom: 20px;
 }
 .contacts-panel-bottom::-webkit-scrollbar {
-    height: 15px;
-    
+  height: 15px;
 }
 .contacts-panel-bottom::-webkit-scrollbar-track {
-    background: transparent; 
+  background: transparent;
 }
 .contacts-panel-bottom::-webkit-scrollbar-thumb {
-    background: rgb(0, 0, 0); 
-    border-radius: 15px; 
+  background: rgb(0, 0, 0);
+  border-radius: 15px;
 }
 
-.contacts-panel-bottom>.contact-card:hover {
-    cursor: pointer;
-    transform: scale(1.5);
-    /* background-color: rgb(114, 0, 0); */
+.contacts-panel-bottom > .contact-card:hover {
+  cursor: pointer;
+  transform: scale(1.5);
+  /* background-color: rgb(114, 0, 0); */
 }
-.contact-card{
-    display: flex;
-    flex-direction: column;
+.contact-card {
+  display: flex;
+  flex-direction: column;
 }
 .contacts-panel-bottom > .contact-card > img {
-    width: 160px;
-    height: 160px;
-    margin: 20px;
+  width: 160px;
+  height: 160px;
+  margin: 20px;
 }
-.contact-name{
-    font-size: 24px;
-    text-align: left;
-    margin-left: 14px;
+.contact-name {
+  font-size: 24px;
+  text-align: center;
+  margin-left: 14px;
 }

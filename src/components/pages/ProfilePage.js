@@ -97,8 +97,8 @@ export default function ProfilePage(props) {
         {profileCard}
         <div className="profile-middle-panel">
           <AddPersonForm handleFormSubmit={handleSubmit} handleOnChange={handleChange} personInfo={personInfo} />
+          <div className="contacts-panel-bottom">{friendCards}</div>
         </div>
-        <div className="contacts-panel-bottom">{friendCards}</div>
       </div>
     </div>
   );
