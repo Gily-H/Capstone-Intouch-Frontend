@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { nanoid } from "nanoid";
 
 export default function AddFriendNode(props) {
   const [formVals, setFormVals] = useState({
-    id: 4,
+    friend_id: "",
     firstName: "",
     lastName: "",
     phone: "",
     imageUrl: "",
     strength: "",
-    lastContacted: "",
+    lastContact: "",
+    userId: "",
   });
 
   function updateOnChange(event) {
@@ -21,16 +23,15 @@ export default function AddFriendNode(props) {
   function formSubmitHandler(event) {
     event.preventDefault();
     const newData = {
-      /* ADDITIONAL DAYS FIELD FOR TESTING PURPOSES ONLY -> See App.js */
       node: {
-        id: formVals.id,
-        index: formVals.id,
+        friend_id: nanoid(),
         firstName: formVals.firstName,
         lastName: formVals.lastName,
         phone: formVals.phone,
-        interactions: 1 /* DEFAULT FOR NOW */,
         imageUrl: formVals.imageUrl,
         strength: formVals.strength,
+        lastContact: Date.now(), /* CREATE TIMESTAMP */
+        userId: props.userId,
       },
       link: { source: 0, target: formVals.id }, // stays constant
     };
@@ -38,28 +39,19 @@ export default function AddFriendNode(props) {
     props.addData(newData);
 
     setFormVals((prevFormVals) => ({
-      id: formVals.id + 1,
+      friend_id: "",
       firstName: "",
       lastName: "",
       phone: "",
       imageUrl: "",
       strength: "",
-      lastContacted: "",
+      lastContact: "",
+      userId: "",
     }));
   }
 
   return (
     <form onSubmit={formSubmitHandler}>
-      <label>
-        Temp ID:
-        <input
-          type="number"
-          placeholder="id..."
-          value={formVals.id}
-          name="id"
-          onChange={updateOnChange}
-        />
-      </label>
       <label>
         First Name:
         <input

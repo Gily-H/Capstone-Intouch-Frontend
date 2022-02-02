@@ -1,10 +1,5 @@
 
 
-img{
-    position: relative;
-    border-radius: 50%;
-    
-}
 
 .bubble-text{
     position: relative;
@@ -15,11 +10,24 @@ img{
     margin-top:-60%;
     color: white;
     font-size: 30px;
+    cursor: default;
 
 }
 
 a{
     text-decoration: none;
+}
+
+.bubble-img{
+    background-color: blueviolet;
+    width: auto;
+}
+
+
+.bubbles img{
+    position: relative;
+    border-radius: 50%;
+    height: 50%
 }
 
 

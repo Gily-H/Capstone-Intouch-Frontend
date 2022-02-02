@@ -3,15 +3,16 @@ import axios from "axios";
 import Graph from "./components/d3/Graph";
 import AddFriendNode from "./components/AddFriendNode";
 import FriendSlide from "./components/FriendSlide";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import "./styles/App.css";
 import About from "./components/About";
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
-import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
+import Prince from "./images/prince-akachi.jpg"
+import { rootUser } from "./data";
 
 function App() {
 
@@ -24,69 +25,87 @@ function App() {
 
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData] = useState({
-    root: {}, // Will use google idea
+    root: rootUser, // Will use google id
     friends: [],
   });
+  
+
   const [graphData, setGraphData] = useState({
     nodes: [],
     links: [],
   });
   const [selectedPerson, setselectedPerson] = useState("");
 
+  
+
+  
+
+
+
+
+  /* user login */
+  //  useEffect(() => {
+  //   const getUser = () => {
+  //     fetch("http://crud-intouch-backend.herokuapp.com/auth/login/success", {
+  //       method: "GET",
+  //       credentials: "include",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Credentials": true,
+  //       },
+  //     })
+  //       .then((response) => {
+  //         if (response.status === 200) return response.json();
+  //         throw new Error("authentication has been failed!");
+  //       })
+  //       .then((resObject) => {
+  //         console.log(resObject);
+  //         setCurrentUserId(resObject.id);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
+  //   getUser();
+  // }, []);
+
   /* data fetching  */
 
   async function fetchPeopleData() {
-    const rootUser = await axios.get(
-      "https://crud-intouch-backend.herokuapp.com/api/users/ "
-    );
-
-   
     const friends = await axios.get(
       "https://crud-intouch-backend.herokuapp.com/api/friends/"
     );
-    console.log(friends);
 
-    setPeopleData({
-      root: rootUser.data,
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
       friends: friends.data,
-    });
+    }));
 
-    const rootData = rootUser.data;
-
-    /* FIND BETTER WAY TO CREATE ID -> BAD TO KEEP SUBTRACTING BY 1 EVERYWHERE */
-    const rootId = rootData.id - 1; /* should be 0 in this case */
-
-    // create node for root user
     const rootNode = {
-      id: rootId,
-      index: rootId,
-      firstName: rootData.firstName,
-      lastName: rootData.lastName,
-      phone: rootData.phone,
-      imageUrl: rootData.imageUrl,
-      /* additional required fields */
-      fx: CANVAS_DIMENSIONS.width / 2, // fixed-x position on canvas
-      fy: CANVAS_DIMENSIONS.height / 2, // fixed-y position on canvas
+      id: rootUser.id,
+      firstName: rootUser.firstName,
+      lastName: rootUser.lastName,
+      imageUrl: rootUser.imageUrl,
+      // password: userData.password ||
+      /* additional required fields for fixed position */
+      fx: CANVAS_DIMENSIONS.width / 2,
+      fy: CANVAS_DIMENSIONS.height / 2,
     };
 
     // create nodes for all friends
     const friendIds = friends.data.map((friend) => ({
-      id: friend.friend_id,
-      index: friend.friend_id,
+      id: friend.friendId,
       firstName: friend.firstName,
       lastName: friend.lastName,
       phone: friend.phone,
       imageUrl: friend.imageUrl,
-      interactions: friend.interactions,
-      strength: 100 /* DEFAULT FOR NOW */,
-      /* ADDITIONAL FIELD FOR TESTING PURPOSES ONLY */
-      days: Math.ceil(Math.random() * 40),
+      strength: friend.strength,
+      lastContact: friend.lastContact,
+      userId: rootUser.id,
     }));
 
     const friendLinks = friends.data.map((friend) => ({
-      source:
-        rootId /* root should always be in the first position - See Line #44 */,
-      target: friend.id,
+      source: rootUser.id,
+      target: friend.friendId,
       /* INCLUDE FIELD TO CALCULATE EDGE LENGTH */
     }));
 
@@ -97,7 +116,6 @@ function App() {
 
     setLoading(false);
   }
-
   useEffect(() => fetchPeopleData(), []);
 
   /* state handlers */
@@ -115,14 +133,15 @@ function App() {
 
   function deleteFriend(removeId) {
     // precaution to avoid deletion of root user
-    if (removeId === 0 /* peopleData.root.id - 1 */) {
+    if (removeId === rootUser.id) {
       return;
     }
     
 
     const updatedFriends = peopleData.friends.filter(
-      (friend) => friend.id !== removeId
+      (friend) => friend.friend_id !== removeId
     );
+
     const updatedGraphData = {
       nodes: graphData.nodes.filter((node) => node.id !== removeId),
       links: graphData.links.filter((link) => link.target.id !== removeId),
@@ -144,37 +163,47 @@ function App() {
   ) : (
     <Graph
       data={graphData}
+      friends={peopleData.friends}
       retrieveHandler={retrieveSelectedPerson}
       dimensions={CANVAS_DIMENSIONS}
+      selectedPerson={selectedPerson}
+      rootUserId={rootUser.id}
+      deleteFriend={deleteFriend}
     />
   );
+  const testImages = {
+    image1: Prince
+  }
 
-  const displayFriendPanel = (
-    <FriendSlide
-      friend={selectedPerson}
-      rootUserId={0}
-      /* peopleData.root.id - 1 */ deleteHandler={deleteFriend}
-    />
-  );
+  
+  
+  const [user, setUser] = useState(null)
+
+  function setUserData(data){
+    setUser(data)
+  }
+
+  
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage user={user}/>} />
         <Route path="/about" element={<About />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage {...peopleData}/>} />
+        <Route path="/home" element={<HomePage user={user}/>} />
+        <Route path="/profile/:id" element={<ProfilePage {...peopleData} user={user}/>} />
+       
+        
+        {/* <Route path="/profile" element={<Login userData={setUserData}/>}/> */}
         <Route
           path="/userGraph"
           element={
             <div className="App">
-              <AddFriendNode addData={addGraphData} />
               {displayGraph}
-              {selectedPerson && displayFriendPanel}
             </div>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login userData={setUserData}/>} />
         <Route path="/signUp" element={<Signup />} />
       </Routes>
     </Router>
