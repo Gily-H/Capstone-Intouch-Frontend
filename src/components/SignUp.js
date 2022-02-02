@@ -5,12 +5,13 @@ import '../styles/login.css'
 import Navbar from './Navbar'
 export default function Login(){
 
-	const [userName, setUserName] = useState();
+	const [firstName, setFirstName] = useState();
+	const [lastName, setLastName] = useState();
 	const [password, setPassword] = useState();
 
 	const [redirect, setRedirect] = useState(false)
 
-	console.log(userName);
+	console.log(firstName);
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -30,12 +31,20 @@ export default function Login(){
 
 				<h1 className="login-msg">Let's get in touch...</h1>
 			<form onSubmit={handleSubmit} className="login-form">
-				<label className="login-username">
+				<label className="login-firstName">
 					<input className="login-input"
-					placeholder="Username"
+					placeholder="First Name"
 					type="text" 
-					value={userName}
-					onChange={(e) => setUserName(e.target.value)}
+					value={firstName}
+					onChange={(e) => setFirstName(e.target.value)}
+					/>
+				</label>
+				<label className="login-lastName">
+					<input className="login-input"
+					placeholder="Last Name"
+					type="text" 
+					value={lastName}
+					onChange={(e) => setLastName(e.target.value)}
 					/>
 				</label>
 				<label className="login-password">
