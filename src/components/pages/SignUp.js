@@ -6,7 +6,7 @@ import axios from "axios";
 import { UserForm } from "../forms";
 import "../../styles/login.css";
 
-export default function SignUp() {
+export default function SignUp(props) {
   const [signupInfo, handleChange, clearForm] = useForm({
     firstName: "",
     password: "",
@@ -23,8 +23,7 @@ export default function SignUp() {
       .post("https://crud-intouch-backend.herokuapp.com/customAuth/signup", newUser)
       .then((res) => {
         navigate("/home");
-        console.log("sent request to sign up");
-        console.log(res.data);
+        props.userData(res.data);
       })
       .catch((err) => console.log(err));
   }

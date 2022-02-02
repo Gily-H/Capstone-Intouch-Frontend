@@ -206,7 +206,7 @@ function App() {
           <Route path="landing" element={<LandingPage user={user} />} />
           <Route path="home" element={<HomePage user={user} />} />
           <Route path="login" element={<Login userData={setUserData} />} />
-          <Route path="signUp" element={<SignUp />} />
+          <Route path="signUp" element={<SignUp userData={setUserData} />} />
           <Route
             path="profile/:id"
             element={<ProfilePage friends={peopleData.relations} user={user} addRelationHandler={addRelationHandler} />}
