@@ -63,7 +63,7 @@
 .landing-bubbles h3{
     margin-top: 40%;
     color: white;
-    font-size: 90%
+    font-size: 90%;
 }
 
 
@@ -92,6 +92,7 @@
 
 .landing{
     display: flex;
+    
 }
 
 #home h1{
@@ -123,6 +124,7 @@
     background-color: thistle;
     opacity: .5;
     overflow: auto;
+    margin-right: auto;
 
 }
 
