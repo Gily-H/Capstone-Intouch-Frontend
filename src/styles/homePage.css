@@ -33,7 +33,7 @@
 
 body{
     background-color: #ebebeb ;
-      
+    z-index: 1
 }
 
 .top-bubble{
@@ -68,7 +68,7 @@ body{
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    transform: translatey(80%);
+    transform: translateY(80%);
 }
 
 #bubble-bar{

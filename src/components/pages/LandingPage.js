@@ -40,7 +40,7 @@ export default function LandingPage(props) {
           <animated.div className="bottom">
             <animated.div
               style={bubbEffs}
-              onClick={() => navigate("/userGraph")}
+              onClick={() => props.user? navigate("/userGraph") : navigate("/login")}
               onMouseOver={() => toggleHover(!hover)}
               onMouseOut={() => toggleHover(!hover)}
               className="bottom-bubbs"
@@ -50,7 +50,7 @@ export default function LandingPage(props) {
 
             <animated.div
               style={rigthEffs}
-              onClick={() => (props.user ? navigate(`/profile/${props.user.id}`) : navigate("login"))}
+              onClick={() => (props.user ? navigate(`/profile/${props.user.id}`) : navigate("/login"))}
               onMouseOver={() => toggleHover3(!hover3)}
               onMouseOut={() => toggleHover3(!hover3)}
               className="bottom-bubbs"

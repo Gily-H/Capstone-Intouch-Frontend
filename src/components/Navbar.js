@@ -38,7 +38,7 @@ export default function Navbar(props) {
 
         {props.user ? (
           <div className="nav-links-with-signin">
-            <h2>Welcome Back {props.user.firstName}</h2>
+            <h2>Welcome {props.user.firstName}</h2>
             <button onClick={userLogout} className="logout-btn">Logout</button>
           </div>
         ) : (

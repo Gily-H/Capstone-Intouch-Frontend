@@ -1,5 +1,4 @@
 import React from "react";
-import { GOOGLE_LOGO } from "../../resources/logos";
 
 export default function UserForm(props) {
   return (

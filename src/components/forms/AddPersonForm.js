@@ -12,6 +12,7 @@ export default function AddPersonForm(props) {
           name="firstName"
           value={props.personInfo.firstName}
           onChange={props.handleOnChange}
+          required
         />
       </label>
       <label className="login-password">
@@ -22,6 +23,7 @@ export default function AddPersonForm(props) {
           name="lastName"
           value={props.personInfo.lastName}
           onChange={props.handleOnChange}
+          required
         />
       </label>
       <label className="phone-input">
@@ -32,6 +34,7 @@ export default function AddPersonForm(props) {
           name="phone"
           value={props.personInfo.phone}
           onChange={props.handleOnChange}
+          required
         />
       </label>
       <label className="login-password">

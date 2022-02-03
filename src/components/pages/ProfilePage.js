@@ -31,7 +31,7 @@ export default function ProfilePage(props) {
     const id = nanoid();
     const addPerson = {
       ...personInfo,
-      strength: personInfo.strength || 100,
+      strength: personInfo.strength || 50,
       friendId: id,
       lastContact: Date.now(),
       userId: props.user.id,
@@ -39,7 +39,7 @@ export default function ProfilePage(props) {
 
     const addPersonNode = {
       ...personInfo,
-      strength: personInfo.strength || 100,
+      strength: personInfo.strength || 50,
       id: id, // need field this to update the graph in real time without errors
       lastContact: Date.now(),
       userId: props.user.id,
@@ -47,7 +47,6 @@ export default function ProfilePage(props) {
 
     axios
       .post("https://crud-intouch-backend.herokuapp.com/api/friends", addPerson)
-      // .post("https://crud-intouch-backend.herokuapp.com/api/friends/", addPerson)
       .then((res) => props.addRelationHandler(addPerson, addPersonNode))
       .catch((error) => console.log(error));
 
