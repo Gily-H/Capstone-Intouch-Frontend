@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "../../hooks";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { nanoid } from "nanoid";
 
@@ -10,7 +10,7 @@ import "../../styles/profile.css";
 
 export default function ProfilePage(props) {
   const navigate = useNavigate();
-  if (props.user === null) {
+  if (!props.user) {
     navigate("/login");
   }
 
@@ -45,8 +45,6 @@ export default function ProfilePage(props) {
       userId: props.user.id,
     };
 
-    // console.log(addPerson);
-
     axios
       .post("https://crud-intouch-backend.herokuapp.com/api/friends", addPerson)
       // .post("https://crud-intouch-backend.herokuapp.com/api/friends/", addPerson)
@@ -57,8 +55,7 @@ export default function ProfilePage(props) {
   }
 
   /* display the friend cards  */
-  const friendsData = props.friends;
-  const friendCards = friendsData?.map((friend, index) => {
+  const friendCards = props.friends.map((friend, index) => {
     return (
       <div className="contact-card" key={index}>
         <img src={friend.imageUrl || DEFAULT_PERSON_IMAGE} alt="default-person-img" />
@@ -73,18 +70,13 @@ export default function ProfilePage(props) {
   const profileCard = (
     <div className="profile-left-panel">
       <div className="profile-pic-container">
-        <img className="profile-pic" src={props.user.imageUrl || DEFAULT_PROFILE_IMAGE} alt="default-profile-img" />
-        {props.user.imageUrl ? (
-          ""
-        ) : (
-          <p className="profile-initials">
-            {props.user.firstName[0]} {/* props.user.lastName[0] */}
-          </p>
-        )}
+        <img className="profile-pic" src={DEFAULT_PROFILE_IMAGE} alt="default-profile-img" />
+        <h2 className="profile-initials">{props.user && `${props.user.firstName[0]} ${props.user.lastName[0]}`}</h2>
       </div>
-
       <div className="profile-user-info">
-        <h1 className="profile-username">{props.user ? `${props.user.firstName}` : "Name not Available"}</h1>
+        <h1 className="profile-username">
+          {props.user ? `${props.user.firstName} ${props.user.lastName}` : "Name not Available"}
+        </h1>
         <p className="profile-phone"> 209 - 563 - 7170</p>
       </div>
     </div>

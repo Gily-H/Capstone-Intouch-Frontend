@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,15 +20,13 @@ export default function Login(props) {
     axios
       .post("https://crud-intouch-backend.herokuapp.com/customAuth/signin", user)
       .then((res) => {
-        setTimeout(() => navigate("/home"), 500);
+        setTimeout(() => navigate("/landing"), 500);
         console.log("sent request to sign in");
         console.log(res.data);
         props.userData(res.data);
       })
       .catch((err) => console.log(err));
   }
-
-  
 
   // function handleLogin() {
   //   window.open("https://crud-intouch-backend.herokuapp.com/auth/google", "_self");

@@ -5,7 +5,6 @@ export default function AddPersonForm(props) {
     <form onSubmit={props.handleFormSubmit} className="login-form add-contact-form">
       <h1 className="add-contact-form-title">Get in touch</h1>
       <label className="login-username">
-        First Name:
         <input
           className="login-input"
           placeholder="First Name..."
@@ -16,7 +15,6 @@ export default function AddPersonForm(props) {
         />
       </label>
       <label className="login-password">
-        Last Name:
         <input
           className="login-input"
           placeholder="Last Name..."
@@ -27,7 +25,6 @@ export default function AddPersonForm(props) {
         />
       </label>
       <label className="phone-input">
-        Phone: 
         <input
           className="login-input"
           placeholder="Phone..."
@@ -38,7 +35,6 @@ export default function AddPersonForm(props) {
         />
       </label>
       <label className="login-password">
-        Image:
         <input
           className="login-input"
           placeholder="Image..."
@@ -48,8 +44,8 @@ export default function AddPersonForm(props) {
           onChange={props.handleOnChange}
         />
       </label>
-      <label className="login-password">
-        Relationship Strength (1 = strongest, 100 = weakest)
+      <label>
+        1
         <input
           className="login-input"
           placeholder="Relation Strength..."
@@ -59,7 +55,9 @@ export default function AddPersonForm(props) {
           name="strength"
           value={props.personInfo.strength}
           onChange={props.handleOnChange}
+          id="strength"
         />
+        100
       </label>
       <input type="submit" value="Add Contact" className="login-btns login-submit-btn add-contact-btn" />
     </form>

@@ -20,7 +20,7 @@ export default function Navbar(props) {
       })
       .then((res) => {
         props.handleUser("");
-        navigate(0);
+        navigate("/landing");
         console.log(res);
       })
       .catch((err) => console.log(err));
@@ -31,15 +31,15 @@ export default function Navbar(props) {
       <animated.div className="nav-body" style={effs}>
         <div className="nav-header">
           {/* <h1 className="nav-title">In-Touch</h1> */}
-          <Link to={props.user ? "/home" : "/"} className="nav-link">
+          <Link to="/landing" className="nav-link">
             Home
           </Link>
         </div>
 
         {props.user ? (
           <div className="nav-links-with-signin">
-            {props.user.firstName}
-            <button onClick={userLogout}>Logout</button>
+            <h2>Welcome Back {props.user.firstName}</h2>
+            <button onClick={userLogout} className="logout-btn">Logout</button>
           </div>
         ) : (
           <div className="nav-links">
