@@ -10,7 +10,7 @@ export default function LandingPage(props) {
   const [hover2, toggleHover2] = useState(false);
   const [hover3, toggleHover3] = useState(false);
   const navigate = useNavigate();
-  
+
   const bubbEffs = useSpring({ transform: hover ? "scale(1.5)" : "scale(1.0)" });
   const centerEffs = useSpring({ transform: hover2 ? "scale(1.8)" : "scale(1.0)" });
   const rigthEffs = useSpring({ transform: hover3 ? "scale(1.5)" : "scale(1.0)" });
@@ -50,7 +50,7 @@ export default function LandingPage(props) {
 
             <animated.div
               style={rigthEffs}
-              onClick={() => (props.user ? navigate("/profile") : navigate("login"))}
+              onClick={() => (props.user ? navigate(`/profile/${props.user.id}`) : navigate("login"))}
               onMouseOver={() => toggleHover3(!hover3)}
               onMouseOut={() => toggleHover3(!hover3)}
               className="bottom-bubbs"

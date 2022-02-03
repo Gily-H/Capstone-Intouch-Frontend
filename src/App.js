@@ -12,8 +12,8 @@ import "./styles/App.css";
 
 function App() {
   const CANVAS_DIMENSIONS = {
-    width: 2000,
-    height: 2000,
+    width: 1500,
+    height: 1500,
   };
   const [isLoading, setLoading] = useState(true);
   const [peopleData, setPeopleData, setPeopleDataRelations] = usePeople();
@@ -21,12 +21,9 @@ function App() {
   const [strengths, setStrengths] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState("");
   const [user, setUser] = useState(null);
+  const [addNewData, setAddNewData] = useState(false);
 
   const [isMessageBoxOpen, setIsMessageBoxOpen] = useState(false);
-  const [messageToSend, setMessageToSend] = useState({
-    phone: "",
-    message: "",
-  });
 
   axios.defaults.withCredentials = true; /* cookie sessions */
 
@@ -34,7 +31,6 @@ function App() {
     axios
       .get("https://crud-intouch-backend.herokuapp.com/auth/login/success")
       .then((res) => {
-        console.log(res.data);
         setUser(res.data.user);
       })
       .catch((err) => console.log("catch block", err));
@@ -89,17 +85,20 @@ function App() {
       setLoading(false);
     }
   }
-  useEffect(() => fetchPeopleData(), [user]);
+  useEffect(() => fetchPeopleData(), [user, addNewData]);
 
   /* =========================== state handlers =============================== */
 
   function addRelationHandler(relationData, nodeData) {
     /* Come back to this and review */
-    setPeopleDataRelations([...peopleData.relations, relationData]);
+    console.log(relationData);
+    console.log(nodeData);
+    setPeopleDataRelations(relationData);
     addSingleGraphData({
       nodes: nodeData, // needs to have id key field (NOT friendId)
       links: { source: relationData.userId, target: relationData.friendId },
     });
+    setAddNewData((prevAddNewData) => !prevAddNewData);
     setSelectedPerson(relationData);
   }
 
@@ -156,10 +155,7 @@ function App() {
     setUser(data);
   }
 
-  /* CONTINUE TO WORK ON */
   function createMessage(phone, message) {
-    setMessageToSend({ phone: phone, message: message });
-
     console.log(phone, message);
     axios
       .get(`https://crud-intouch-backend.herokuapp.com/sms/send?recipient=${phone}&message=${message}`)
@@ -205,7 +201,7 @@ function App() {
       <Routes>
         <Route to="/" element={<Navbar user={user} handleUser={setUserData} />}>
           <Route path="landing" element={<LandingPage user={user} />} />
-          <Route path="home" element={<HomePage user={user} />} />
+          {/* <Route path="home" element={<HomePage user={user} />} /> */}
           <Route path="login" element={<Login userData={setUserData} />} />
           <Route path="signUp" element={<SignUp userData={setUserData} />} />
           <Route

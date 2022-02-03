@@ -31,7 +31,7 @@ export default function Navbar(props) {
       <animated.div className="nav-body" style={effs}>
         <div className="nav-header">
           {/* <h1 className="nav-title">In-Touch</h1> */}
-          <Link to={props.user ? "/home" : "/"} className="nav-link">
+          <Link to="/landing" className="nav-link">
             Home
           </Link>
         </div>

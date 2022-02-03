@@ -77,7 +77,7 @@ export default function FriendSlide(props) {
       )}
 
       <div className="friend-slide-footer">
-        <Link className="friend-slide-home-btn" to={`../home`}>
+        <Link className="friend-slide-home-btn" to={`../landing`}>
           <i className="fas fa-home"></i>Home
         </Link>
         <Link className="friend-slide-add-friend-btn" to={`../profile/${props.rootUserId}`}>

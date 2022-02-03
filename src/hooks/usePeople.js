@@ -16,7 +16,7 @@ export default function usePeople() {
   function changeRelations(newRelation) {
     setPeopleData((prevPeopleData) => ({
       ...prevPeopleData,
-      relations: [...newRelation],
+      relations: [...prevPeopleData.relations, newRelation],
     }));
   }
 

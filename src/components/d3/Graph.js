@@ -28,8 +28,8 @@ export default function Graph(props) {
         d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
       ) // magnetic force between nodes, positive attracts, default -30
       .force("collide", d3.forceCollide(80)) // prevent node overlap
-      .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(1)) // force exerted from center point - evenly spreads distance between nodes
-
+      // force exerted from center point - evenly spreads distance between nodes
+      .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(1))
       .force(
         "links",
         d3
@@ -47,18 +47,6 @@ export default function Graph(props) {
             }
           })
       )
-      // creates a circle that applies a pulling force to all nodes
-      // .force(
-      //   "enclosure",
-      //   d3
-      //     .forceRadial(
-      //       500, // radius
-      //       props.dimensions.width / 2,
-      //       props.dimensions.height / 2
-      //     )
-      //     .strength(0.05) // maybe update this value to move nodes closer
-      // )
-
       // .alpha(0.9) // will decay until reaches default break point of 0.001
       // .alphaMin(0.01) // without this -> infinite loop
       // .alphaDecay(0.05) // rate of decay
@@ -69,7 +57,7 @@ export default function Graph(props) {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([1, 3])
+      .scaleExtent([0.8, 2.5])
       .on("zoom", () => {
         const zoomState = zoomTransform(svg.node());
         links.attr("transform", zoomState);
@@ -78,7 +66,7 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes, props.strengthData, props.user]);
+  }, [props.data.nodes, props.data.relations, props.strengthData, props.user, props.data]);
 
   return (
     <div className="svg-container">

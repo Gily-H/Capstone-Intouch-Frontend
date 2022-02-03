@@ -22,7 +22,7 @@ export default function SignUp(props) {
     axios
       .post("https://crud-intouch-backend.herokuapp.com/customAuth/signup", newUser)
       .then((res) => {
-        navigate("/home");
+        navigate("/landing");
         props.userData(res.data);
       })
       .catch((err) => console.log(err));
