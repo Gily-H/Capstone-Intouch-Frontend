@@ -15,8 +15,12 @@ export default function UserForm(props) {
             name="firstName"
             value={props.userInfo.firstName}
             onChange={props.handleInputChange}
+            required
           />
         </label>
+
+        {props.lastNameInput}
+
         <label className="login-password">
           <input
             className="login-input"
@@ -25,16 +29,12 @@ export default function UserForm(props) {
             name="password"
             value={props.userInfo.password}
             onChange={props.handleInputChange}
+            required
           />
         </label>
 
         <input type="submit" value={props.formText.button} className="login-btns login-submit-btn" />
-        <p className="login-OR"> or</p>
-
-        <button className="login-btns login-google-btn">
-          <img src={GOOGLE_LOGO} className="google-logo" alt="google-icon" />
-          <p className="google-text">Continue with Google</p>
-        </button>
+        
       </form>
 
       <p className="sign-up-msg">

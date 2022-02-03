@@ -22,7 +22,7 @@ export default function SignUp(props) {
     axios
       .post("https://crud-intouch-backend.herokuapp.com/customAuth/signup", newUser)
       .then((res) => {
-        navigate("/home");
+        navigate("/landing");
         props.userData(res.data);
       })
       .catch((err) => console.log(err));
@@ -35,7 +35,27 @@ export default function SignUp(props) {
     button: "Create Account",
   };
 
+  const lastNameInput = (
+    <label className="login-lastName">
+      <input
+        className="login-input"
+        placeholder="Last Name"
+        type="text"
+        name="lastName"
+        value={signupInfo.lastName}
+        onChange={handleChange}
+        required
+      />
+    </label>
+  );
+
   return (
-    <UserForm handleFormSubmit={handleForm} handleInputChange={handleChange} userInfo={signupInfo} formText={text} />
+    <UserForm
+      handleFormSubmit={handleForm}
+      handleInputChange={handleChange}
+      lastNameInput={lastNameInput}
+      userInfo={signupInfo}
+      formText={text}
+    />
   );
 }

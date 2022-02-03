@@ -1,55 +1,48 @@
 .profile-pic-container {
-  position: absolute;
   color: white;
+  /* background-color: blueviolet; */
+  display: inline;
 }
+
 .profile-pic {
-  margin-top: 10%;
-  margin-left: 18%;
-  width: 275px;
-  height: 275px;
+  max-width: 400px;
+  max-height: 400px;
 }
 .profile-user-info {
-  /* border-style: solid; */
-  position: absolute;
-  margin-top: 18%;
-  width: 20%;
+  width: 100%;
+  text-align: left;
+  padding-left: 10%;
 }
 .profile-username {
   margin-top: 10%;
-  margin-left: 13%;
   font-size: 50px;
 }
-
 .profile-phone {
   margin-top: 10%;
-  margin-left: 19%;
   font-size: 30px;
 }
 .profile-initials {
-  position: relative;
-  top: 10%;
-  left: 47%;
-  transform: translate(0%, -180%);
+  text-align: left;
+  padding-left: 4vw;
+  transform: translate(0%, -240%);
   font-size: 90px;
 }
 .profile-panels {
   display: flex;
   flex-direction: row;
-  /* border-style: solid;  */
 }
 .profile-left-panel {
-  margin-left: 1%;
+  position: relative;
+  margin-left: 2%;
   width: 25%;
   height: 900px;
   margin-top: 2%;
-
-  /* border-style: solid; */
 }
 .profile-middle-panel {
+  margin-left: auto;
   width: 65%;
   height: 100%;
-  height: 900px;
-  /* border-style: solid; */
+  min-height: 900px;
 }
 .add-contact-form-title {
   margin-top: 0px;
@@ -57,10 +50,10 @@
   font-size: 40px;
 }
 .add-contact-form {
+  width: 400px;
+  margin-left: clamp(10%, 100px, 100px);
   margin-top: 5%;
   font-size: 26px;
-  width: 400px;
-  margin-left: 25%;
 }
 .add-contact-btn {
   background-color: rgb(12, 9, 155);
@@ -78,7 +71,7 @@
   padding-top: 5%;
   padding-left: 4%;
   height: 45%;
-  width: 99%;
+  width: 85%;
   bottom: 0;
   overflow-y: hidden;
   padding-bottom: 20px;
@@ -103,13 +96,18 @@
   display: flex;
   flex-direction: column;
 }
+
+.contact-card img {
+  border-radius: 50%;
+}
+
 .contacts-panel-bottom > .contact-card > img {
   width: 160px;
   height: 160px;
   margin: 20px;
 }
 .contact-name {
-  font-size: 24px;
-  text-align: center;
   margin-left: 14px;
+  text-align: center;
+  font-size: 24px;
 }
