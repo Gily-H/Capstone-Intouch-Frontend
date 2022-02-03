@@ -2,7 +2,6 @@
   color: white;
   /* background-color: blueviolet; */
   display: inline;
-  text-align: center;
 }
 
 .profile-pic {
@@ -11,6 +10,7 @@
 }
 .profile-user-info {
   width: 100%;
+  text-align: left;
   padding-left: 10%;
 }
 .profile-username {
@@ -22,6 +22,8 @@
   font-size: 30px;
 }
 .profile-initials {
+  text-align: left;
+  padding-left: 4vw;
   transform: translate(0%, -240%);
   font-size: 90px;
 }
@@ -94,6 +96,11 @@
   display: flex;
   flex-direction: column;
 }
+
+.contact-card img {
+  border-radius: 50%;
+}
+
 .contacts-panel-bottom > .contact-card > img {
   width: 160px;
   height: 160px;

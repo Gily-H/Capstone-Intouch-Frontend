@@ -15,6 +15,7 @@ export default function UserForm(props) {
             name="firstName"
             value={props.userInfo.firstName}
             onChange={props.handleInputChange}
+            required
           />
         </label>
 
@@ -28,6 +29,7 @@ export default function UserForm(props) {
             name="password"
             value={props.userInfo.password}
             onChange={props.handleInputChange}
+            required
           />
         </label>
 

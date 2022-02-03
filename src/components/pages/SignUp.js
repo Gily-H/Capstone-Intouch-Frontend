@@ -44,6 +44,7 @@ export default function SignUp(props) {
         name="lastName"
         value={signupInfo.lastName}
         onChange={handleChange}
+        required
       />
     </label>
   );
