@@ -29,14 +29,14 @@ export default function Graph(props) {
       ) // magnetic force between nodes, positive attracts, default -30
       .force("collide", d3.forceCollide(80)) // prevent node overlap
       // force exerted from center point - evenly spreads distance between nodes
-      .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(1))
+      .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(0.1))
       .force(
         "links",
         d3
           .forceLink(props.data.links)
           .id((datum) => datum.id)
           .distance((link, i) => {
-            // console.log(link.target);
+            // console.log(link.target.strength);
             const edgeLength = props.strengthData[i];
             if (edgeLength <= 0) {
               return 1; // prevent node from moving past central node

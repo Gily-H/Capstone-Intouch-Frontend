@@ -16,7 +16,7 @@ function App() {
     height: 1500,
   };
   const [isLoading, setLoading] = useState(true);
-  const [peopleData, setPeopleData, setPeopleDataRelations] = usePeople();
+  const [peopleData, setPeopleData, setPeopleDataRelations, updatePeopleDataRelations] = usePeople();
   const [graphData, addGraphData, addSingleGraphData] = useGraph();
   const [strengths, setStrengths] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState("");
@@ -121,12 +121,15 @@ function App() {
     const updatedFriends = peopleData.relations.map((friend) =>
       friendId === friend.friendId ? updatedFriend : friend
     );
+
+    console.log(updatedFriends);
     const updatedStrengths = updatedFriends.map((friend) => friend.strength);
+    console.log(updatedStrengths);
 
     axios
       .patch(`https://crud-intouch-backend.herokuapp.com/api/friends/${friendId}`, updatedFriend)
       .then((res) => {
-        setPeopleDataRelations(updatedFriends);
+        updatePeopleDataRelations(updatedFriends);
         setStrengths(updatedStrengths);
       })
       .catch((err) => console.log(err));

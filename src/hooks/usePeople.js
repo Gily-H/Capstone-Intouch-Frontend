@@ -13,12 +13,19 @@ export default function usePeople() {
     }));
   }
 
-  function changeRelations(newRelation) {
+  function changeSingleRelation(newRelation) {
     setPeopleData((prevPeopleData) => ({
       ...prevPeopleData,
       relations: [...prevPeopleData.relations, newRelation],
     }));
   }
 
-  return [peopleData, changePeople, changeRelations];
+  function changeRelations(updatedRelations) {
+    setPeopleData((prevPeopleData) => ({
+      ...prevPeopleData,
+      relations: [...updatedRelations],
+    }));
+  }
+
+  return [peopleData, changePeople, changeSingleRelation, changeRelations];
 }
