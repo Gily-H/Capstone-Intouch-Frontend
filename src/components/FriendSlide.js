@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import RemoveFriendNode from "./RemoveFriendNode";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import "../styles/FriendSlide.css";
+import { DEFAULT_PERSON_IMAGE } from "../resources/profileImages";
 
 export default function FriendSlide(props) {
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
   const friendId = props.friend.id;
   const name = `${props.friend.firstName} ${props.friend.lastName}`;
   const phone = props.friend.phone;
-  const imageUrl = props.friend.imageUrl;
+  const imageUrl = props.friend.imageUrl || DEFAULT_PERSON_IMAGE;
   const updatedAt = props.friend.lastContact;
 
   const displayRemoveButton = props.rootUserId !== friendId && (
@@ -77,7 +80,7 @@ export default function FriendSlide(props) {
       )}
 
       <div className="friend-slide-footer">
-        <Link className="friend-slide-home-btn" to={`../landing`}>
+        <Link className="friend-slide-home-btn" to="/landing">
           <i className="fas fa-home"></i>Home
         </Link>
         <Link className="friend-slide-add-friend-btn" to={`../profile/${props.rootUserId}`}>

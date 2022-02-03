@@ -146,7 +146,7 @@ function App() {
             links: graphData.links.filter((link) => link.target.id !== removeId),
           };
 
-          setPeopleDataRelations(updatedFriends);
+          updatePeopleDataRelations(updatedFriends);
           addGraphData(updatedGraphData);
           selectedPerson && setSelectedPerson((prevSelectedPerson) => "");
         })
