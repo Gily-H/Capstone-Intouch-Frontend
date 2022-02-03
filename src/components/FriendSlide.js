@@ -24,7 +24,7 @@ export default function FriendSlide(props) {
   }
 
   function connectWithFriend() {
-    // props.messageHandler(phone, message);
+    props.messageHandler(phone, message);
     updateStrength(friendId, 20);
     setMessage("");
   }
