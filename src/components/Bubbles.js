@@ -19,7 +19,7 @@ export default function ImageBubble(props) {
 	return (
 		<div className="bubbles">
 			<animated.div style={effs}>
-				<animated.div style={overEff} onMouseOver={() => toggle(!open)} onMouseOut={() => toggle(!open)}>
+				<animated.div className="bubble-img" style={overEff} onMouseOver={() => toggle(!open)} onMouseOut={() => toggle(!open)}>
 					<img src={props.image}  />
 					<div className="bubble-text">
 						<animated.h2>{props.label}</animated.h2>

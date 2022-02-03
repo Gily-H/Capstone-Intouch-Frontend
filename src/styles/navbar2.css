@@ -22,3 +22,25 @@
     font-size: 30px;
 }
 
+.nav-links-with-signin{
+    display: flex;
+    
+}
+
+
+.logout-btn{
+    padding: 15px;
+    border-radius: 20%;
+    border: none;
+    cursor: pointer;
+    background-color: #d1d1d1;
+    font-size: 100%;
+    font-weight: bold;
+    margin-right: 40px;
+}
+
+.nav-links-with-signin h2{
+    margin-top: 8px;
+    text-align: center;
+    margin-right: 30px;
+}

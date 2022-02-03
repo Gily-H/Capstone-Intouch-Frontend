@@ -1,29 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { zoomTransform } from "d3-zoom";
 import { createNodes, createLinks, createNodeText, onTick } from "./graphFuncs";
+import { FriendSlide } from "..";
 import "../../styles/Graph.css";
-import FriendSlide from "../FriendSlide";
 
 export default function Graph(props) {
-  const [strengths, setStrengths] = useState(() => {
-    const strengthList = props.data.nodes.map((node) => node.strength || 0);
-    strengthList.shift();
-    return strengthList;
-  });
-
-  function updateConnection(index, factor) {
-    setStrengths((prevStrengths) => {
-      const currentStrengths = [...prevStrengths];
-      const newStrength = currentStrengths[index] - factor;
-      currentStrengths[index] = newStrength;
-      return currentStrengths;
-    });
-  }
-
   const EDGE_GROWTH_FACTOR = 5;
   const networkGraph = useRef();
 
+  // console.log(props.strengthData);
   useEffect(() => {
     const svg = d3
       .select(networkGraph.current)
@@ -41,42 +27,24 @@ export default function Graph(props) {
         "charge",
         d3.forceManyBody().strength((d, i) => (i === 0 ? 10 * -500 : -500))
       ) // magnetic force between nodes, positive attracts, default -30
-      .force("collide", d3.forceCollide(100)) // prevent node overlap
-      .force(
-        "center",
-        d3
-          .forceCenter(props.dimensions.width / 2, props.dimensions.height / 2)
-          .strength(1)
-      ) // force exerted from center point - evenly spreads distance between nodes
-
-      // creates a circle that applies a pulling force to all nodes
-      // .force(
-      //   "enclosure",
-      //   d3
-      //     .forceRadial(
-      //       500, // radius
-      //       props.dimensions.width / 2,
-      //       props.dimensions.height / 2
-      //     )
-      //     .strength(0.05) // maybe update this value to move nodes closer
-      // )
+      .force("collide", d3.forceCollide(80)) // prevent node overlap
+      // force exerted from center point - evenly spreads distance between nodes
+      .force("center", d3.forceCenter(props.dimensions.width / 2, props.dimensions.height / 2).strength(0.1))
       .force(
         "links",
         d3
           .forceLink(props.data.links)
           .id((datum) => datum.id)
           .distance((link, i) => {
-            console.log(link, i);
-            const edgeLength = strengths[i];
-            if (edgeLength  <= 0) {
-              return 0; // TOUCH OUTER RADIAL EDGE
+            // console.log(link.target.strength);
+            const edgeLength = props.strengthData[i];
+            if (edgeLength <= 0) {
+              return 1; // prevent node from moving past central node
+            } else if (edgeLength * EDGE_GROWTH_FACTOR > 500) {
+              return 500; // limit how far node can move
+            } else {
+              return edgeLength * EDGE_GROWTH_FACTOR;
             }
-            else if(edgeLength * EDGE_GROWTH_FACTOR > 500) {
-              return 500;
-            }
-
-              
-            return edgeLength; // MOVE EDGE CLOSER TO RADIAL EDGE
           })
       )
       // .alpha(0.9) // will decay until reaches default break point of 0.001
@@ -89,7 +57,7 @@ export default function Graph(props) {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([1, 3])
+      .scaleExtent([0.8, 2.5])
       .on("zoom", () => {
         const zoomState = zoomTransform(svg.node());
         links.attr("transform", zoomState);
@@ -98,22 +66,23 @@ export default function Graph(props) {
       });
 
     svg.call(zoom);
-  }, [props.data.nodes, strengths]);
+  }, [props.data.nodes, props.data.relations, props.strengthData, props.user, props.data]);
 
   return (
-    <div>
+    <div className="svg-container">
       {props.selectedPerson && (
         <FriendSlide
-          friends={props.friends}
           friend={props.selectedPerson}
-          rootUserId={props.rootId}
+          rootUserId={props.rootUserId}
           deleteHandler={props.deleteFriend}
-          updateConnection={updateConnection}
+          updateStrengthConnection={props.connectionStrengthHandler}
+          isMessage={props.isMessage}
+          messageHandler={props.messageHandler}
+          openMessageBoxHandler={props.openMessageBoxHandler}
+          closeMessageBoxHandler={props.closeMessageBoxHandler}
         />
       )}
-      <div className="svg-container">
-        <svg className="graph" ref={networkGraph}></svg>
-      </div>
+      <svg className="graph" ref={networkGraph}></svg>
     </div>
   );
 }
