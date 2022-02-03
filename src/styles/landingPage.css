@@ -117,6 +117,7 @@
   overflow: auto;
   margin-right: auto;
   border: solid 10px lightskyblue;
+  cursor: pointer;
 }
 
 .about-bubb:hover {

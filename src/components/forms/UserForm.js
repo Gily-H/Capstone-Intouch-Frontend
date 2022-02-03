@@ -17,6 +17,9 @@ export default function UserForm(props) {
             onChange={props.handleInputChange}
           />
         </label>
+
+        {props.lastNameInput}
+
         <label className="login-password">
           <input
             className="login-input"

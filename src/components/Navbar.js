@@ -20,7 +20,7 @@ export default function Navbar(props) {
       })
       .then((res) => {
         props.handleUser("");
-        navigate(0);
+        navigate("/landing");
         console.log(res);
       })
       .catch((err) => console.log(err));

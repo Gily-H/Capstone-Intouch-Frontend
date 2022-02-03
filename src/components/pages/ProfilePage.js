@@ -10,7 +10,7 @@ import "../../styles/profile.css";
 
 export default function ProfilePage(props) {
   const navigate = useNavigate();
-  if (props.user === null) {
+  if (!props.user) {
     navigate("/login");
   }
 
@@ -66,20 +66,17 @@ export default function ProfilePage(props) {
     );
   });
 
-  // const userImage = props.user
-  //   ? props.user.imageUrl
-  //     ? props.user.imageUrl
-  //     : DEFAULT_PROFILE_IMAGE
-  //   : DEFAULT_PROFILE_IMAGE;
-
   /* component to display the user info */
   const profileCard = (
     <div className="profile-left-panel">
       <div className="profile-pic-container">
         <img className="profile-pic" src={DEFAULT_PROFILE_IMAGE} alt="default-profile-img" />
+        <h2 className="profile-initials">{props.user && `${props.user.firstName[0]} ${props.user.lastName[0]}`}</h2>
       </div>
       <div className="profile-user-info">
-        <h1 className="profile-username">{props.user ? `${props.user.firstName}` : "Name not Available"}</h1>
+        <h1 className="profile-username">
+          {props.user ? `${props.user.firstName} ${props.user.lastName}` : "Name not Available"}
+        </h1>
         <p className="profile-phone"> 209 - 563 - 7170</p>
       </div>
     </div>

@@ -35,7 +35,26 @@ export default function SignUp(props) {
     button: "Create Account",
   };
 
+  const lastNameInput = (
+    <label className="login-lastName">
+      <input
+        className="login-input"
+        placeholder="Last Name"
+        type="text"
+        name="lastName"
+        value={signupInfo.lastName}
+        onChange={handleChange}
+      />
+    </label>
+  );
+
   return (
-    <UserForm handleFormSubmit={handleForm} handleInputChange={handleChange} userInfo={signupInfo} formText={text} />
+    <UserForm
+      handleFormSubmit={handleForm}
+      handleInputChange={handleChange}
+      lastNameInput={lastNameInput}
+      userInfo={signupInfo}
+      formText={text}
+    />
   );
 }
