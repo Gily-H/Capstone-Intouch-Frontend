@@ -30,7 +30,9 @@ export default function LandingPage() {
                 <Link to="/profile"> <Bubbles image={NewBlackCircle} label={"Add Friends"} startOp={.2} /></Link>
                 </animated.div>
                 <animated.div style={rightEffs}>
+                <Link to="/about">
                     <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.2} />
+                </Link>
                 </animated.div>
             </div>
         </div>

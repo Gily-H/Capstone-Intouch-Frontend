@@ -14,16 +14,22 @@ export default function HomePage() {
         <div id="home">
             <Navbar />
             <div className="top-bubble">
-                <Link to="/userGraph"><Bubbles image={blueCircle} label={"Connects"} startOp={.2} /></Link>
+                <Link to="/userGraph">
+                    <Bubbles image={blueCircle} label={"Connects"} startOp={.2} />
+                </Link>
             </div>
             <div className="center-bubble">
-                <Bubbles label={"In-Touch"} image={NewBlackCircle} startOp={1} />
+                <Bubbles image={NewBlackCircle} label={"In-Touch"} startOp={1} />
             </div>
             <div className="bottom-bubbles">
                 <div id="left-btm-bubble">
-                 <Bubbles image={NewBlackCircle} label={"Profile"} startOp={.2} />
+                    <Bubbles image={NewBlackCircle} label={"Profile"} startOp={.2} />
                 </div>
-                <Bubbles label={"About-Us"} image={NewBlackCircle} startOp={.2} />
+                <div id="right-btm-bubble">
+                    <Link to="/about">
+                        <Bubbles image={NewBlackCircle} label={"About-Us"}  startOp={.2} />
+                    </Link>
+                </div>
             </div>
         </div>
     )

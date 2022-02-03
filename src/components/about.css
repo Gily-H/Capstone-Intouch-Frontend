@@ -1,29 +1,62 @@
-
 .about-circles{
     display: flex;
-    background-color: aquamarine;
-    width: 100vw;
-    height: 100vh;
+    /* background-color: aquamarine; */
+    /* width: 100vw;
+    height: 100vh; */
 }
-.about-circle-main{
-    margin-top: 0%;
-    margin-left: 0%;
-    width: 100%;
-    height: 50%;
-    /* background-color: rgb(138, 255, 127); */
-}
-.about-circle-app{
-    margin-top: 8%;
-    margin-left: 3%;
-    width: 25%;
-    height: 25%;
+.about-circle-left{
+    margin-top: 50%;
+    margin-left: 5%;
+    height: 30%;
     /* background-color: rgb(255, 127, 127); */
 }
-.about-circle-dev{
-    margin-top: 8%;
-    margin-left: 0%;
-    width: 17%;
+.about-circle-middle{
+    margin-top: 0%;
+    margin-left: -30%;
+    height: 60%; 
+    /* background-color: rgb(138, 255, 127); */
+}
+.about-circle-right{
+    margin-top: 75%;
+    margin-left: -15%;
     height: 17%;
-    
     /* background-color: aquamarine; */
+}
+.about-circle-allText{
+    position: absolute;
+    color: white;
+    text-align: center;
+}
+.about-circle-left-text{
+    font-size: 255%;
+    width: 15%;
+    height: 20%;
+    margin-top: -17%;
+    margin-left: 6%; 
+}
+.about-circle-middle-text{
+    font-size: 435%;
+    width: 35%;
+    height: 20%;
+    margin-top: -36%;
+    margin-left: -7%;
+}
+.about-circle-right-text{
+    font-size: 180%;
+    width: 18%;
+    height: 20%;
+    margin-top: -11%;
+    margin-left: -9%;
+}
+.purple-text{
+    color: #877CFF;
+}
+.gray-text{
+    color: #BABABA;
+}
+#creators-text{
+    font-size: 170%;
+}
+#main-text-small{
+    font-size: 75%;
 }
