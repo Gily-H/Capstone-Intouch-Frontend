@@ -34,12 +34,7 @@ export default function UserForm(props) {
         </label>
 
         <input type="submit" value={props.formText.button} className="login-btns login-submit-btn" />
-        <p className="login-OR"> or</p>
-
-        <button className="login-btns login-google-btn">
-          <img src={GOOGLE_LOGO} className="google-logo" alt="google-icon" />
-          <p className="google-text">Continue with Google</p>
-        </button>
+        
       </form>
 
       <p className="sign-up-msg">
